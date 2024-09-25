@@ -8,6 +8,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dash');
+        $attr = [
+            'title' => 'Dashboard',
+        ];
+        return view('dash', $attr);
     }
 }

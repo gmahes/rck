@@ -2,16 +2,15 @@
 @section('content')
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Blank Page</h1>
+        <h1>Selamat Datang di RCK Office!</h1>
     </div><!-- End Page Title -->
     <section class="section">
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body mx-auto">
                         <h5 class="card-title">Example Card</h5>
-                        <p>This is an examle page with no contrnt. You can use it as a starter for your custom
-                            pages.</p>
+                        <img src="{{ asset('img/avatar.jpg') }}" class="img-fluid" alt="">
                     </div>
                 </div>
             </div>

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_auth', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('provider');
+            $table->string('provider_id');
+            $table->timestamps();
         });
     }
 

@@ -63,12 +63,20 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
+                                        @if ($errors->any())
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            @foreach ($errors->all() as $error)
+                                            {{ $error }}
+                                            @endforeach
+                                        </div>
+                                        @endif
                                         <h5 class="card-title text-center pb-0 fs-4">Selamat Datang</h5>
                                         <p class="text-center small">Silahkan masukkan username & password anda.</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" novalidate>
-
+                                    <form class="row g-3 needs-validation" novalidate method="POST"
+                                        action="{{ route('verify') }}">
+                                        @csrf
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Username</label>
                                             <input type="text" name="username" class="form-control" id="yourUsername"

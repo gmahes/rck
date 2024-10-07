@@ -3,7 +3,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item">
+        <li class="nav-item mb-3">
             <a class="nav-link" href="/">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
@@ -11,6 +11,8 @@
         </li><!-- End Dashboard Nav -->
 
 
+
+        <li class="nav-heading">Pages</li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -33,8 +35,6 @@
                 </li>
             </ul>
         </li><!-- End Icons Nav -->
-
-        <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="pages-blank.html">

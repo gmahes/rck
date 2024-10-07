@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_auth', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('provider');
-            $table->string('provider_id');
+            $table->string('username', 255)->primary();
+            $table->string('password', 255);
+            $table->string('remember_token', 100)->nullable();
+            $table->tinyInteger('frp')->default(0);
+            $table->enum('role', ['superadmin', 'administrator', 'user']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

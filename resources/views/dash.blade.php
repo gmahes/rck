@@ -8,9 +8,10 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="card-body mx-auto">
-                        <h5 class="card-title">Example Card</h5>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ $fullname }}</h5>
                         <img src="{{ asset('img/avatar.jpg') }}" class="img-fluid" alt="">
+                        <h3 class="card-title fs-6">{{ $position }}</h3>
                     </div>
                 </div>
             </div>

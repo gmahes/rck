@@ -8,14 +8,40 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="card">
+                    <div class="card shadow">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col">
                                     <p class="card-text fw-bold text-primary-emphasis fs-5">Data Karyawan</p>
                                 </div>
                                 <div class="col text-end">
-                                    <p class="card-text fw-bold text-primary-emphasis fs-5">Data Karyawan</p>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        Tambah Data
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title text-dark fw-bold fs-5"
+                                                        id="staticBackdropLabel">
+                                                        Tambah Data
+                                                        Karyawan
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

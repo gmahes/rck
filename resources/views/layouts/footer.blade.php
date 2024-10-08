@@ -13,8 +13,10 @@
         class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
+<script src="{{ asset('vendor/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap-table-master/dist/bootstrap-table.min.js') }}"></script>
 <script src="{{ asset('vendor/chart.js/chart.umd.js') }}"></script>
 <script src="{{ asset('vendor/echarts/echarts.min.js') }}"></script>
 <script src="{{ asset('vendor/quill/quill.js') }}"></script>

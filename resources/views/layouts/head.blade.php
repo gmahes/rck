@@ -19,6 +19,7 @@
   <!-- Vendor CSS Files -->
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('vendor/bootstrap-table-master/dist/bootstrap-table.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/quill/quill.snow.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/quill/quill.bubble.css') }}" rel="stylesheet">

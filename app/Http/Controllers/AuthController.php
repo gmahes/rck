@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +23,12 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $userdetail = [
+                'nik' => UserAuth::find(Auth::id())->userDetail->nik,
+                'fullname' => UserAuth::find(Auth::id())->userDetail->fullname,
+                'position' => UserAuth::find(Auth::id())->userDetail->position,
+            ];
+            $request->session()->put('userdetail', $userdetail);
             return redirect()->intended('/');
         }
         return back()->withErrors('Login Gagal!');

@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $attr = [
             'title' => 'Dashboard',
-            'fullname' => UserAuth::find(Auth::id())->userDetail->fullname,
-            'position' => UserAuth::find(Auth::id())->userDetail->position,
+            'fullname' => $request->session()->get('userdetail')['fullname'],
+            'position' => $request->session()->get('userdetail')['position'],
         ];
         return view('dash', $attr);
     }

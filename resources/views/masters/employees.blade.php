@@ -8,6 +8,15 @@
         <div class="col">
             <div class="row">
                 <div class="col">
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <div class="card shadow">
                         <div class="card-header">
                             <div class="row">
@@ -37,7 +46,8 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-start text-dark">
-                                                    <form action="">
+                                                    <form action="{{ route('add-employee') }}" method="POST">
+                                                        @csrf
                                                         <div class="mb-3">
                                                             <div class="row">
                                                                 <div class="col-4">
@@ -48,7 +58,7 @@
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         id="username" placeholder="Masukkan Username"
-                                                                        name="username">
+                                                                        name="username" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -60,7 +70,22 @@
                                                                 <div class="col-8">
                                                                     <input type="text"
                                                                         class="form-control form-control-sm" id="nik"
-                                                                        placeholder="Masukkan NIK" name="nik">
+                                                                        placeholder="Masukkan NIK" name="nik" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="fullname" class="form-label">Nama
+                                                                        Lengkap</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        id="fullname"
+                                                                        placeholder="Masukkan Nama Lengkap"
+                                                                        name="fullname" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -74,7 +99,7 @@
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         id="position" placeholder="Masukkan Jabatan"
-                                                                        name="position">
+                                                                        name="position" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -85,11 +110,12 @@
                                                                 </div>
                                                                 <div class="col-8">
                                                                     <select class="form-select form-select-sm"
-                                                                        aria-label="role">
+                                                                        aria-label="role" name="role" required>
                                                                         <option selected>Pilih Role User</option>
-                                                                        <option value="1">One</option>
-                                                                        <option value="2">Two</option>
-                                                                        <option value="3">Three</option>
+                                                                        @foreach ($role_list as $role)
+                                                                        <option value="{{ $role }}">{{ $role }}
+                                                                        </option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>

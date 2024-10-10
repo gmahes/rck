@@ -10,3 +10,4 @@ Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name
 Route::post('verify', [AuthController::class, 'verify'])->middleware('guest')->name('verify');
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('employees', [MasterController::class, 'employees'])->middleware('auth')->name('employees');
+Route::post('add-employee', [MasterController::class, 'addEmployee'])->middleware('auth')->name('add-employee');

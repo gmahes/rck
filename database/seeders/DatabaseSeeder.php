@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\UserAuth;
-use App\UserDetail;
+use App\Models\UserAuth;
+use App\Models\UserDetail;
 use Illuminate\Support\Facades\Hash;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;

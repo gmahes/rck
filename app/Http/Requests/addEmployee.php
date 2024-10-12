@@ -24,8 +24,8 @@ class addEmployee extends FormRequest
         return [
             'username' => 'required|alpha:ascii|lowercase|unique:App\Models\UserAuth,username',
             'nik' => 'required|numeric',
-            'fullname' => 'required|alpha',
-            'position' => 'required|alpha',
+            'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
+            'position' => 'required|regex:/^[a-zA-Z\s]+$/',
             'role' => 'required'
         ];
     }
@@ -37,9 +37,9 @@ class addEmployee extends FormRequest
             'username.lowercase' => 'username hanya boleh berisi huruf kecil',
             'username.unique' => 'username sudah terdaftar',
             'fullname.required' => 'nama lengkap belum diisi',
-            'fullname.alpha' => 'nama lengkap hanya boleh berisi huruf a-z',
+            'fullname.regex' => 'nama lengkap hanya boleh berisi huruf a-z',
             'position.required' => 'posisi belum diisi',
-            'position.alpha' => 'posisi hanya boleh berisi huruf a-z',
+            'position.regex' => 'posisi hanya boleh berisi huruf a-z',
             'role.required' => 'role belum dipilih'
         ];
     }

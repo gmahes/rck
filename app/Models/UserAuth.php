@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticable;
 
 class UserAuth extends Authenticable
 {
+    use SoftDeletes;
     use HasFactory;
     protected $table = 'user_auth';
     protected $primaryKey = 'username';

@@ -8,15 +8,6 @@
         <div class="col">
             <div class="row">
                 <div class="col">
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
                     <div class="card shadow">
                         <div class="card-header">
                             <div class="row">
@@ -59,9 +50,11 @@
                                                     <i class="bi bi-justify"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                    <li>
+                                                        <a href="{{ route('del-employee', $employee->username) }}"
+                                                            class="btn btn-sm btn-danger"
+                                                            data-confirm-delete="true">Hapus</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>

@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\UserAuth;
 use App\Models\UserDetail;
 use Illuminate\Support\Facades\Hash;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

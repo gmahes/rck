@@ -17,6 +17,7 @@ class MasterController extends Controller
             'title' => 'Employees',
             'fullname' => $request->session()->get('userdetail')['fullname'],
             'position' => $request->session()->get('userdetail')['position'],
+            'division_list' => ['Operasional', 'Non Operasional'],
             'role_list' => ['administrator', 'user'],
             'employees' => UserDetail::all()->sortBy('fullname')
         ];
@@ -31,9 +32,10 @@ class MasterController extends Controller
             $request->all(),
             [
                 'username' => 'required|unique:App\Models\UserAuth,username|alpha:ascii|lowercase',
-                'nik' => 'required|numeric',
+                'nik' => 'required|numeric|unique:App\Models\UserDetail,nik',
                 'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'position' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'division' => 'required',
                 'role' => 'required'
             ],
             [
@@ -41,11 +43,15 @@ class MasterController extends Controller
                 'username.alpha' => 'Username hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->username'",
                 'username.lowercase' => 'Username hanya boleh berisi huruf kecil. Anda membuat ' . "'$request->username'",
                 'username.unique' => 'Username sudah terdaftar',
+                'nik.required' => 'NIK belum diisi',
+                'nik.numeric' => 'NIK hanya boleh berisi angka. Anda membuat ' . "'$request->nik'",
+                'nik.unique' => 'NIK sudah terdaftar',
                 'fullname.required' => 'Nama lengkap belum diisi',
                 'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
                 'position.required' => 'Posisi belum diisi',
                 'position.regex' => 'Posisi hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->position'",
-                'role.required' => 'Role belum dipilih'
+                'role.required' => 'Role belum dipilih',
+                'division.required' => 'Divisi belum dipilih'
             ],
         );
         if ($validator->fails()) {
@@ -63,11 +69,57 @@ class MasterController extends Controller
             'nik' => $validated['nik'],
             'username' => $validated['username'],
             'fullname' => $validated['fullname'],
-            'position' => $validated['position']
+            'position' => $validated['position'],
+            'division' => $validated['division']
         ];
         UserAuth::create($userauth);
         UserDetail::create($userdetail);
         Alert::success('Sukses', 'Data karyawan berhasil ditambahkan');
+        return redirect()->route('employees');
+    }
+    public function editEmployee(Request $request, $username)
+    {
+        // dd($request->all());
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'position' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'division' => 'required',
+            ],
+            [
+                'fullname.required' => 'Nama lengkap belum diisi',
+                'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
+                'position.required' => 'Posisi belum diisi',
+                'position.regex' => 'Posisi hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->position'",
+                'division.required' => 'Divisi belum dipilih'
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('employees');
+        }
+        $validated = $validator->validated();
+        if (!$request->role) {
+            $userdetail = [
+                'fullname' => $validated['fullname'],
+                'position' => $validated['position'],
+                'division' => $validated['division']
+
+            ];
+        } else {
+            $userauth = [
+                'role' => $request->role
+            ];
+            $userdetail = [
+                'fullname' => $validated['fullname'],
+                'position' => $validated['position'],
+                'division' => $validated['division'],
+            ];
+        }
+        UserAuth::where('username', $username)->update($userauth);
+        UserDetail::where('username', $username)->update($userdetail);
+        Alert::success('Sukses', 'Data karyawan berhasil diubah');
         return redirect()->route('employees');
     }
     public function delEmployee($username)

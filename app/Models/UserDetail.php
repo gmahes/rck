@@ -18,6 +18,7 @@ class UserDetail extends Model
         'username',
         'fullname',
         'position',
+        'division'
     ];
     public function userAuth()
     {

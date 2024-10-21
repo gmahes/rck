@@ -61,6 +61,21 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
+                                <label for="role" class="form-label">Divisi</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" aria-label="division" name="division"
+                                    required>
+                                    @foreach ($division_list as $division)
+                                    <option value="{{ $division }}">{{ $division }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" mb-3">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="role" class="form-label">Role</label>
                             </div>
                             <div class="col-8">

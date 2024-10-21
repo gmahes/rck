@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'it_chakra',
             'fullname' => 'Gregi Maulana Mahes',
             'position' => 'IT Support',
+            'division' => 'Non Operasional',
         ]);
     }
 }

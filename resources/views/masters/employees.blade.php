@@ -37,6 +37,7 @@
                                         <th>NIK</th>
                                         <th>Nama Lengkap</th>
                                         <th>Jabatan</th>
+                                        <th>Divisi</th>
                                         <th>Role</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -48,6 +49,7 @@
                                         <td class="fw-bold">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
                                         <td>{{ $employee->position }}</td>
+                                        <td>{{ $employee->division }}</td>
                                         <td>{{ $employee->userAuth->role }}</td>
                                         <td class="text-center">
                                             <div class="btn-group dropstart">

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserDetail extends Model
 {
-    use SoftDeletes;
     use HasFactory;
     protected $table = 'user_detail';
     protected $primaryKey = 'nik';

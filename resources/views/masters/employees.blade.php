@@ -15,6 +15,11 @@
                                     <p class="card-text fw-bold text-primary-emphasis fs-5">Data Karyawan</p>
                                 </div>
                                 <div class="col text-end">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#addEmployee">
+                                        Tambah Data
+                                    </button>
                                     @include('components.masters.modals.addEmployee')
                                 </div>
                             </div>
@@ -38,6 +43,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($employees as $employee)
+                                    @include('components.masters.modals.editEmployee')
                                     <tr>
                                         <td class="fw-bold">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
@@ -51,10 +57,22 @@
                                                 </button>
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a href="{{ route('del-employee', $employee->username) }}"
-                                                            class="btn btn-sm btn-danger"
-                                                            data-confirm-delete="true">Hapus</a>
+                                                        <button type="button"
+                                                            class="btn btn-sm dropdown-item text-success"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editData{{ $employee->username }}">
+                                                            <i class="bi bi-pencil"></i>
+                                                            Edit Data
+                                                        </button>
                                                     </li>
+                                                    @if ($employee->userAuth->role != 'superadmin')
+                                                    <li>
+                                                        <a href="{{ route('del-employee', $employee->username) }}"
+                                                            class="text-danger dropdown-item"
+                                                            data-confirm-delete="true"><i
+                                                                class="bi bi-trash-fill"></i>Hapus</a>
+                                                    </li>
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </td>

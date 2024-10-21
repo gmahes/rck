@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\addEmployee;
 use App\Models\UserAuth;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
-
-use function Laravel\Prompts\error;
 
 class MasterController extends Controller
 {
@@ -21,7 +18,7 @@ class MasterController extends Controller
             'fullname' => $request->session()->get('userdetail')['fullname'],
             'position' => $request->session()->get('userdetail')['position'],
             'role_list' => ['administrator', 'user'],
-            'employees' => UserDetail::all()
+            'employees' => UserDetail::all()->sortBy('fullname')
         ];
         $title = 'Hapus Karyawan';
         $text = 'Apakah anda yakin ingin menghapus data karyawan ini?';
@@ -30,49 +27,29 @@ class MasterController extends Controller
     }
     public function addEmployee(Request $request)
     {
-        // if ($request->validated()) {
-        //     $validated = $request->validated();
-        //     $userauth = [
-        //         'username' => $validated['username'],
-        //         'password' => Hash::make(12345678),
-        //         'frp' => 0,
-        //         'role' => $validated['role']
-        //     ];
-        //     $userdetail = [
-        //         'nik' => $validated['nik'],
-        //         'username' => $validated['username'],
-        //         'fullname' => $validated['fullname'],
-        //         'position' => $validated['position']
-        //     ];
-        //     UserAuth::create($userauth);
-        //     UserDetail::create($userdetail);
-        //     Alert::success('Sukses', 'Data karyawan berhasil ditambahkan');
-        // } else {
-        //     Alert::error('Gagal', 'Data karyawan gagal ditambahkan');
-        // }
         $validator = Validator::make(
             $request->all(),
             [
-                'username' => 'required|alpha:ascii|lowercase|unique:App\Models\UserAuth,username',
+                'username' => 'required|unique:App\Models\UserAuth,username|alpha:ascii|lowercase',
                 'nik' => 'required|numeric',
                 'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'position' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'role' => 'required'
             ],
             [
-                'username.required' => 'username belum diisi',
-                'username.alpha' => 'username hanya boleh berisi huruf a-z',
-                'username.lowercase' => 'username hanya boleh berisi huruf kecil',
-                'username.unique' => 'username sudah terdaftar',
-                'fullname.required' => 'nama lengkap belum diisi',
-                'fullname.regex' => 'nama lengkap hanya boleh berisi huruf a-z',
-                'position.required' => 'posisi belum diisi',
-                'position.regex' => 'posisi hanya boleh berisi huruf a-z',
-                'role.required' => 'role belum dipilih'
-            ]
+                'username.required' => 'Username belum diisi',
+                'username.alpha' => 'Username hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->username'",
+                'username.lowercase' => 'Username hanya boleh berisi huruf kecil. Anda membuat ' . "'$request->username'",
+                'username.unique' => 'Username sudah terdaftar',
+                'fullname.required' => 'Nama lengkap belum diisi',
+                'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
+                'position.required' => 'Posisi belum diisi',
+                'position.regex' => 'Posisi hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->position'",
+                'role.required' => 'Role belum dipilih'
+            ],
         );
         if ($validator->fails()) {
-            Alert::error('Gagal', $validator->errors()->all());
+            Alert::error('Gagal', $validator->errors()->first());
             return redirect()->route('employees');
         }
         $validated = $validator->validated();

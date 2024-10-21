@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('fullname', 255);
             $table->string('position', 255);
             $table->timestamps();
-            $table->softDeletes();
-            $table->foreign('username')->references('username')->on('user_auth')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

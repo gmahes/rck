@@ -18,7 +18,6 @@ return new class extends Migration
             $table->tinyInteger('frp')->default(0);
             $table->enum('role', ['superadmin', 'administrator', 'user']);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

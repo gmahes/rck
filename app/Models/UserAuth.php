@@ -9,7 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticable;
 
 class UserAuth extends Authenticable
 {
-    use SoftDeletes;
     use HasFactory;
     protected $table = 'user_auth';
     protected $primaryKey = 'username';

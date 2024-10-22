@@ -129,4 +129,11 @@ class MasterController extends Controller
         Alert::success('Sukses', 'Data karyawan berhasil dihapus');
         return redirect()->route('employees');
     }
+    public function resetPassword($username)
+    {
+        $userauth = UserAuth::where('username', $username)->first();
+        $userauth->update(['password' => Hash::make(12345678)]);
+        Alert::success('Sukses', 'Password berhasil direset');
+        return redirect()->route('employees');
+    }
 }

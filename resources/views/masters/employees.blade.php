@@ -69,6 +69,21 @@
                                                     </li>
                                                     @if ($employee->userAuth->role != 'superadmin')
                                                     <li>
+                                                        <form
+                                                            action="{{ route('reset-password', $employee->username) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            @method('patch')
+                                                            <button type="submit"
+                                                                class="btn btn-sm dropdown-item text-primary">
+                                                                <i class="bi bi-key"></i>
+                                                                Reset Password
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    @endif
+                                                    @if ($employee->userAuth->role != 'superadmin')
+                                                    <li>
                                                         <a href="{{ route('del-employee', $employee->username) }}"
                                                             class="text-danger dropdown-item"
                                                             data-confirm-delete="true"><i

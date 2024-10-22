@@ -13,3 +13,4 @@ Route::get('employees', [MasterController::class, 'employees'])->middleware('aut
 Route::post('add-employee', [MasterController::class, 'addEmployee'])->middleware('auth')->name('add-employee');
 Route::put('edit-employee/{username}', [MasterController::class, 'editEmployee'])->middleware('auth')->name('edit-employee');
 Route::delete('del-employee/{username}', [MasterController::class, 'delEmployee'])->middleware('auth')->name('del-employee');
+Route::patch('reset-password/{username}', [MasterController::class, 'resetPassword'])->middleware('auth')->name('reset-password');

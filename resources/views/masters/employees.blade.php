@@ -45,6 +45,7 @@
                                 <tbody>
                                     @foreach ($employees as $employee)
                                     @include('components.masters.modals.editEmployee')
+                                    @include('components.masters.modals.resetPassword')
                                     <tr>
                                         <td class="fw-bold">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
@@ -69,17 +70,13 @@
                                                     </li>
                                                     @if ($employee->userAuth->role != 'superadmin')
                                                     <li>
-                                                        <form
-                                                            action="{{ route('reset-password', $employee->username) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('patch')
-                                                            <button type="submit"
-                                                                class="btn btn-sm dropdown-item text-primary">
-                                                                <i class="bi bi-key"></i>
-                                                                Reset Password
-                                                            </button>
-                                                        </form>
+                                                        <button type="button"
+                                                            class="btn btn-sm dropdown-item text-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#resetPassword{{ $employee->username }}">
+                                                            <i class="bi bi-key"></i>
+                                                            Reset Password
+                                                        </button>
                                                     </li>
                                                     @endif
                                                     @if ($employee->userAuth->role != 'superadmin')

@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'superadmin',
         ]);
         UserDetail::create([
-            'nik' => '123456789',
+            'nik' => '10230701077',
             'username' => 'it_chakra',
             'fullname' => 'Gregi Maulana Mahes',
             'position' => 'IT Support',

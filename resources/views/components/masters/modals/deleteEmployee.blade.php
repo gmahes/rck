@@ -1,18 +1,18 @@
 <!-- Modal -->
-<div class="modal fade" id="resetPassword{{ $employee->username }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="deleteEmployee{{ $employee->username }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Reset Password</strong></h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Hapus Akun</strong></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('reset-password', $employee->username) }}" method="POST">
+                <form action="{{ route('del-employee', $employee->username) }}" method="POST">
                     @csrf
-                    @method('patch')
+                    @method('delete')
                     <div class="row text-center">
-                        <p class="text-dark modal-title">Apakah anda yakin akan reset password akun <br> <strong>{{
+                        <p class="text-dark modal-title">Apakah anda yakin akan menghapus akun <br> <strong>{{
                                 $employee->fullname }}</strong> ?</p>
                     </div>
                     <div class="row text-center mt-3">

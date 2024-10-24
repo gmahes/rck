@@ -46,6 +46,7 @@
                                     @foreach ($employees as $employee)
                                     @include('components.masters.modals.editEmployee')
                                     @include('components.masters.modals.resetPassword')
+                                    @include('components.masters.modals.deleteEmployee')
                                     <tr>
                                         <td class="fw-bold">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
@@ -81,10 +82,12 @@
                                                     @endif
                                                     @if ($employee->userAuth->role != 'superadmin')
                                                     <li>
-                                                        <a href="{{ route('del-employee', $employee->username) }}"
-                                                            class="text-danger dropdown-item"
-                                                            data-confirm-delete="true"><i
-                                                                class="bi bi-trash-fill"></i>Hapus</a>
+                                                        <button type="button"
+                                                            class="btn btn-sm dropdown-item text-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteEmployee{{ $employee->username }}">
+                                                            <i class="bi bi-trash"></i>
+                                                            Hapus Data
                                                     </li>
                                                     @endif
                                                 </ul>

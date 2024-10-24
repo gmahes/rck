@@ -21,9 +21,6 @@ class MasterController extends Controller
             'role_list' => ['administrator', 'user'],
             'employees' => UserDetail::all()->sortBy('fullname')
         ];
-        $title = 'Hapus Karyawan';
-        $text = 'Apakah anda yakin ingin menghapus data karyawan ini?';
-        confirmDelete($title, $text);
         return view('masters.employees', $attr);
     }
     public function addEmployee(Request $request)

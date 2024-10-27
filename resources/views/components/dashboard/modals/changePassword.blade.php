@@ -38,7 +38,7 @@
                                 {{-- <label for="password2" class="form-label">Password Baru</label> --}}
                             </div>
                             <div class="col-8">
-                                <input type="password" class="form-control form-control-sm" id="password2"
+                                <input type="password" class="form-control form-control-sm" id="password3"
                                     placeholder="Masukkan Lagi Password Baru" name="newpassword1">
                             </div>
                         </div>

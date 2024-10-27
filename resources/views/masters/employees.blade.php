@@ -38,7 +38,8 @@
                                         <th>Nama Lengkap</th>
                                         <th>Jabatan</th>
                                         <th>Divisi</th>
-                                        <th>Role</th>
+                                        <th class="@if (Auth::user()->role != 'superadmin') visually-hidden @endif">Role
+                                        </th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

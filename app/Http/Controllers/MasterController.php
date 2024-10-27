@@ -19,7 +19,10 @@ class MasterController extends Controller
             'position' => $request->session()->get('userdetail')['position'],
             'division_list' => ['Operasional', 'Non Operasional'],
             'role_list' => ['administrator', 'user'],
-            'employees' => UserDetail::all()->sortBy('fullname')
+            'employees' => UserDetail::join('user_auth', 'user_detail.username', '=', 'user_auth.username')
+                ->where('user_auth.role', '!=', 'superadmin')
+                ->orderBy('user_detail.fullname')
+                ->get(['user_detail.*'])
         ];
         return view('masters.employees', $attr);
     }

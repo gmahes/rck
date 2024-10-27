@@ -14,59 +14,60 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="editusername{{ $employee->username }}" class="form-label">Username</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm" id="username"
-                                    placeholder="Masukkan Username" name="username" value="{{ $employee->username }}"
-                                    disabled>
+                                <input type="text" class="form-control form-control-sm"
+                                    id="editusername{{ $employee->username }}" placeholder="Masukkan Username"
+                                    name="username" value="{{ $employee->username }}" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="nik" class="form-label">NIK</label>
+                                <label for="editnik{{ $employee->username }}" class="form-label">NIK</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm" id="nik"
-                                    placeholder="Masukkan NIK" name="nik" value="{{ $employee->nik }}" disabled>
+                                <input type="text" class="form-control form-control-sm"
+                                    id="editnik{{ $employee->username }}" placeholder="Masukkan NIK" name="nik"
+                                    value="{{ $employee->nik }}" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="fullname" class="form-label">Nama
+                                <label for="editfullname{{ $employee->username }}" class="form-label">Nama
                                     Lengkap</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm" id="fullname"
-                                    placeholder="Masukkan Nama Lengkap" name="fullname"
-                                    value="{{ $employee->fullname }}" required>
+                                <input type="text" class="form-control form-control-sm"
+                                    id="editfullname{{ $employee->username }}" placeholder="Masukkan Nama Lengkap"
+                                    name="fullname" value="{{ $employee->fullname }}" required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="position" class="form-label">Jabatan</label>
+                                <label for="editposition{{ $employee->username }}" class="form-label">Jabatan</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm" id="position"
-                                    placeholder="Masukkan Jabatan" name="position" value="{{ $employee->position }}"
-                                    required>
+                                <input type="text" class="form-control form-control-sm"
+                                    id="editposition{{ $employee->username }}" placeholder="Masukkan Jabatan"
+                                    name="position" value="{{ $employee->position }}" required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="role" class="form-label">Divisi</label>
+                                <label for="editdivision{{ $employee->username }}" class="form-label">Divisi</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select form-select-sm" aria-label="division" name="division"
-                                    required>
+                                <select class="form-select form-select-sm"
+                                    aria-label="editdivision{{ $employee->username }}" name="division" required>
                                     @foreach ($division_list as $division)
                                     <option value="{{ $division }}" @if ($division==$employee->division) selected
                                         @endif>{{ $division }}</option>
@@ -79,10 +80,11 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="role" class="form-label">Role</label>
+                                <label for="editrole{{ $employee->username }}" class="form-label">Role</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select form-select-sm" aria-label="role" name="role" required>
+                                <select class="form-select form-select-sm"
+                                    aria-label="editrole{{ $employee->username }}" name="role" required>
                                     @foreach ($role_list as $role)
                                     <option value="{{ $role }}" @if ($role==$employee->userAuth->role) selected
                                         @endif>{{ $role }}</option>

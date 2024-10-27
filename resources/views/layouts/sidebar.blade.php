@@ -13,6 +13,7 @@
 
 
         <li class="nav-heading">Pages</li>
+        @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator')
         <li class="nav-item">
             <a class="nav-link @if(url()->current() != route('employees'))collapsed @endif"
                 data-bs-target="#master-data" data-bs-toggle="collapse" href="#">
@@ -32,6 +33,7 @@
                 </li>
             </ul>
         </li><!-- End Master Data Nav -->
+        @endif
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="pages-blank.html">

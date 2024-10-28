@@ -36,7 +36,6 @@ class MasterController extends Controller
                 'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'position' => 'required|regex:/^[a-zA-Z\s]+$/',
                 'division' => 'required',
-                'role' => 'required'
             ],
             [
                 'username.required' => 'Username belum diisi',
@@ -50,7 +49,6 @@ class MasterController extends Controller
                 'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
                 'position.required' => 'Posisi belum diisi',
                 'position.regex' => 'Posisi hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->position'",
-                'role.required' => 'Role belum dipilih',
                 'division.required' => 'Divisi belum dipilih'
             ],
         );
@@ -63,7 +61,7 @@ class MasterController extends Controller
             'username' => $validated['username'],
             'password' => Hash::make(12345678),
             'frp' => 0,
-            'role' => $validated['role']
+            'role' => $request->role
         ];
         $userdetail = [
             'nik' => $validated['nik'],
@@ -79,7 +77,6 @@ class MasterController extends Controller
     }
     public function editEmployee(Request $request, $username)
     {
-        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -111,13 +108,13 @@ class MasterController extends Controller
             $userauth = [
                 'role' => $request->role
             ];
+            UserAuth::where('username', $username)->update($userauth);
             $userdetail = [
                 'fullname' => $validated['fullname'],
                 'position' => $validated['position'],
                 'division' => $validated['division'],
             ];
         }
-        UserAuth::where('username', $username)->update($userauth);
         UserDetail::where('username', $username)->update($userdetail);
         Alert::success('Sukses', 'Data karyawan berhasil diubah');
         return redirect()->route('employees');

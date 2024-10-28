@@ -13,6 +13,9 @@
             <div class="modal-body text-start text-dark">
                 <form action="{{ route('add-employee') }}" method="POST">
                     @csrf
+                    @if (Auth::user()->role == 'administrator')
+                    <input type="hidden" name="role" value="user">
+                    @endif
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
@@ -73,6 +76,7 @@
                             </div>
                         </div>
                     </div>
+                    @if (Auth::user()->role == 'superadmin')
                     <div class=" mb-3">
                         <div class="row">
                             <div class="col-4">
@@ -88,6 +92,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="mt-2">
                         <div class="d-flex flex-row-reverse">
                             <div class="text-end">

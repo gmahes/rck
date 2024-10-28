@@ -81,7 +81,6 @@
                                                         </button>
                                                     </li>
                                                     @endif
-                                                    @if ($employee->userAuth->role != 'superadmin')
                                                     <li>
                                                         <button type="button"
                                                             class="btn btn-sm dropdown-item text-danger"
@@ -90,7 +89,6 @@
                                                             <i class="bi bi-trash"></i>
                                                             Hapus Data
                                                     </li>
-                                                    @endif
                                                 </ul>
                                             </div>
                                         </td>

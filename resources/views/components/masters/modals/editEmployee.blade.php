@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                    @if ($employee->userAuth->role != 'superadmin')
+                    @if (Auth::user()->role == 'superadmin')
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">

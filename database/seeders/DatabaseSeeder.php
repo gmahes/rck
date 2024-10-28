@@ -14,18 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
         UserAuth::create([
             'username' => 'it_chakra',
             'password' => Hash::make('it_chakra'),
             'role' => 'superadmin',
         ]);
         UserDetail::create([
-            'nik' => '10230701077',
+            'nik' => 12345678,
             'username' => 'it_chakra',
-            'fullname' => 'Gregi Maulana Mahes',
-            'position' => 'IT Support',
-            'division' => 'Non Operasional',
+            'fullname' => 'superadmin',
+            'position' => 'superadmin',
+            'division' => 'superadmin',
         ]);
     }
 }

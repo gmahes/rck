@@ -134,4 +134,11 @@ class MasterController extends Controller
         Alert::success('Sukses', 'Password berhasil direset');
         return redirect()->route('employees');
     }
+    public function drivers()
+    {
+        $attr = [
+            'title' => 'Supir dan Kernet',
+        ];
+        return view('masters.drivers', $attr);
+    }
 }

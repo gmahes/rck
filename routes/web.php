@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\OperasionalController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name('login');
@@ -15,3 +16,4 @@ Route::put('edit-employee/{username}', [MasterController::class, 'editEmployee']
 Route::delete('del-employee/{username}', [MasterController::class, 'delEmployee'])->middleware('auth')->name('del-employee');
 Route::patch('reset-password/{username}', [MasterController::class, 'resetPassword'])->middleware('auth')->name('reset-password');
 Route::post('change-password/{username}', [DashboardController::class, 'changePassword'])->middleware('auth')->name('change-password');
+Route::get('omzet', [OperasionalController::class, 'omzet'])->middleware('auth')->name('omzet');

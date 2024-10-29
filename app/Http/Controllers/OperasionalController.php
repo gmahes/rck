@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 
 class OperasionalController extends Controller
 {
-    public function tabBan()
+    public function omzet(Request $request)
     {
-        return view('operasional.tabBan');
+        $attr = [
+            'title' => 'Omzet',
+            'fullname' => $request->session()->get('userdetail')['fullname'],
+            'position' => $request->session()->get('userdetail')['position'],
+        ];
+        return view('operasional.tabBan', $attr);
     }
 }

@@ -17,3 +17,7 @@ Route::delete('del-employee/{username}', [MasterController::class, 'delEmployee'
 Route::patch('reset-password/{username}', [MasterController::class, 'resetPassword'])->middleware('auth')->name('reset-password');
 Route::post('change-password/{username}', [DashboardController::class, 'changePassword'])->middleware('auth')->name('change-password');
 Route::get('omzet', [OperasionalController::class, 'omzet'])->middleware('auth')->name('omzet');
+Route::get('drivers', [MasterController::class, 'drivers'])->middleware('auth')->name('drivers');
+Route::post('add-driver', [MasterController::class, 'addDriver'])->middleware('auth')->name('add-driver');
+Route::put('edit-driver/{id}', [MasterController::class, 'editDriver'])->middleware('auth')->name('edit-driver');
+Route::delete('del-driver/{id}', [MasterController::class, 'delDriver'])->middleware('auth')->name('del-driver');

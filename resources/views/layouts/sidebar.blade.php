@@ -27,8 +27,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="icons-bootstrap.html">
-                        <i class="bi bi-circle-fill"></i><span>Data Supir & Kernet</span>
+                    <a href="{{ route('drivers') }}">
+                        <i class="bi bi-circle-fill"></i><span>Data Supir</span>
                     </a>
                 </li>
             </ul>

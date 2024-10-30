@@ -17,7 +17,7 @@ class DashboardController extends Controller
             'fullname' => $request->session()->get('userdetail')['fullname'],
             'position' => $request->session()->get('userdetail')['position'],
         ];
-        return view('dash', $attr);
+        return view('dashboard.dash', $attr);
     }
     public function changePassword(Request $request, $username)
     {

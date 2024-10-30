@@ -85,4 +85,4 @@
     </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
-@include('components.dashboard.modals.changePassword')
+@include('dashboard.modals.changePassword')

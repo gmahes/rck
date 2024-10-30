@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Drivers;
 use App\Models\UserAuth;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -15,7 +17,7 @@ class MasterController extends Controller
     public function employees(Request $request)
     {
         $attr = [
-            'title' => 'Employees',
+            'title' => 'Data Karyawan',
             'fullname' => $request->session()->get('userdetail')['fullname'],
             'position' => $request->session()->get('userdetail')['position'],
             'division_list' => ['Operasional', 'Non Operasional'],
@@ -25,7 +27,7 @@ class MasterController extends Controller
                 ->orderBy('user_detail.fullname')
                 ->get(['user_detail.*'])
         ];
-        return view('masters.employees', $attr);
+        return view('masters.employees.employees', $attr);
     }
     public function addEmployee(Request $request)
     {
@@ -62,14 +64,16 @@ class MasterController extends Controller
             'username' => $validated['username'],
             'password' => Hash::make(12345678),
             'frp' => 0,
-            'role' => $request->role
+            'role' => $request->role,
+            'created_by' => Auth::user()->username
         ];
         $userdetail = [
             'nik' => $validated['nik'],
             'username' => $validated['username'],
             'fullname' => $validated['fullname'],
             'position' => $validated['position'],
-            'division' => $validated['division']
+            'division' => $validated['division'],
+            'created_by' => Auth::user()->username
         ];
         UserAuth::create($userauth);
         UserDetail::create($userdetail);
@@ -137,8 +141,81 @@ class MasterController extends Controller
     public function drivers()
     {
         $attr = [
-            'title' => 'Supir dan Kernet',
+            'title' => 'Data Supir',
+            'fullname' => session('userdetail')['fullname'],
+            'position' => session('userdetail')['position'],
+            'vehicle_type' => ['Kendaraan Kecil', 'Kendaraan Besar'],
+            'drivers' => Drivers::all()->sortBy('fullname')
         ];
-        return view('masters.drivers', $attr);
+        return view('masters.drivers.drivers', $attr);
+    }
+    public function addDriver(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'vehicle_type' => 'required',
+                'vehicle_number' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
+            ],
+            [
+                'fullname.required' => 'Nama lengkap belum diisi',
+                'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
+                'vehicle_type.required' => 'Tipe kendaraan belum dipilih',
+                'vehicle_number.required' => 'Nomor kendaraan belum diisi',
+                'vehicle_number.regex' => 'Nomor kendaraan hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->vehicle_number'",
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('drivers');
+        }
+        $validated = $validator->validated();
+        $driver = [
+            'fullname' => $validated['fullname'],
+            'vehicle_type' => $validated['vehicle_type'],
+            'vehicle_number' => $validated['vehicle_number'],
+            'created_by' => Auth::user()->username
+        ];
+        Drivers::create($driver);
+        Alert::success('Sukses', 'Data supir berhasil ditambahkan');
+        return redirect()->route('drivers');
+    }
+    public function editDriver(Request $request, $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'vehicle_type' => 'required',
+                'vehicle_number' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
+            ],
+            [
+                'fullname.required' => 'Nama lengkap belum diisi',
+                'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
+                'vehicle_type.required' => 'Tipe kendaraan belum dipilih',
+                'vehicle_number.required' => 'Nomor kendaraan belum diisi',
+                'vehicle_number.regex' => 'Nomor kendaraan hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->vehicle_number'",
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('drivers');
+        }
+        $validated = $validator->validated();
+        $driver = [
+            'fullname' => $validated['fullname'],
+            'vehicle_type' => $validated['vehicle_type'],
+            'vehicle_number' => $validated['vehicle_number']
+        ];
+        Drivers::where('id', $id)->update($driver);
+        Alert::success('Sukses', 'Data supir berhasil diubah');
+        return redirect()->route('drivers');
+    }
+    public function delDriver($id)
+    {
+        Drivers::where('id', $id)->delete();
+        Alert::success('Sukses', 'Data supir berhasil dihapus');
+        return redirect()->route('drivers');
     }
 }

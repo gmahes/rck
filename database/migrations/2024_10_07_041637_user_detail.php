@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('position', 255);
             $table->string('division', 255);
             $table->timestamps();
+            $table->string('created_by', 255)->nullable();
+            $table->string('updated_by', 255)->nullable();
+            $table->foreign('username')->references('username')->on('user_auth');
+            $table->foreign('created_by')->references('username')->on('user_auth');
         });
     }
 

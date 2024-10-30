@@ -20,7 +20,7 @@
                                         data-bs-target="#addEmployee">
                                         Tambah Data
                                     </button>
-                                    @include('components.masters.modals.addEmployee')
+                                    @include('masters.employees.modals.addEmployee')
                                 </div>
                             </div>
                         </div>
@@ -45,11 +45,11 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($employees as $employee)
-                                    @include('components.masters.modals.editEmployee')
-                                    @include('components.masters.modals.resetPassword')
-                                    @include('components.masters.modals.deleteEmployee')
+                                    @include('masters.employees.modals.editEmployee')
+                                    @include('masters.employees.modals.resetPassword')
+                                    @include('masters.employees.modals.deleteEmployee')
                                     <tr>
-                                        <td class="fw-bold">{{ $employee->nik }}</td>
+                                        <td class="fw-bold text-center">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
                                         <td>{{ $employee->position }}</td>
                                         <td>{{ $employee->division }}</td>

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_auth', function (Blueprint $table) {
-            $table->string('username', 255)->primary();
-            $table->string('password', 255);
-            $table->string('remember_token', 100)->nullable();
-            $table->tinyInteger('frp')->default(0);
-            $table->enum('role', ['superadmin', 'administrator', 'user']);
+        Schema::create('drivers', function (Blueprint $table) {
+            $table->id();
+            $table->string('fullname', 255);
+            $table->enum('vehicle_type', ['Kendaraan Kecil', 'Kendaraan Besar']);
+            $table->string('vehicle_number', 255);
             $table->timestamps();
-            $table->string('created_by', 255)->nullable();
+            $table->string('created_by', 255);
             $table->string('updated_by', 255)->nullable();
+            $table->foreign('created_by')->references('username')->on('user_auth');
         });
     }
 

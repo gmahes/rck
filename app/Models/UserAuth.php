@@ -20,6 +20,7 @@ class UserAuth extends Authenticable
         'remember_token',
         'frp',
         'role',
+        'created_by',
     ];
     protected $hidden = [
         'password',

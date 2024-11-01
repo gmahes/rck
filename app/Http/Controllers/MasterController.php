@@ -65,7 +65,6 @@ class MasterController extends Controller
             'password' => Hash::make(12345678),
             'frp' => 0,
             'role' => $request->role,
-            'created_by' => Auth::user()->username
         ];
         $userdetail = [
             'nik' => $validated['nik'],
@@ -106,7 +105,8 @@ class MasterController extends Controller
             $userdetail = [
                 'fullname' => $validated['fullname'],
                 'position' => $validated['position'],
-                'division' => $validated['division']
+                'division' => $validated['division'],
+                'updated_by' => Auth::user()->username
 
             ];
         } else {
@@ -118,6 +118,7 @@ class MasterController extends Controller
                 'fullname' => $validated['fullname'],
                 'position' => $validated['position'],
                 'division' => $validated['division'],
+                'updated_by' => Auth::user()->username
             ];
         }
         UserDetail::where('username', $username)->update($userdetail);
@@ -206,7 +207,8 @@ class MasterController extends Controller
         $driver = [
             'fullname' => $validated['fullname'],
             'vehicle_type' => $validated['vehicle_type'],
-            'vehicle_number' => $validated['vehicle_number']
+            'vehicle_number' => $validated['vehicle_number'],
+            'updated_by' => Auth::user()->username
         ];
         Drivers::where('id', $id)->update($driver);
         Alert::success('Sukses', 'Data supir berhasil diubah');

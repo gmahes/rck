@@ -18,8 +18,6 @@ return new class extends Migration
             $table->tinyInteger('frp')->default(0);
             $table->enum('role', ['superadmin', 'administrator', 'user']);
             $table->timestamps();
-            $table->string('created_by', 255)->nullable();
-            $table->string('updated_by', 255)->nullable();
         });
     }
 

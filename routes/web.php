@@ -22,3 +22,4 @@ Route::post('add-driver', [MasterController::class, 'addDriver'])->middleware('a
 Route::put('edit-driver/{id}', [MasterController::class, 'editDriver'])->middleware('auth')->name('edit-driver');
 Route::delete('del-driver/{id}', [MasterController::class, 'delDriver'])->middleware('auth')->name('del-driver');
 Route::get('dummy', [DashboardController::class, 'dummy'])->middleware('auth')->name('dummy');
+Route::post('add-omzet', [OperasionalController::class, 'addOmzet'])->middleware('auth')->name('add-omzet');

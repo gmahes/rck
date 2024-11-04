@@ -12,16 +12,17 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col">
-                                    <p class="card-text fw-bold text-primary-emphasis fs-5">Data Supir</p>
+                                    <p class="card-text fw-bold text-primary-emphasis fs-5">Target Omzet</p>
                                 </div>
                                 <div class="col text-end">
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addDriver">
+                                        data-bs-target="#addOmzet">
                                         Tambah Data
                                     </button>
-                                    {{-- @include('masters.drivers.modals.addDriver') --}}
+                                    @include('operasional.modals.addOmzet')
                                 </div>
+                                <hr class="text-dark mt-2">
                             </div>
                         </div>
                     </div>
@@ -37,19 +38,19 @@
                                         <th>No</th>
                                         <th>Nama Lengkap</th>
                                         <th>Nomor Kendaraan</th>
-                                        <th>Jenis Kendaraan</th>
+                                        <th>Input Omzet</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($drivers as $driver) --}}
-                                    {{-- @include('masters.drivers.modals.editDriver') --}}
-                                    {{-- @include('masters.drivers.modals.deleteDriver') --}}
+                                    @foreach ($omzets as $omzet)
+                                    {{-- @include('masters.omzets.modals.editomzet') --}}
+                                    {{-- @include('masters.omzets.modals.deleteomzet') --}}
                                     <tr>
                                         <td class="fw-bold text-center">{{ $loop->iteration }}</td>
-                                        <td class="">{{ $driver->fullname }}</td>
-                                        <td>{{ $driver->vehicle_number }}</td>
-                                        <td>{{ $driver->vehicle_type }}</td>
+                                        <td class="">{{ $omzet->drivers->fullname }}</td>
+                                        <td>{{ $omzet->drivers->vehicle_number }}</td>
+                                        <td>{{ $omzet->drivers->vehicle_type }}</td>
                                         <td class="text-center">
                                             <div class="btn-group dropstart">
                                                 <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
@@ -61,7 +62,7 @@
                                                         <button type="button"
                                                             class="btn btn-sm dropdown-item text-success"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#editDriver{{ $driver->id }}">
+                                                            data-bs-target="#editomzet{{ $omzet->id }}">
                                                             <i class="bi bi-pencil"></i>
                                                             Edit Data
                                                         </button>
@@ -70,7 +71,7 @@
                                                         <button type="button"
                                                             class="btn btn-sm dropdown-item text-danger"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#deleteDriver{{ $driver->id }}">
+                                                            data-bs-target="#deleteomzet{{ $omzet->id }}">
                                                             <i class="bi bi-trash"></i>
                                                             Hapus Data
                                                     </li>
@@ -78,7 +79,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    {{-- @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

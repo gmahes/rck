@@ -20,9 +20,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('created_by', 255)->nullable();
             $table->string('updated_by', 255)->nullable();
-            $table->foreign('username')->references('username')->on('user_auth');
-            $table->foreign('created_by')->references('username')->on('user_auth');
-            $table->foreign('updated_by')->references('username')->on('user_auth');
+            $table->foreign('username')->references('username')->on('user_auth')->cascadeOnDelete();
         });
     }
 

@@ -13,6 +13,6 @@ class OperasionalController extends Controller
             'fullname' => $request->session()->get('userdetail')['fullname'],
             'position' => $request->session()->get('userdetail')['position'],
         ];
-        return view('operasional.tabBan', $attr);
+        return view('operasional.omzet', $attr);
     }
 }

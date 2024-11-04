@@ -128,7 +128,6 @@ class MasterController extends Controller
     public function delEmployee($username)
     {
         UserAuth::where('username', $username)->delete();
-        UserDetail::where('username', $username)->delete();
         Alert::success('Sukses', 'Data karyawan berhasil dihapus');
         return redirect()->route('employees');
     }

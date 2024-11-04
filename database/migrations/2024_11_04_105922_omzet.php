@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('drivers', function (Blueprint $table) {
+        Schema::create('omzet', function (Blueprint $table) {
             $table->id();
-            $table->string('fullname', 255);
-            $table->enum('vehicle_type', ['Kendaraan Kecil', 'Kendaraan Besar']);
-            $table->string('vehicle_number', 255);
+            $table->bigInteger('user_id')->unsigned();
+            $table->timestamp('date');
+            $table->string('omzet', 255);
             $table->timestamps();
             $table->string('created_by', 255);
-            $table->string('updated_by', 255)->nullable();
+            $table->string('updated_by', 255);
+            $table->foreign('user_id')->references('id')->on('drivers')->cascadeOnDelete();
         });
     }
 

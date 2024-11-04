@@ -48,4 +48,8 @@ class DashboardController extends Controller
         $request->session()->regenerateToken();
         return redirect()->to('/login');
     }
+    public function dummy()
+    {
+        return view('dummy');
+    }
 }

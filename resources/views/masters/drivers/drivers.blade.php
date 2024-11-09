@@ -12,7 +12,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col">
-                                    <p class="card-text fw-bold text-primary-emphasis fs-5">Data Supir</p>
+                                    <p class="card-text fw-bold text-dark fs-5">Data Supir</p>
                                 </div>
                                 <div class="col text-end">
                                     <!-- Button trigger modal -->

@@ -10,25 +10,107 @@
                 <div class="col">
                     <div class="card shadow">
                         <div class="card-header">
-                            <div class="row">
-                                <div class="col">
-                                    <p class="card-text fw-bold text-primary-emphasis fs-5">Target Omzet</p>
-                                </div>
-                                <div class="col text-end">
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addOmzet">
-                                        Tambah Data
-                                    </button>
-                                    @include('operasional.modals.addOmzet')
-                                </div>
-                                <hr class="text-dark mt-2">
-                            </div>
+                            <p class="card-text fw-bold text-primary-emphasis fs-5">Target Omzet</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="card-text fw-bold mt-2">Filter Data</p>
+                                    <form action="" method="POST">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p class="card-text">Supir</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-select form-select-sm"
+                                                    aria-label=".form-select-sm example">
+                                                    <option selected>Pilih Supir</option>
+                                                    <option value="1">Supir 1</option>
+                                                    <option value="2">Supir 2</option>
+                                                    <option value="3">Supir 3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-3">
+                                                <p class="card-text fs-6">Tanggal Awal</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="date" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-3">
+                                                <p class="card-text fs-6">Tanggal Akhir</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="date" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-auto d-flex">
+                                                <button type="submit" class="btn btn-sm btn-primary">Cari Data</button>
+                                                {{-- <button type="button" class="ms-1 btn btn-sm btn-primary">Unduh
+                                                    Data</button> --}}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col">
+                                    <p class="card-text fw-bold fs-6 mt-2">Tambah Data</p>
+                                    <form action="" method="POST">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <p class="card-text">Supir</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-select form-select-sm"
+                                                    aria-label=".form-select-sm example">
+                                                    <option selected>Pilih Supir</option>
+                                                    <option value="1">Supir 1</option>
+                                                    <option value="2">Supir 2</option>
+                                                    <option value="3">Supir 3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-3">
+                                                <p class="card-text fs-6">Tanggal</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="date" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-3">
+                                                <p class="card-text fs-6">Omzet</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-auto d-flex">
+                                                <button type="submit" class="btn btn-sm btn-primary">Tambah
+                                                    Data</button>
+                                                {{-- <button type="button" class="ms-1 btn btn-sm btn-primary">Unduh
+                                                    Data</button> --}}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row visually-hidden">
                 <div class="col">
                     <div class="card mt-1 shadow">
                         <div class="card-body">

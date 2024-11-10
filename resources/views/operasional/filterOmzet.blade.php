@@ -116,6 +116,36 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card mt-1 shadow">
+                        <div class="card-body">
+                            <table class="table mt-3" data-toggle="table">
+                                <thead class="table-dark">
+                                    <tr class="text-center">
+                                        <th>No</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Nomor Kendaraan</th>
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Input Omzet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- @foreach ($driver as $drivers) --}}
+                                    <tr class="text-center">
+                                        <td></td>
+                                        <td>{{ $driver['fullname'] }}</td>
+                                        <td>{{ $driver['vehicle_number'] }}</td>
+                                        <td>{{ $driver['vehicle_type'] }}</td>
+                                        <td>{{ $totalOmzet }}</td>
+                                    </tr>
+                                    {{-- @endforeach --}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </main>

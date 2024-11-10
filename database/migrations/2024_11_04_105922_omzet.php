@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('omzet', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('driver_id')->unsigned();
             $table->timestamp('date');
             $table->string('omzet', 255);
             $table->timestamps();
             $table->string('created_by', 255);
-            $table->string('updated_by', 255);
-            $table->foreign('user_id')->references('id')->on('drivers')->cascadeOnDelete();
+            $table->string('updated_by', 255)->nullable();
+            $table->foreign('driver_id')->references('id')->on('drivers')->cascadeOnDelete();
         });
     }
 

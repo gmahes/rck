@@ -17,7 +17,7 @@ class OperasionalController extends Controller
             'title' => 'Omzet',
             'fullname' => $request->session()->get('userdetail')['fullname'],
             'position' => $request->session()->get('userdetail')['position'],
-            'drivers' => Drivers::all(),
+            'drivers' => Drivers::all()->sortBy('fullname'),
         ];
         return view('operasional.omzet', $attr);
     }
@@ -41,6 +41,10 @@ class OperasionalController extends Controller
         );
         if ($validator->fails()) {
             Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('omzet');
+        }
+        if ($request->driver_id == 'null') {
+            Alert::error('Gagal', 'Driver belum dipilih');
             return redirect()->route('omzet');
         }
         $validated = $validator->validated();
@@ -76,27 +80,54 @@ class OperasionalController extends Controller
                 'end_date.date' => 'Tanggal akhir tidak valid',
             ],
         );
-        // dd($request->all());
         if ($validator->fails()) {
             Alert::error('Gagal', $validator->errors()->first());
             return redirect()->route('omzet');
         }
+        if ($request->driver == 'null') {
+            Alert::error('Gagal', 'Driver belum dipilih');
+            return redirect()->route('omzet');
+        }
         $validated = $validator->validated();
-        $driver = Drivers::find($validated['driver']);
-        $omzet = Omzet::where('driver_id', $validated['driver'])
-            ->whereBetween('date', [$validated['start_date'], $validated['end_date']])
-            ->get();
-        $totalOmzet = $omzet->sum('omzet');
-        $attr = [
-            'title' => 'Omzet',
-            'fullname' => $request->session()->get('userdetail')['fullname'],
-            'position' => $request->session()->get('userdetail')['position'],
-            'drivers' => Drivers::all(),
-            'driver' => $driver,
-            'omzet' => $omzet,
-            'totalOmzet' => $totalOmzet,
-        ];
-        // dd($attr['driver']);
+        if ($validated['start_date'] > $validated['end_date']) {
+            Alert::error('Gagal', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
+            return redirect()->route('omzet');
+        }
+        if ($validated['driver'] == 'all') {
+            $omzet = Omzet::whereBetween('date', [$validated['start_date'], $validated['end_date']])
+                ->get()
+                ->groupBy('driver_id');
+            $totalOmzetPerDriver = $omzet->map(function ($group) {
+                return $group->sum('omzet');
+            });
+            $totalOmzet = $totalOmzetPerDriver->sum();
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => $request->session()->get('userdetail')['fullname'],
+                'position' => $request->session()->get('userdetail')['position'],
+                'drivers' => Drivers::all()->sortBy('fullname'),
+                'supir' => null,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'totalOmzetPerDriver' => $totalOmzetPerDriver,
+            ];
+        } else {
+            $driver = Drivers::where('id', $validated['driver'])->get();
+            $omzet = Omzet::where('driver_id', $validated['driver'])
+                ->whereBetween('date', [$validated['start_date'], $validated['end_date']])
+                ->get();
+            $totalOmzet = $omzet->sum('omzet');
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => $request->session()->get('userdetail')['fullname'],
+                'position' => $request->session()->get('userdetail')['position'],
+                'drivers' => Drivers::all()->sortBy('fullname'),
+                'supir' => $driver,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+            ];
+        }
+        // dd($totalOmzetPerDriver);
         return view('operasional.filterOmzet', $attr);
     }
 }

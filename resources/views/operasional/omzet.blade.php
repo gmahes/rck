@@ -30,8 +30,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <select class="form-select form-select-sm"
-                                                    aria-label=".form-select-sm example" name="driver">
-                                                    <option selected>Pilih Supir</option>
+                                                    aria-label=".form-select-sm example" name="driver" required>
+                                                    <option value="null" selected>Pilih Supir</option>
                                                     <option value="all">Semua Supir</option>
                                                     @foreach ($drivers as $driver)
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
@@ -46,7 +46,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="date" class="form-control form-control-sm"
-                                                    name="start_date">
+                                                    name="start_date" required>
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -54,7 +54,8 @@
                                                 <p class="card-text fs-6">Tanggal Akhir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="date" class="form-control form-control-sm" name="end_date">
+                                                <input type="date" class="form-control form-control-sm" name="end_date"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
@@ -76,8 +77,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <select class="form-select form-select-sm"
-                                                    aria-label=".form-select-sm example" name="driver_id">
-                                                    <option selected>Pilih Supir</option>
+                                                    aria-label=".form-select-sm example" name="driver_id" required>
+                                                    <option value="null" selected>Pilih Supir</option>
                                                     @foreach ($drivers as $driver)
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
                                                     </option>
@@ -90,7 +91,8 @@
                                                 <p class="card-text fs-6">Tanggal</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="date" class="form-control form-control-sm" name="date">
+                                                <input type="date" class="form-control form-control-sm" name="date"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -98,7 +100,8 @@
                                                 <p class="card-text fs-6">Omzet</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" class="form-control form-control-sm" name="omzet">
+                                                <input type="text" class="form-control form-control-sm" name="omzet"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="row mt-2">

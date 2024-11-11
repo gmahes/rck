@@ -30,8 +30,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <select class="form-select form-select-sm"
-                                                    aria-label=".form-select-sm example" name="driver">
-                                                    <option selected>Pilih Supir</option>
+                                                    aria-label=".form-select-sm example" name="driver" required>
+                                                    <option value="null" selected>Pilih Supir</option>
                                                     <option value="all">Semua Supir</option>
                                                     @foreach ($drivers as $driver)
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
@@ -46,7 +46,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="date" class="form-control form-control-sm"
-                                                    name="start_date">
+                                                    name="start_date" required>
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -54,7 +54,8 @@
                                                 <p class="card-text fs-6">Tanggal Akhir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="date" class="form-control form-control-sm" name="end_date">
+                                                <input type="date" class="form-control form-control-sm" name="end_date"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
@@ -77,7 +78,7 @@
                                             <div class="col-md-4">
                                                 <select class="form-select form-select-sm"
                                                     aria-label=".form-select-sm example" name="driver_id">
-                                                    <option selected>Pilih Supir</option>
+                                                    <option value="null" selected>Pilih Supir</option>
                                                     @foreach ($drivers as $driver)
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
                                                     </option>
@@ -120,6 +121,7 @@
                 <div class="col">
                     <div class="card mt-1 shadow">
                         <div class="card-body">
+                            @if ($supir == null)
                             <table class="table mt-3" data-toggle="table">
                                 <thead class="table-dark">
                                     <tr class="text-center">
@@ -127,21 +129,46 @@
                                         <th>Nama Lengkap</th>
                                         <th>Nomor Kendaraan</th>
                                         <th>Jenis Kendaraan</th>
-                                        <th>Input Omzet</th>
+                                        <th>Omzet</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($driver as $drivers) --}}
+                                    @foreach ($drivers as $driver)
                                     <tr class="text-center">
-                                        <td></td>
-                                        <td>{{ $driver['fullname'] }}</td>
-                                        <td>{{ $driver['vehicle_number'] }}</td>
-                                        <td>{{ $driver['vehicle_type'] }}</td>
-                                        <td>{{ $totalOmzet }}</td>
+                                        <td class="fw-bold">{{ $loop->iteration }}</td>
+                                        <td>{{ $driver->fullname }}</td>
+                                        <td>{{ $driver->vehicle_number }}</td>
+                                        <td>{{ $driver->vehicle_type }}</td>
+                                        <td class="fw-bold">
+                                            {{ "Rp".number_format($totalOmzetPerDriver[$driver->id] ?? 0, 0, ',', '.')
+                                            }}
+                                        </td>
                                     </tr>
-                                    {{-- @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
+                            @else
+                            <table class="table mt-3" data-toggle="table">
+                                <thead class="table-dark">
+                                    <tr class="text-center">
+                                        <th>No</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Nomor Kendaraan</th>
+                                        <th>Jenis Kendaraan</th>
+                                        <th>Omzet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td class="fw-bold">1</td>
+                                        <td>{{ $supir->first()->fullname }}</td>
+                                        <td>{{ $supir->first()->vehicle_number }}</td>
+                                        <td>{{ $supir->first()->vehicle_type }}</td>
+                                        <td class="fw-bold">{{ "Rp".$totalOmzet }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -23,12 +23,6 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            $userdetail = [
-                'nik' => UserAuth::find(Auth::id())->userDetail->nik,
-                'fullname' => UserAuth::find(Auth::id())->userDetail->fullname,
-                'position' => UserAuth::find(Auth::id())->userDetail->position,
-            ];
-            $request->session()->put('userdetail', $userdetail);
             return redirect()->intended('/');
         }
         return back()->withErrors('Login Gagal!');

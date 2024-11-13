@@ -24,3 +24,4 @@ Route::delete('del-driver/{id}', [MasterController::class, 'delDriver'])->middle
 Route::get('dummy', [DashboardController::class, 'dummy'])->middleware('auth')->name('dummy');
 Route::post('add-omzet', [OperasionalController::class, 'addOmzet'])->middleware('auth')->name('add-omzet');
 Route::post('omzet/filter-omzet', [OperasionalController::class, 'filterOmzet'])->middleware('auth')->name('filter-omzet');
+Route::get('omzet/print-omzet/{driver}/{start_date}/{end_date}', [OperasionalController::class, 'printOmzet'])->middleware('auth')->name('print-omzet');

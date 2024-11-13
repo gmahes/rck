@@ -9,9 +9,6 @@
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
-
-
-
         <li class="nav-heading">Pages</li>
         @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator')
         <li class="nav-item">
@@ -33,6 +30,9 @@
                 </li>
             </ul>
         </li><!-- End Master Data Nav -->
+        @endif
+        @if (Auth::user()->userDetail->division == 'Operasional' or Auth::user()->role == 'superadmin' or
+        Auth::user()->role == 'administrator')
         <li class="nav-item">
             <a class="nav-link @if(url()->current() != route('omzet'))collapsed @endif" data-bs-target="#operasional"
                 data-bs-toggle="collapse" href="#">
@@ -42,7 +42,7 @@
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('omzet') }}">
-                        <i class="bi bi-circle-fill"></i><span>Target Omset</span>
+                        <i class="bi bi-circle-fill"></i><span>Target Omzet</span>
                     </a>
                 </li>
             </ul>

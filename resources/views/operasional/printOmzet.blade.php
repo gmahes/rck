@@ -41,7 +41,7 @@
         ======================================================== -->
 </head>
 
-<body>
+<body style="background-color: white">
     <div class="container">
         <section class="section">
             <div class="row">
@@ -50,20 +50,56 @@
                     <p class="text-center text-dark fw-bold h1">Target Omzet</p>
                     <p class="text-center text-dark">PT. Roda Chakra Kencana</p>
                     <br><br>
-                    <p class="text-dark">Periode : Oktober 2024</p>
-                    <table class="table table-bordered border-dark" data-toggle="table">
+                    <p class="text-dark">Periode : {{ date('d F Y', $filter['start_date']). ' - '. date('d F Y',
+                        $filter['end_date'])}}</p>
+                    @if ($supir == null)
+                    <table class="table table-bordered border-dark mt-3 align-items-center">
                         <thead>
                             <tr class="text-center">
-                                <th>Nama</th>
+                                <th>Nama Lengkap</th>
                                 <th>Nomor Kendaraan</th>
                                 <th>Jenis Kendaraan</th>
                                 <th>Omzet</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($drivers as $driver)
+                            <tr class="text-center">
+                                <td>{{ $driver->fullname }}</td>
+                                <td>{{ $driver->vehicle_number }}</td>
+                                <td>{{ $driver->vehicle_type }}</td>
+                                <td class="fw-bold">
+                                    {{ "Rp".number_format($totalOmzetPerDriver[$driver->id] ?? 0, 0, ',', '.')
+                                    }}
+                                </td>
+                            </tr>
+                            @endforeach
+                            <tr class="text-center">
+                                <td colspan="3" class="fw-bold">Total Omzet</td>
+                                <td class="fw-bold">{{ "Rp".($totalOmzet) }}</td>
+                            </tr>
                         </tbody>
                     </table>
+                    @else
+                    <table class="table table-bordered border-dark mt-3">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Nama Lengkap</th>
+                                <th>Nomor Kendaraan</th>
+                                <th>Jenis Kendaraan</th>
+                                <th>Omzet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <td>{{ $supir->first()->fullname }}</td>
+                                <td>{{ $supir->first()->vehicle_number }}</td>
+                                <td>{{ $supir->first()->vehicle_type }}</td>
+                                <td class="fw-bold">{{ "Rp".$totalOmzet }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    @endif
                 </div>
             </div>
         </section>

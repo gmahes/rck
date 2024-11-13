@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class OperasionalController extends Controller
 {
@@ -15,15 +16,14 @@ class OperasionalController extends Controller
     {
         $attr = [
             'title' => 'Omzet',
-            'fullname' => $request->session()->get('userdetail')['fullname'],
-            'position' => $request->session()->get('userdetail')['position'],
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
             'drivers' => Drivers::all()->sortBy('fullname'),
         ];
         return view('operasional.omzet', $attr);
     }
     public function addOmzet(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -51,7 +51,6 @@ class OperasionalController extends Controller
         // Process the 'omzet' input
         $omzetParts = explode(',', $validated['omzet']);
         $omzetSum = array_sum(array_map('intval', $omzetParts));
-
         // Save to Omzet model
         $omzet = new Omzet();
         $omzet->driver_id = $validated['driver_id'];
@@ -89,6 +88,7 @@ class OperasionalController extends Controller
             return redirect()->route('omzet');
         }
         $validated = $validator->validated();
+        // $filter = $request->session()->flash('filter', $validated);
         if ($validated['start_date'] > $validated['end_date']) {
             Alert::error('Gagal', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
             return redirect()->route('omzet');
@@ -103,13 +103,14 @@ class OperasionalController extends Controller
             $totalOmzet = $totalOmzetPerDriver->sum();
             $attr = [
                 'title' => 'Omzet',
-                'fullname' => $request->session()->get('userdetail')['fullname'],
-                'position' => $request->session()->get('userdetail')['position'],
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
                 'drivers' => Drivers::all()->sortBy('fullname'),
                 'supir' => null,
                 'omzet' => $omzet,
                 'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
                 'totalOmzetPerDriver' => $totalOmzetPerDriver,
+                'filter' => $validated,
             ];
         } else {
             $driver = Drivers::where('id', $validated['driver'])->get();
@@ -119,15 +120,67 @@ class OperasionalController extends Controller
             $totalOmzet = $omzet->sum('omzet');
             $attr = [
                 'title' => 'Omzet',
-                'fullname' => $request->session()->get('userdetail')['fullname'],
-                'position' => $request->session()->get('userdetail')['position'],
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
                 'drivers' => Drivers::all()->sortBy('fullname'),
                 'supir' => $driver,
                 'omzet' => $omzet,
                 'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'filter' => $validated,
             ];
         }
-        // dd($totalOmzetPerDriver);
+        // dd($attr['filter']['driver']);
         return view('operasional.filterOmzet', $attr);
     }
+    public function printOmzet($driver, $start_date, $end_date)
+    {
+        if ($driver == 'all') {
+            $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
+                ->get()
+                ->groupBy('driver_id');
+            $totalOmzetPerDriver = $omzet->map(function ($group) {
+                return $group->sum('omzet');
+            });
+            $totalOmzet = $totalOmzetPerDriver->sum();
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->sortBy('fullname'),
+                'supir' => null,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'totalOmzetPerDriver' => $totalOmzetPerDriver,
+                'filter' => [
+                    'driver' => $driver,
+                    'start_date' => strtotime($start_date),
+                    'end_date' => strtotime($end_date),
+                ],
+            ];
+            return pdf::view('operasional.printOmzet', $attr)->format('legal')->save('omzet.pdf');
+            // return view('operasional.printOmzet', $attr);
+        } else {
+            $driver = Drivers::where('id', $driver)->get();
+            $omzet = Omzet::where('driver_id', $driver)
+                ->whereBetween('date', [$start_date, $end_date])
+                ->get();
+            $totalOmzet = $omzet->sum('omzet');
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->sortBy('fullname'),
+                'supir' => $driver,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'filter' => [
+                    'driver' => $driver,
+                    'start_date' => strtotime($start_date),
+                    'end_date' => strtotime($end_date),
+                ],
+            ];
+            return view('operasional.printOmzet', $attr);
+        }
+    }
+    public function pdfOmzet() {}
 }

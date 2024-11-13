@@ -14,8 +14,8 @@ class DashboardController extends Controller
     {
         $attr = [
             'title' => 'Dashboard',
-            'fullname' => $request->session()->get('userdetail')['fullname'],
-            'position' => $request->session()->get('userdetail')['position'],
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
         ];
         return view('dashboard.dash', $attr);
     }

@@ -18,8 +18,8 @@ class MasterController extends Controller
     {
         $attr = [
             'title' => 'Data Karyawan',
-            'fullname' => $request->session()->get('userdetail')['fullname'],
-            'position' => $request->session()->get('userdetail')['position'],
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
             'division_list' => ['Operasional', 'Non Operasional'],
             'role_list' => ['administrator', 'user'],
             'employees' => UserDetail::join('user_auth', 'user_detail.username', '=', 'user_auth.username')

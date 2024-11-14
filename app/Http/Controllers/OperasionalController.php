@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
-use Spatie\LaravelPdf\Facades\Pdf;
 
 class OperasionalController extends Controller
 {
@@ -157,7 +156,7 @@ class OperasionalController extends Controller
                     'end_date' => strtotime($end_date),
                 ],
             ];
-            return pdf::view('operasional.printOmzet', $attr)->format('legal')->save('omzet.pdf');
+            // return pdf::view('operasional.printOmzet', $attr)->format('legal')->save('omzet.pdf');
             // return view('operasional.printOmzet', $attr);
         } else {
             $driver = Drivers::where('id', $driver)->get();

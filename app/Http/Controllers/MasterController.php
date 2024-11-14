@@ -142,8 +142,8 @@ class MasterController extends Controller
     {
         $attr = [
             'title' => 'Data Supir',
-            'fullname' => session('userdetail')['fullname'],
-            'position' => session('userdetail')['position'],
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
             'vehicle_type' => ['Kendaraan Kecil', 'Kendaraan Besar'],
             'drivers' => Drivers::all()->sortBy('fullname')
         ];

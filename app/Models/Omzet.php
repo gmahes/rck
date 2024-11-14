@@ -10,7 +10,7 @@ class Omzet extends Model
 {
     use HasFactory;
     protected $table = 'omzet';
-    protected $fillable = ['user_id', 'date', 'omzet', 'created_by', 'updated_by'];
+    protected $fillable = ['driver_id', 'date', 'omzet', 'created_by', 'updated_by'];
     protected $primaryKey = 'id';
     // public $timestamps = false;
     public function drivers()

@@ -67,7 +67,7 @@
                                             <div class="col-auto d-flex">
                                                 <button type="submit" class="btn btn-sm btn-primary">Cari Data</button>
                                                 <a href="{{ route('print-omzet', [$filter['driver'], $filter['start_date'], $filter['end_date']]) }}"
-                                                    class="btn btn-sm btn-success ms-1">Unduh Data</a>
+                                                    class="btn btn-sm btn-success ms-1" target="_blank">Unduh Data</a>
                                             </div>
                                         </div>
                                     </form>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Drivers;
 use App\Models\Omzet;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -156,7 +157,7 @@ class OperasionalController extends Controller
                     'end_date' => strtotime($end_date),
                 ],
             ];
-            // return pdf::view('operasional.printOmzet', $attr)->format('legal')->save('omzet.pdf');
+            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
             // return view('operasional.printOmzet', $attr);
         } else {
             $driver = Drivers::where('id', $driver)->get();

@@ -31,7 +31,7 @@
                 <div class="col">
                     <div class="card mt-1 shadow">
                         <div class="card-body">
-                            <table class="table mt-3" data-toggle="table">
+                            <table class="table mt-3" data-toggle="table" data-paginaton="true">
                                 <thead class="table-dark">
                                     <tr class="text-center">
                                         <th>NIK</th>

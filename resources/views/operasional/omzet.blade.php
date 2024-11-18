@@ -29,7 +29,7 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select form-select-sm filter"
                                                     aria-label=".form-select-sm example" name="driver" required>
                                                     <option value="null" selected>Pilih Supir</option>
                                                     <option value="all">Semua Supir</option>

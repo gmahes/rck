@@ -125,7 +125,7 @@
                     <div class="card mt-1 shadow">
                         <div class="card-body">
                             @if ($supir == null)
-                            <table class="table mt-3" data-toggle="table">
+                            <table class="table mt-3" data-toggle="table" data-pagination="true">
                                 <thead class="table-dark">
                                     <tr class="text-center">
                                         <th>No</th>

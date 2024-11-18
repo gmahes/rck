@@ -182,5 +182,4 @@ class OperasionalController extends Controller
             return view('operasional.printOmzet', $attr);
         }
     }
-    public function pdfOmzet() {}
 }

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dummy</title>
+    <title>Target Omzet</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -49,9 +49,9 @@
                 <div class="col">
                     <br><br><br>
                     <h1 class="text-center text-dark fw-bold">Target Omzet</h1>
-                    <p class="text-center text-dark">PT. Roda Chakra Kencana</p>
+                    <p class="text-center">PT. Roda Chakra Kencana</p>
                     <br><br>
-                    <p class="text-dark">Periode : {{ date('d F Y', $filter['start_date']). ' - '. date('d F Y',
+                    <p class="">Periode : {{ date('d F Y', $filter['start_date']). ' - '. date('d F Y',
                         $filter['end_date'])}}</p>
                     @if ($supir == null)
                     <table class="table table-bordered border-dark mt-3 align-items-center">

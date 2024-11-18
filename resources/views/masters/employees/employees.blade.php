@@ -38,8 +38,9 @@
                                         <th>Nama Lengkap</th>
                                         <th>Jabatan</th>
                                         <th>Divisi</th>
-                                        <th class="@if (Auth::user()->role != 'superadmin') visually-hidden @endif">Role
-                                        </th>
+                                        @if (Auth::user()->role == 'superadmin')
+                                        <th>Role</th>
+                                        @endif
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -53,7 +54,9 @@
                                         <td class="">{{ $employee->fullname }}</td>
                                         <td>{{ $employee->position }}</td>
                                         <td>{{ $employee->division }}</td>
+                                        @if (Auth::user()->role == 'superadmin')
                                         <td>{{ $employee->userAuth->role }}</td>
+                                        @endif
                                         <td class="text-center">
                                             <div class="btn-group dropstart">
                                                 <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"

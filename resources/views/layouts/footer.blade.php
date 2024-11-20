@@ -21,7 +21,12 @@
 @if (url()->current() == route('omzet'))
 <script>
     $(document).ready(function () {
-        $('.filter').select2();
+        $('.filter-omzet').select2();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.add-omzet').select2();
     });
 </script>
 @endif

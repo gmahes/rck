@@ -29,7 +29,7 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-select form-select-sm filter"
+                                                {{-- <select class="form-select form-select-sm filter-omzet"
                                                     aria-label=".form-select-sm example" name="driver" required>
                                                     <option value="null" selected>Pilih Supir</option>
                                                     <option value="all">Semua Supir</option>
@@ -37,7 +37,8 @@
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
                                                     </option>
                                                     @endforeach
-                                                </select>
+                                                </select> --}}
+                                                @livewire('driver-list')
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -61,8 +62,6 @@
                                         <div class="row mt-2">
                                             <div class="col-auto d-flex">
                                                 <button type="submit" class="btn btn-sm btn-primary">Cari Data</button>
-                                                {{-- <button type="button" class="ms-1 btn btn-sm btn-primary">Unduh
-                                                    Data</button> --}}
                                             </div>
                                         </div>
                                     </form>
@@ -76,7 +75,7 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-select form-select-sm"
+                                                <select class="form-select add-omzet"
                                                     aria-label=".form-select-sm example" name="driver_id" required>
                                                     <option value="null" selected>Pilih Supir</option>
                                                     @foreach ($drivers as $driver)

@@ -51,7 +51,7 @@
                     <h1 class="text-center text-dark fw-bold">Target Omzet</h1>
                     <p class="text-center">PT. Roda Chakra Kencana</p>
                     <br><br>
-                    <p class="">Periode : {{ date('d F Y', $filter['start_date']). ' - '. date('d F Y',
+                    <p class="">Periode : {{ date('d F Y', $filter['start_date']). ' s/d '. date('d F Y',
                         $filter['end_date'])}}</p>
                     @if ($supir == null)
                     <table class="table table-bordered border-dark mt-3 align-items-center">

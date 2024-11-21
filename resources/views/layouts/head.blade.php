@@ -20,6 +20,9 @@
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
   <link href="{{ asset('vendor/select2/dist/css/select2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/bootstrap-table-master/dist/bootstrap-table.min.css') }}" rel="stylesheet">
   <link href="{{ asset('vendor/quill/quill.snow.css') }}" rel="stylesheet">

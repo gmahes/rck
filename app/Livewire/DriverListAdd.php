@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\Drivers;
 use Livewire\Component;
 
-class DriverList extends Component
+class DriverListAdd extends Component
 {
     public $vehicleType = '';
     public $drivers = [];
@@ -21,6 +21,6 @@ class DriverList extends Component
 
     public function render()
     {
-        return view('livewire.driver-list');
+        return view('livewire.driver-list-add');
     }
 }

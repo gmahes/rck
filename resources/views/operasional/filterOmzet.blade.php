@@ -29,20 +29,7 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-select form-select-sm"
-                                                    aria-label=".form-select-sm example" name="driver" required>
-                                                    <option value="null" @if ($filter['driver']=='null' ) selected
-                                                        @endif>Pilih
-                                                        Supir</option>
-                                                    <option value="all" @if ($filter['driver']=='all' ) selected @endif>
-                                                        Semua Supir</option>
-                                                    @foreach ($drivers as $driver)
-                                                    <option value="{{ $driver->id }}" @if ($filter['driver']==$driver->
-                                                        id )
-                                                        selected @endif>{{ $driver->fullname }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
+                                                @livewire('driver-list')
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -51,7 +38,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="date" class="form-control form-control-sm"
-                                                    name="start_date" required value="{{ $filter['start_date'] }}">
+                                                    name="start_date" required>
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -60,13 +47,13 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="date" class="form-control form-control-sm" name="end_date"
-                                                    value="{{ $filter['end_date'] }}" required>
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-auto d-flex">
                                                 <button type="submit" class="btn btn-sm btn-primary">Cari Data</button>
-                                                <a href="{{ route('print-omzet', [$filter['driver'], $filter['start_date'], $filter['end_date']]) }}"
+                                                <a href="{{ route('print-omzet', [$filter['vehicleType'], $filter['driver'], $filter['start_date'], $filter['end_date']]) }}"
                                                     class="btn btn-sm btn-success ms-1" target="_blank">Unduh Data</a>
                                             </div>
                                         </div>
@@ -81,14 +68,15 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-select form-select-sm"
+                                                {{-- <select class="form-select form-select-sm"
                                                     aria-label=".form-select-sm example" name="driver_id">
                                                     <option value="null" selected>Pilih Supir</option>
                                                     @foreach ($drivers as $driver)
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
                                                     </option>
                                                     @endforeach
-                                                </select>
+                                                </select> --}}
+                                                @livewire('driver-list-add')
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -124,6 +112,10 @@
                 <div class="col">
                     <div class="card mt-1 shadow">
                         <div class="card-body">
+                            <p class="text-dark h6 fw-bold mt-3">Periode : {{ date('d M Y', $start_date)
+                                . ' s/d '.
+                                date('d M Y', $end_date) }}
+                            </p>
                             @if ($supir == null)
                             <table class="table mt-3" data-toggle="table" data-pagination="true">
                                 <thead class="table-dark">

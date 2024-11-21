@@ -17,19 +17,9 @@
 <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap-table-master/dist/bootstrap-table.min.js') }}"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
 <script src="{{ asset('vendor/select2/dist/js/select2.min.js') }}" type="module"></script>
-@if (url()->current() == route('omzet'))
-<script>
-    $(document).ready(function () {
-        $('.filter-omzet').select2();
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('.add-omzet').select2();
-    });
-</script>
-@endif
 <script src="{{ asset('vendor/chart.js/chart.umd.js') }}"></script>
 <script src="{{ asset('vendor/echarts/echarts.min.js') }}"></script>
 <script src="{{ asset('vendor/quill/quill.js') }}"></script>

@@ -5,9 +5,8 @@
         <option value="Kendaraan Besar">Kendaraan Besar</option>
     </select>
 
-    <select name="driver" class="form-select form-select-sm mt-1">
+    <select name="driver_id" class="form-select form-select-sm mt-1">
         <option value="null">Pilih Supir</option>
-        <option value="all">Semua Supir</option>
         @foreach ($drivers as $driver)
         <option value="{{ $driver->id }}">{{ $driver->fullname }}</option>
         @endforeach

@@ -29,15 +29,6 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                {{-- <select class="form-select form-select-sm filter-omzet"
-                                                    aria-label=".form-select-sm example" name="driver" required>
-                                                    <option value="null" selected>Pilih Supir</option>
-                                                    <option value="all">Semua Supir</option>
-                                                    @foreach ($drivers as $driver)
-                                                    <option value="{{ $driver->id }}">{{ $driver->fullname }}
-                                                    </option>
-                                                    @endforeach
-                                                </select> --}}
                                                 @livewire('driver-list')
                                             </div>
                                         </div>
@@ -75,14 +66,15 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-select add-omzet"
+                                                {{-- <select class="form-select form-select-sm"
                                                     aria-label=".form-select-sm example" name="driver_id" required>
                                                     <option value="null" selected>Pilih Supir</option>
                                                     @foreach ($drivers as $driver)
                                                     <option value="{{ $driver->id }}">{{ $driver->fullname }}
                                                     </option>
                                                     @endforeach
-                                                </select>
+                                                </select> --}}
+                                                @livewire('driver-list-add')
                                             </div>
                                         </div>
                                         <div class="row mt-1">

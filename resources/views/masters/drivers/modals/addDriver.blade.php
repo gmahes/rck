@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-8">
                                 <input type="text" class="form-control form-control-sm" id="vehicleNumber"
-                                    placeholder="Masukkan Jabatan" name="vehicle_number" required>
+                                    placeholder="Masukkan Nomor Kendaraan" name="vehicle_number" required>
                             </div>
                         </div>
                     </div>

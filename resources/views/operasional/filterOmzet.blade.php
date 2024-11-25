@@ -68,14 +68,6 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                {{-- <select class="form-select form-select-sm"
-                                                    aria-label=".form-select-sm example" name="driver_id">
-                                                    <option value="null" selected>Pilih Supir</option>
-                                                    @foreach ($drivers as $driver)
-                                                    <option value="{{ $driver->id }}">{{ $driver->fullname }}
-                                                    </option>
-                                                    @endforeach
-                                                </select> --}}
                                                 @livewire('driver-list-add')
                                             </div>
                                         </div>

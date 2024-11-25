@@ -10,7 +10,7 @@
                 <div class="col">
                     <div class="card shadow">
                         <div class="card-header">
-                            <p class="card-text fw-bold text-primary-emphasis fs-5">Target Omzet</p>
+                            <p class="card-text fw-bold text-dark fs-5">Target Omzet</p>
                         </div>
                     </div>
                 </div>
@@ -66,14 +66,6 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-4">
-                                                {{-- <select class="form-select form-select-sm"
-                                                    aria-label=".form-select-sm example" name="driver_id" required>
-                                                    <option value="null" selected>Pilih Supir</option>
-                                                    @foreach ($drivers as $driver)
-                                                    <option value="{{ $driver->id }}">{{ $driver->fullname }}
-                                                    </option>
-                                                    @endforeach
-                                                </select> --}}
                                                 @livewire('driver-list-add')
                                             </div>
                                         </div>
@@ -99,8 +91,6 @@
                                             <div class="col-auto d-flex">
                                                 <button type="submit" class="btn btn-sm btn-primary">Tambah
                                                     Data</button>
-                                                {{-- <button type="button" class="ms-1 btn btn-sm btn-primary">Unduh
-                                                    Data</button> --}}
                                             </div>
                                         </div>
                                     </form>

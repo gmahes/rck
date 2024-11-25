@@ -10,7 +10,7 @@
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
 
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
 
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
@@ -40,7 +40,7 @@
                     </li>
                 </ul><!-- End Notification Dropdown Items -->
 
-            </li><!-- End Notification Nav -->
+            </li><!-- End Notification Nav --> --}}
 
             <li class="nav-item dropdown pe-3">
 
@@ -84,5 +84,5 @@
         </ul>
     </nav><!-- End Icons Navigation -->
 
-    @include('dashboard.modals.changePassword')
 </header><!-- End Header -->
+@include('dashboard.modals.changePassword')

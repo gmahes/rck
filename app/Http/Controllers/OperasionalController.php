@@ -18,7 +18,6 @@ class OperasionalController extends Controller
             'title' => 'Omzet',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'drivers' => Drivers::all()->sortBy('fullname'),
         ];
         return view('operasional.omzet', $attr);
     }

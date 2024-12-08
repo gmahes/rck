@@ -26,6 +26,7 @@ class UserAuth extends Authenticable
         'password',
         'remember_token',
     ];
+    // protected $with = ['userDetail'];
     public function userDetail(): HasOne
     {
         return $this->hasOne(UserDetail::class, 'username', 'username');

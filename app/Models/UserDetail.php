@@ -21,6 +21,7 @@ class UserDetail extends Model
         'division',
         'created_by',
     ];
+    protected $with = ['userAuth'];
     public function userAuth()
     {
         return $this->belongsTo(UserAuth::class, 'username', 'username');

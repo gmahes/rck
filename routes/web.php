@@ -25,3 +25,7 @@ Route::get('dummy', [DashboardController::class, 'dummy'])->middleware('auth')->
 Route::post('add-omzet', [OperasionalController::class, 'addOmzet'])->middleware('auth')->name('add-omzet');
 Route::post('omzet/filter-omzet', [OperasionalController::class, 'filterOmzet'])->middleware('auth')->name('filter-omzet');
 Route::get('omzet/print-omzet/{vehicleType}/{driver}/{start_date}/{end_date}', [OperasionalController::class, 'printOmzet'])->middleware('auth')->name('print-omzet');
+Route::get('customers', [MasterController::class, 'customers'])->middleware('auth')->name('customers');
+Route::post('add-customer', [MasterController::class, 'addCustomer'])->middleware('auth')->name('add-customer');
+Route::put('edit-customer/{id}', [MasterController::class, 'editCustomer'])->middleware('auth')->name('edit-customer');
+Route::delete('del-customer/{id}', [MasterController::class, 'delCustomer'])->middleware('auth')->name('del-customer');

@@ -11,6 +11,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use SimpleXMLElement;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+
 
 
 class NonOperasionalController extends Controller
@@ -45,7 +47,11 @@ class NonOperasionalController extends Controller
                 Alert::error('Gagal', 'Pelanggan ' . $invoice['pelanggan'] . ' tidak terdaftar');
                 return redirect()->route('xml-coretax');
             }
-            $date = Carbon::createFromFormat('d/m/Y', $invoice['tgl_invoice'])->format('Y-m-d');
+            if (gettype($invoice['tgl_invoice']) == 'integer') {
+                $date = Date::excelToDateTimeObject($invoice['tgl_invoice'])->format('Y-d-m');
+            } else {
+                $date = Carbon::createFromFormat('d/m/Y', $invoice['tgl_invoice'])->format('Y-m-d');
+            }
             $otherTaxBase = intval($invoice['sub_total']) * 11 / 12;
             $vat = $otherTaxBase * 0.12;
             $taxInvoice = $this->xml->ListOfTaxInvoice->addChild('TaxInvoice');

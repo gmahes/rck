@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Drivers;
 use App\Models\UserAuth;
 use App\Models\UserDetail;
+use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -218,5 +219,82 @@ class MasterController extends Controller
         Drivers::where('id', $id)->delete();
         Alert::success('Sukses', 'Data supir berhasil dihapus');
         return redirect()->route('drivers');
+    }
+    public function customers()
+    {
+        $attr = [
+            'title' => 'Data Pelanggan',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'customers' => Customers::all()->sortBy('name')
+        ];
+        // dd($attr['customers']);
+        return view('masters.customers.customers', $attr);
+    }
+    public function addCustomer(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'idNumber' => 'required',
+                'idNumberType' => 'required',
+                'address' => 'required',
+            ],
+            [
+                'name.required' => 'Nama pelanggan belum diisi',
+                'idNumber.required' => 'ID pelanggan belum diisi',
+                'idNumberType.required' => 'Tipe pelanggan belum dipilih',
+                'address.required' => 'Alamat pelanggan belum diisi',
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('customers');
+        }
+        $validated = $validator->validated();
+        $customer = [
+            'id' => $validated['idNumber'],
+            'name' => $validated['name'],
+            'type' => $validated['idNumberType'],
+            'address' => $validated['address'],
+            'created_by' => Auth::user()->username
+        ];
+        Customers::create($customer);
+        Alert::success('Sukses', 'Data pelanggan berhasil ditambahkan');
+        return redirect()->route('customers');
+    }
+    public function editCustomer(Request $request, $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'address' => 'required',
+            ],
+            [
+                'name.required' => 'Nama pelanggan belum diisi',
+                'address.required' => 'Alamat pelanggan belum diisi',
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('customers');
+        }
+        $validated = $validator->validated();
+        $customer = [
+            'name' => $validated['name'],
+            'address' => $validated['address'],
+            'updated_by' => Auth::user()->username
+        ];
+        Customers::where('id', $id)->update($customer);
+        Alert::success('Sukses', 'Data pelanggan berhasil diubah');
+        return redirect()->route('customers');
+    }
+    public function delCustomer($id)
+    {
+        Customers::where('id', $id)->delete();
+        Alert::success('Sukses', 'Data pelanggan berhasil dihapus');
+        return redirect()->route('customers');
     }
 }

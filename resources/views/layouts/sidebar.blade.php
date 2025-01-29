@@ -54,7 +54,7 @@
             </ul>
         </li><!-- End Operasional Nav -->
         @endif
-        @if (Auth::user()->userDetail->division == 'Non-Operasional' or Auth::user()->role == 'superadmin' or
+        @if (Auth::user()->userDetail->division == 'Non Operasional' or Auth::user()->role == 'superadmin' or
         Auth::user()->role == 'administrator')
         <li class="nav-item">
             <a class="nav-link @if(url()->current() != route('xml-coretax'))collapsed @endif"

@@ -28,7 +28,7 @@ class xls implements ToArray, WithHeadingRow, WithStartRow
                 continue; // Lewati baris ini
             }
             $this->data[] = [ // Sesuaikan dengan header di Excel
-                'pelanggan'  => $row[1],
+                'pelanggan'  => rtrim($row[1]),
                 'tgl_invoice' => $row[3],
                 'no_invoice'  => $row[4],
                 'sub_total'  => floatval($row[7]),

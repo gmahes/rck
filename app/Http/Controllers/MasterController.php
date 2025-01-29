@@ -236,14 +236,15 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'name' => 'required',
                 'idNumber' => 'required',
+                'idNumberType' => 'required',
                 'address' => 'required',
             ],
             [
                 'name.required' => 'Nama pelanggan belum diisi',
-                'name.regex' => 'Nama pelanggan hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->name'",
-                'id.required' => 'ID pelanggan belum diisi',
+                'idNumber.required' => 'ID pelanggan belum diisi',
+                'idNumberType.required' => 'Tipe pelanggan belum dipilih',
                 'address.required' => 'Alamat pelanggan belum diisi',
             ],
         );
@@ -255,6 +256,7 @@ class MasterController extends Controller
         $customer = [
             'id' => $validated['idNumber'],
             'name' => $validated['name'],
+            'type' => $validated['idNumberType'],
             'address' => $validated['address'],
             'created_by' => Auth::user()->username
         ];
@@ -267,12 +269,11 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'name' => 'required',
                 'address' => 'required',
             ],
             [
                 'name.required' => 'Nama pelanggan belum diisi',
-                'name.regex' => 'Nama pelanggan hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->name'",
                 'address.required' => 'Alamat pelanggan belum diisi',
             ],
         );

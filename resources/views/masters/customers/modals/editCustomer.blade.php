@@ -27,21 +27,21 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="editidNumber{{ $customer->id }}" class="form-label">Nomor
-                                    Kendaraan</label>
+                                <label for="editidNumber{{ $customer->id }}" class="form-label">Nomor Identitas
+                                    Pelanggan</label>
                             </div>
                             <div class="col-8">
                                 <input type="text" class="form-control form-control-sm"
                                     id="editidNumber{{ $customer->id }}"
                                     placeholder="Masukkan Nomor Identitas Pelanggan" name="idNumber"
-                                    value="{{ $customer->id }}" required>
+                                    value="{{ $customer->id }}" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="editAddress{{ $customer->id }}" class="form-label">Role</label>
+                                <label for="editAddress{{ $customer->id }}" class="form-label">Alamat Pelanggan</label>
                             </div>
                             <div class="col-8">
                                 <input type="text" class="form-control form-control-sm"

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\OperasionalController;
+use App\Http\Controllers\NonOperasionalController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('login', [AuthController::class, 'login'])->middleware('guest')->name('login');
@@ -29,3 +30,6 @@ Route::get('customers', [MasterController::class, 'customers'])->middleware('aut
 Route::post('add-customer', [MasterController::class, 'addCustomer'])->middleware('auth')->name('add-customer');
 Route::put('edit-customer/{id}', [MasterController::class, 'editCustomer'])->middleware('auth')->name('edit-customer');
 Route::delete('del-customer/{id}', [MasterController::class, 'delCustomer'])->middleware('auth')->name('del-customer');
+Route::get('xml-coretax', [NonOperasionalController::class, 'xmlCoretax'])->middleware('auth')->name('xml-coretax');
+Route::post('convert-xls-to-xml', [NonOperasionalController::class, 'convertXlsToXml'])->middleware('auth')->name('convert-xls-to-xml');
+Route::get('download-xml', [NonOperasionalController::class, 'downloadXml'])->middleware('auth')->name('download-xml');

@@ -38,6 +38,21 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
+                                <label for="idNumberType" class="form-label">Tipe Nomor Identitas</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" id="idNumberType" name="idNumberType"
+                                    required>
+                                    <option value="" selected disabled>Pilih Tipe Nomor Identitas</option>
+                                    <option value="KTP">KTP</option>
+                                    <option value="NPWP">NPWP</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="address" class="form-label">Alamat Pelanggan</label>
                             </div>
                             <div class="col-8">

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('customers_list', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('type');
             $table->string('name');
             $table->string('address');
             $table->timestamps();

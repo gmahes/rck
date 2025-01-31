@@ -67,7 +67,7 @@
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('xml-coretax') }}">
-                        <i class="bi bi-circle-fill"></i><span>XML Coretax</span>
+                        <i class="bi bi-circle-fill"></i><span>Fitur Coretax</span>
                     </a>
                 </li>
             </ul>

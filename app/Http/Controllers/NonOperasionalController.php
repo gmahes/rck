@@ -21,7 +21,7 @@ class NonOperasionalController extends Controller
     public function xmlCoretax()
     {
         $attr = [
-            'title' => 'XML Coretax',
+            'title' => 'Fitur Coretax',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
             'sbu' => Customers::all()->sortBy('name')
@@ -33,9 +33,6 @@ class NonOperasionalController extends Controller
         $import = new xls;
         Excel::import($import, request()->file('file'));
         $attr = [
-            'title' => 'XML Coretax',
-            'fullname' => Auth::user()->userDetail->fullname,
-            'position' => Auth::user()->userDetail->position,
             'sbu' => Customers::all()->sortBy('name'),
             'invoices' => $import->data
         ];
@@ -110,5 +107,66 @@ class NonOperasionalController extends Controller
         return response($dom->saveXML(), 200)
             ->header('Content-Type', 'text/xml')
             ->header('Content-Disposition', 'attachment; filename="' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xml"');
+    }
+    public function convertXlsToXlsx()
+    {
+        $import = new xls;
+        Excel::import($import, request()->file('file'));
+        $attr = [
+            'sbu' => Customers::all()->sortBy('name'),
+            'invoices' => array_reverse($import->data)
+        ];
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No Invoice');
+        $sheet->setCellValue('B1', 'Pelanggan');
+        $sheet->setCellValue('C1', 'Tanggal Invoice');
+        $sheet->setCellValue('D1', 'Harga Satuan');
+        $sheet->setCellValue('E1', 'DPP');
+        $sheet->setCellValue('F1', 'DPP Nilai Lain');
+        $sheet->setCellValue('G1', 'PPn');
+
+        // Set header with bold text and center text
+        $headerStyleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ];
+        $sheet->getStyle('A1:G1')->applyFromArray($headerStyleArray);
+
+        $row = 2;
+        foreach ($attr['invoices'] as $invoice) {
+            if (gettype($invoice['tgl_invoice']) == 'integer') {
+                $date = Date::excelToDateTimeObject($invoice['tgl_invoice'])->format('m-d-Y');
+            } else {
+                $date = Carbon::createFromFormat('d/m/Y', $invoice['tgl_invoice'])->format('d-m-Y');
+            }
+            $otherTaxBase = intval($invoice['sub_total']) * 11 / 12;
+            $vat = $otherTaxBase * 0.12;
+
+            $sheet->setCellValue('A' . $row, $invoice['no_invoice']);
+            $sheet->setCellValue('B' . $row, $invoice['pelanggan']);
+            $sheet->setCellValue('C' . $row, $date);
+            $sheet->setCellValue('D' . $row, number_format($invoice['sub_total'], 2, ',', '.'));
+            $sheet->setCellValue('E' . $row, number_format($invoice['sub_total'], 2, ',', '.'));
+            $sheet->setCellValue('F' . $row, number_format($otherTaxBase, 2, ',', '.'));
+            $sheet->setCellValue('G' . $row, number_format($vat, 2, ',', '.'));
+
+            $row++;
+        }
+
+        // Auto size columns to fit content
+        foreach (range('A', 'G') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename = pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx';
+        $writer->save($filename);
+
+        return response()->download($filename)->deleteFileAfterSend(true);
     }
 }

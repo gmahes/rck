@@ -167,6 +167,6 @@ class NonOperasionalController extends Controller
         $filename = storage_path('app/public/' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx');
         $writer->save($filename);
 
-        return response()->download($filename);
+        return response()->download($filename)->deleteFileAfterSend(true);
     }
 }

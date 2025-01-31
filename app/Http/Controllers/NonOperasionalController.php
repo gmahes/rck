@@ -164,9 +164,9 @@ class NonOperasionalController extends Controller
         }
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-        $filename = pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx';
+        $filename = storage_path('app/public/' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx');
         $writer->save($filename);
 
-        return response()->download($filename)->deleteFileAfterSend(true);
+        return response()->download($filename);
     }
 }

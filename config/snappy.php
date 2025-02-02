@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Event\Runtime\PHP;
+
 return [
 
     /*
@@ -35,7 +37,7 @@ return [
 
     'pdf' => [
         'enabled' => true,
-        'binary'  => env('WKHTML_PDF_BINARY', '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"'),
+        'binary'  => env('WKHTML_PDF_BINARY', PHP_OS === 'WINNT' ? '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"' : '/usr/local/bin/wkhtmltopdf'),
         'timeout' => false,
         'options' => [],
         'env'     => [],

@@ -126,10 +126,12 @@ class NonOperasionalController extends Controller
         $sheet->setCellValue('F1', 'DPP Nilai Lain');
         $sheet->setCellValue('G1', 'PPn');
 
-        // Set header with bold text and center text
+        // Set header with bold text, center text, and font size 11
         $headerStyleArray = [
             'font' => [
                 'bold' => true,
+                'size' => 11,
+                'name' => 'Calibri',
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -162,6 +164,37 @@ class NonOperasionalController extends Controller
         foreach (range('A', 'G') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
+
+        // Add border to cells
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        $sheet->getStyle('A1:G' . ($row - 1))->applyFromArray($styleArray);
+
+        // Center align all cells and set font to Calibri with size 11
+        $sheet->getStyle('A1:G' . ($row - 1))->applyFromArray([
+            'font' => [
+                'name' => 'Calibri',
+                'size' => 11,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ]);
+
+        // Set print settings
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
+        $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_FOLIO);
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+
+        // Set repeating rows for print title
+        $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 1);
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $filename = storage_path('app/public/' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx');

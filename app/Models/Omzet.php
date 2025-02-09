@@ -15,6 +15,6 @@ class Omzet extends Model
     // public $timestamps = false;
     public function drivers()
     {
-        return $this->belongsTo(Drivers::class, 'user_id', 'id');
+        return $this->belongsTo(Drivers::class, 'driver_id', 'id');
     }
 }

@@ -16,8 +16,4 @@ class Drivers extends Model
         'vehicle_number',
         'created_by',
     ];
-    public function omzet()
-    {
-        return $this->hasMany(Omzet::class, 'user_id', 'id');
-    }
 }

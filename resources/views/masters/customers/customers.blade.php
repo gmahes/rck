@@ -36,6 +36,7 @@
                                     <tr class="text-center">
                                         <th>No</th>
                                         <th>Nama Pelanggan</th>
+                                        <th>Jenis Identitas</th>
                                         <th>Nomor Identitas</th>
                                         <th>Alamat Pelanggan</th>
                                         <th>Aksi</th>
@@ -48,6 +49,7 @@
                                     <tr>
                                         <td class="fw-bold text-center">{{ $loop->iteration }}</td>
                                         <td class="">{{ $customer->name }}</td>
+                                        <td class="">{{ $customer->type }}</td>
                                         <td>{{ $customer->id }}</td>
                                         <td>{{ $customer->address }}</td>
                                         <td class="text-center">

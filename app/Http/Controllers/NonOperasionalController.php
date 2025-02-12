@@ -40,6 +40,9 @@ class NonOperasionalController extends Controller
         $this->xml->addChild('TIN', '0704142322402000');
         $this->xml->addChild('ListOfTaxInvoice');
         foreach ($attr['invoices'] as $invoice) {
+            if ($invoice['pelanggan'] == 'PELANGGAN') {
+                continue;
+            }
             if ($invoice['status'] == 'Tidak Terdaftar') {
                 Alert::error('Gagal', 'Pelanggan ' . $invoice['pelanggan'] . ' tidak terdaftar');
                 return redirect()->route('xml-coretax');
@@ -141,6 +144,9 @@ class NonOperasionalController extends Controller
 
         $row = 2;
         foreach ($attr['invoices'] as $invoice) {
+            if ($invoice['pelanggan'] == 'PELANGGAN') {
+                continue;
+            }
             if (gettype($invoice['tgl_invoice']) == 'integer') {
                 $date = Date::excelToDateTimeObject($invoice['tgl_invoice'])->format('m-d-Y');
             } else {

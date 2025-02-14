@@ -34,3 +34,4 @@ Route::get('xml-coretax', [NonOperasionalController::class, 'xmlCoretax'])->midd
 Route::post('convert-xls-to-xml', [NonOperasionalController::class, 'convertXlsToXml'])->middleware('auth')->name('convert-xls-to-xml');
 Route::get('download-xml', [NonOperasionalController::class, 'downloadXml'])->middleware('auth')->name('download-xml');
 Route::post('download-dpp-excel', [NonOperasionalController::class, 'convertXlsToXlsx'])->middleware('auth')->name('download-dpp-excel');
+Route::post('tax-invoice-correction', [NonOperasionalController::class, 'taxInvoiceCorrection'])->middleware('auth')->name('tax-invoice-correction');

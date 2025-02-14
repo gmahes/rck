@@ -109,6 +109,83 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-5 mt-2">
+                                <p class="card-text fw-bold text-center h4">Tabel Data Coretax</p>
+                                <table class="table mt-1" data-toggle="table">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th data-width="10">No Invoice</th>
+                                            <th>Nama Pelanggan</th>
+                                            <th data-width="10">Sub Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($coretax as $item)
+                                        <tr>
+                                            <td>{{ $item['no_invoice'] }}</td>
+                                            <td>{{ $item['nama_pelanggan'] }}</td>
+                                            <td class="fw-bold">{{ number_format($item['sub_total'],0,'.') }}</td>
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td colspan="3" class="text-center fw-bold">Total Data = {{ count($coretax)
+                                                }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-2 mt-2">
+                                <p class="card-text fw-bold text-center h4">Koreksi</p>
+                                <table class="table mt-1" data-toggle="table">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @foreach ($correction as $item)
+                                        <tr>
+                                            <td>{{ $item }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-5 mt-2">
+                                <p class="card-text fw-bold text-center h4">Tabel Data Akunting</p>
+                                <table class="table mt-1" data-toggle="table">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th data-width="10">No Invoice</th>
+                                            <th>Nama Pelanggan</th>
+                                            <th data-width="10">Sub Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($accounting as $item)
+                                        <tr>
+                                            <td>{{ $item['no_invoice'] }}</td>
+                                            <td>{{ $item['nama_pelanggan'] }}</td>
+                                            <td class="fw-bold">{{ number_format($item['sub_total'],0,'.') }}</td>
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td colspan="3" class="text-center fw-bold">Total Data = {{
+                                                count($accounting) }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 </main><!-- End #main -->
 @endsection

@@ -50,6 +50,11 @@ class DashboardController extends Controller
     }
     public function dummy()
     {
-        return view('dummy');
+        $attr = [
+            'title' => 'Dummy',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+        ];
+        return view('non-operasional.upxlstable', $attr);
     }
 }

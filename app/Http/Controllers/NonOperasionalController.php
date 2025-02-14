@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\accountingExcel;
+use App\Imports\coretaxExcel;
 use Carbon\Carbon;
 use App\Imports\xls;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Customers;
 use DOMDocument;
+use GuzzleHttp\Psr7\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Http\Request;
 use SimpleXMLElement;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -207,5 +209,36 @@ class NonOperasionalController extends Controller
         $writer->save($filename);
 
         return response()->download($filename)->deleteFileAfterSend(true);
+    }
+    public function taxInvoiceCorrection()
+    {
+        $coretaxExcel = new coretaxExcel;
+        $accountingExcel = new accountingExcel;
+        Excel::import($accountingExcel, request()->file('accountingExcel'));
+        Excel::import($coretaxExcel, request()->file('coretaxExcel'));
+        $coretax = collect($coretaxExcel->data)->sortBy(['sub_total', 'no_invoice'])->values()->all();
+        $accounting = collect($accountingExcel->data)->sortBy(['sub_total', 'no_invoice'])->values()->all();
+        $correction = [];
+        foreach ($accounting as $index => $acc) {
+            $status = 'Salah';
+            foreach ($coretax as $core) {
+                if ($acc['no_invoice'] == $core['no_invoice'] && $acc['sub_total'] == $core['sub_total']) {
+                    $status = 'Benar';
+                    break;
+                }
+            }
+            $correction[] = $status;
+        }
+        $attr = [
+            'title' => 'Fitur Coretax',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'sbu' => Customers::all()->sortBy('name'),
+            'coretax' => $coretax,
+            'accounting' => $accounting,
+            'correction' => $correction
+        ];
+        // dd($attr['correction']);
+        return view('non-operasional.upxlstable', $attr);
     }
 }

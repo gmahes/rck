@@ -7,8 +7,13 @@
     <section class="section">
         <div class="row">
             <div class="col">
-                <div class="card">
-                    <div class="card-body text-center">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text fw-bold text-dark fs-5">Blank</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

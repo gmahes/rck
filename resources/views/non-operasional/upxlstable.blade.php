@@ -7,7 +7,7 @@
     <section class="section">
         <div class="row">
             <div class="col">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">
                         <p class="card-text fw-bold text-dark fs-5">Fitur Coretax</p>
                     </div>
@@ -114,7 +114,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-5 mt-2">
+                            <div class="col mt-2">
                                 <p class="card-text fw-bold text-center h4">Tabel Data Coretax</p>
                                 <table class="table mt-1" data-toggle="table">
                                     <thead class="text-center">
@@ -139,24 +139,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-lg-2 mt-2">
-                                <p class="card-text fw-bold text-center h4">Koreksi</p>
-                                <table class="table mt-1" data-toggle="table">
-                                    <thead class="text-center">
-                                        <tr>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-center">
-                                        @foreach ($correction as $item)
-                                        <tr>
-                                            <td>{{ $item }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-5 mt-2">
+                            <div class="col mt-2">
                                 <p class="card-text fw-bold text-center h4">Tabel Data Akunting</p>
                                 <table class="table mt-1" data-toggle="table">
                                     <thead class="text-center">

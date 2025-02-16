@@ -31,7 +31,7 @@
                 <div class="col">
                     <div class="card mt-1 shadow">
                         <div class="card-body">
-                            <table class="table mt-3" data-toggle="table" data-pagination="true">
+                            <table class="table" data-toggle="table" data-pagination="true" data-search="true">
                                 <thead class="table-dark">
                                     <tr class="text-center">
                                         <th>No</th>

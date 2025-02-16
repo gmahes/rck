@@ -7,7 +7,7 @@
     <section class="section">
         <div class="row">
             <div class="col">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">
                         <p class="card-text fw-bold text-dark fs-5">Fitur Coretax</p>
                     </div>
@@ -66,6 +66,8 @@
                 </div>
             </div>
         </div>
+        @if (auth()->user()->userDetail->position == 'Admin Akuntansi' or auth()->user()->role == 'administrator' or
+        auth()->user()->role == 'superadmin')
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -109,6 +111,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </section>
 </main><!-- End #main -->
 @endsection

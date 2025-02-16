@@ -35,3 +35,4 @@ Route::post('convert-xls-to-xml', [NonOperasionalController::class, 'convertXlsT
 Route::get('download-xml', [NonOperasionalController::class, 'downloadXml'])->middleware('auth')->name('download-xml');
 Route::post('download-dpp-excel', [NonOperasionalController::class, 'convertXlsToXlsx'])->middleware('auth')->name('download-dpp-excel');
 Route::post('tax-invoice-correction', [NonOperasionalController::class, 'taxInvoiceCorrection'])->middleware('auth')->name('tax-invoice-correction');
+Route::get('tab-ban', [OperasionalController::class, 'tabBan'])->middleware('auth')->name('tab-ban');

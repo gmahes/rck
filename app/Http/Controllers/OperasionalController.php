@@ -312,15 +312,4 @@ class OperasionalController extends Controller
             }
         }
     }
-    public function tabBan()
-    {
-        $attr = [
-            'title' => 'Tabungan Ban',
-            'fullname' => Auth::user()->userDetail->fullname,
-            'position' => Auth::user()->userDetail->position,
-            'drivers' => Drivers::all()->sortBy('fullname'),
-
-        ];
-        return view('operasional.tabBan', $attr);
-    }
 }

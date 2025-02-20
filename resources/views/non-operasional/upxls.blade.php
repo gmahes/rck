@@ -33,6 +33,20 @@
                                                 required>
                                         </div>
                                     </div>
+                                    @if (auth()->user()->userDetail->position == 'Admin Marketing' or
+                                    auth()->user()->role == 'administrator' or auth()->user()->role == 'superadmin')
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="true"
+                                                    id="flexCheckChecked" checked name="invoiceImport">
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    Invoice Import
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="row mt-2">
                                         <div class="col-auto d-flex">
                                             <button type="submit" class="btn btn-sm btn-primary">Download XML</button>

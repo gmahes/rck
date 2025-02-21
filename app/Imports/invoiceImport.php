@@ -6,7 +6,7 @@ use App\Models\Customers;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-
+use Illuminate\Support\Str;
 
 class invoiceImport implements ToArray, WithStartRow
 {
@@ -24,9 +24,9 @@ class invoiceImport implements ToArray, WithStartRow
             } else {
                 $status = 'Tidak Terdaftar';
             }
-            $deskripsi = explode(';', $row[3]);
-            $unit = explode(';', $row[4]);
-            $jumlah = explode(';', $row[5]);
+            $deskripsi = Str::contains($row[3], ';') ? explode(';', $row[3]) : $row[3];
+            $unit = Str::contains($row[4], ';') ? explode(';', $row[4]) : $row[4];
+            $jumlah = Str::contains($row[5], ';') ? explode(';', $row[5]) : $row[5];
             $this->data[] = [
                 'no_invoice' => $row[0],
                 'tanggal_invoice' => Date::excelToDateTimeObject($row[1])->format('Y-m-d'),

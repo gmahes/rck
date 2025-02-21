@@ -14,6 +14,7 @@
                                 <div class="col">
                                     <p class="card-text fw-bold text-dark fs-5">Data Pelanggan</p>
                                 </div>
+                                @if (auth()->user()->role == 'superadmin' or auth()->user()->role == 'administrator')
                                 <div class="col text-end">
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
@@ -22,6 +23,7 @@
                                     </button>
                                     @include('masters.customers.modals.addCustomer')
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -39,7 +41,10 @@
                                         <th>Jenis Identitas</th>
                                         <th>Nomor Identitas</th>
                                         <th>Alamat Pelanggan</th>
+                                        @if (auth()->user()->role == 'superadmin' or auth()->user()->role ==
+                                        'administrator')
                                         <th>Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,6 +57,8 @@
                                         <td class="">{{ $customer->type }}</td>
                                         <td>{{ $customer->id }}</td>
                                         <td>{{ $customer->address }}</td>
+                                        @if (auth()->user()->role == 'superadmin' or auth()->user()->role ==
+                                        'administrator')
                                         <td class="text-center">
                                             <div class="btn-group dropstart">
                                                 <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
@@ -79,6 +86,7 @@
                                                 </ul>
                                             </div>
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

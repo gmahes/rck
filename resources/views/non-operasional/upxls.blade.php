@@ -69,13 +69,13 @@
                                         </div>
                                     </div>
                                     @if (auth()->user()->role == 'administrator' or auth()->user()->role ==
-                                    'superadmin')
+                                    'superadmin' or auth()->user()->userDetail->position == 'Admin Marketing')
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="true"
-                                                    id="flexCheckChecked" checked name="invoiceImport">
-                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    id="flexCheckCheckedDPP" checked name="invoiceImport">
+                                                <label class="form-check-label" for="flexCheckCheckedDPP">
                                                     Invoice Import
                                                 </label>
                                             </div>

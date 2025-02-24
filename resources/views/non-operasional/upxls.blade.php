@@ -25,7 +25,7 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-5 mt-1">
                                             <p class="card-text">Upload Rekap BOA => </p>
                                         </div>
                                         <div class="col-md-5">
@@ -33,16 +33,26 @@
                                                 required>
                                         </div>
                                     </div>
-                                    @if (auth()->user()->userDetail->position == 'Admin Marketing' or
-                                    auth()->user()->role == 'administrator' or auth()->user()->role == 'superadmin')
-                                    <div class="row">
+                                    @if (auth()->user()->role == 'administrator' or auth()->user()->role ==
+                                    'superadmin' or auth()->user()->userDetail->position == 'Admin Marketing' or
+                                    auth()->user()->userDetail->position == 'Admin Akuntansi')
+                                    <div class="row mt-1">
                                         <div class="col">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="true"
-                                                    id="flexCheckChecked" checked name="invoiceImport">
-                                                <label class="form-check-label" for="flexCheckChecked">
-                                                    Invoice Import
-                                                </label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="invoice"
+                                                    id="invoiceExp" value="exp" required>
+                                                <label class="form-check-label" for="invoiceExp">Angkutan</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="invoice"
+                                                    id="invoiceImport" value="imp">
+                                                <label class="form-check-label" for="invoiceImport">Import</label>
+                                            </div>
+                                            <div class="form-check form-check-inline" {{ auth()->
+                                                user()->userDetail->position == 'Admin Marketing' ? 'hidden' : '' }}>
+                                                <input class="form-check-input" type="radio" name="invoice"
+                                                    id="invoiceBengkel" value="bkl">
+                                                <label class="form-check-label" for="invoiceBengkel">Bengkel</label>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +70,7 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-5 mt-1">
                                             <p class="card-text">Upload Rekap BOA =></p>
                                         </div>
                                         <div class="col-md-5">
@@ -69,15 +79,25 @@
                                         </div>
                                     </div>
                                     @if (auth()->user()->role == 'administrator' or auth()->user()->role ==
-                                    'superadmin' or auth()->user()->userDetail->position == 'Admin Marketing')
-                                    <div class="row">
+                                    'superadmin' or auth()->user()->userDetail->position == 'Admin Marketing' or
+                                    auth()->user()->userDetail->position == 'Admin Akuntansi')
+                                    <div class="row mt-1">
                                         <div class="col">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="true"
-                                                    id="flexCheckCheckedDPP" checked name="invoiceImport">
-                                                <label class="form-check-label" for="flexCheckCheckedDPP">
-                                                    Invoice Import
-                                                </label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="invoice"
+                                                    id="invoiceExpDpp" value="exp" required>
+                                                <label class="form-check-label" for="invoiceExpDpp">Angkutan</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="invoice"
+                                                    id="invoiceImportDpp" value="imp">
+                                                <label class="form-check-label" for="invoiceImportDpp">Import</label>
+                                            </div>
+                                            <div class="form-check form-check-inline" {{ auth()->
+                                                user()->userDetail->position == 'Admin Marketing' ? 'hidden' : '' }}>
+                                                <input class="form-check-input" type="radio" name="invoice"
+                                                    id="invoiceBengkelDpp" value="bkl">
+                                                <label class="form-check-label" for="invoiceBengkelDpp">Bengkel</label>
                                             </div>
                                         </div>
                                     </div>

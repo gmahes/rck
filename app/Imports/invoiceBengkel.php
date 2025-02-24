@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Str;
 
-class invoiceImport implements ToArray, WithStartRow
+class invoiceBengkel implements ToArray, WithStartRow
 {
     public $data = [];
     public function startRow(): int
@@ -24,18 +24,17 @@ class invoiceImport implements ToArray, WithStartRow
             } else {
                 $status = 'Tidak Terdaftar';
             }
-            if (empty($row[0]) || empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4]) || empty($row[5])) {
-                continue; // Lewati baris ini
-            }
             $deskripsi = Str::contains($row[3], ';') ? explode(';', $row[3]) : $row[3];
-            $unit = Str::contains($row[4], ';') ? explode(';', $row[4]) : $row[4];
-            $jumlah = Str::contains($row[5], ';') ? explode(';', $row[5]) : $row[5];
+            $qty = Str::contains($row[4], ';') ? explode(';', $row[4]) : $row[4];
+            $satuan = Str::contains($row[5], ';') ? explode(';', $row[5]) : $row[5];
+            $jumlah = Str::contains($row[6], ';') ? explode(';', $row[6]) : $row[6];
             $this->data[] = [
                 'no_invoice' => $row[0],
                 'tanggal_invoice' => Date::excelToDateTimeObject($row[1])->format('Y-m-d'),
                 'nama_pelanggan' => $row[2],
                 'deskripsi' => $deskripsi,
-                'unit' => $unit,
+                'qty' => $qty,
+                'satuan' => $satuan,
                 'jumlah' => $jumlah,
                 'status' => $status,
             ];

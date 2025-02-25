@@ -180,18 +180,20 @@ class NonOperasionalController extends Controller
                 }
                 $goodService = $taxInvoice->addChild('ListOfGoodService');
                 if (gettype($invoice['deskripsi']) == 'string') {
+                    $otherTaxBase = intval($invoice['jumlah']) * 11 / 12;
+                    $vat = $otherTaxBase * 0.12;
                     $listOfGoodService = $goodService->addChild('GoodService');
                     $listOfGoodService->addChild('Opt', 'B');
                     $listOfGoodService->addChild('Code', '000000');
                     $listOfGoodService->addChild('Name', $invoice['deskripsi']);
-                    $listOfGoodService->addChild('Unit', $attr['units'][$invoice['satuan']]);
-                    $listOfGoodService->addChild('Price', $invoice['jumlah'] / $invoice['unit']);
-                    $listOfGoodService->addChild('Qty', $invoice['unit']);
+                    $listOfGoodService->addChild('Unit', 'UM.0033');
+                    $listOfGoodService->addChild('Price', $invoice['jumlah']);
+                    $listOfGoodService->addChild('Qty', $invoice['qty']);
                     $listOfGoodService->addChild('TotalDiscount', '0');
                     $listOfGoodService->addChild('TaxBase', $invoice['jumlah']);
-                    $listOfGoodService->addChild('OtherTaxBase', '0');
+                    $listOfGoodService->addChild('OtherTaxBase', rtrim(rtrim(number_format($otherTaxBase, 2, '.', ''), '0'), '.'));
                     $listOfGoodService->addChild('VATRate', '12');
-                    $listOfGoodService->addChild('VAT', rtrim(rtrim(number_format($invoice['jumlah'] * 0.011, 2, '.', ''), '0'), '.'));
+                    $listOfGoodService->addChild('VAT', rtrim(rtrim(number_format($vat, 2, '.', ''), '0'), '.'));
                     $listOfGoodService->addChild('STLGRate', '0');
                     $listOfGoodService->addChild('STLG', '0');
                 } else {
@@ -199,10 +201,10 @@ class NonOperasionalController extends Controller
                         $otherTaxBase = intval($invoice['jumlah'][$key]) * 11 / 12;
                         $vat = $otherTaxBase * 0.12;
                         $listOfGoodService = $goodService->addChild('GoodService');
-                        $listOfGoodService->addChild('Opt', 'B');
+                        $listOfGoodService->addChild('Opt', 'A');
                         $listOfGoodService->addChild('Code', '000000');
                         $listOfGoodService->addChild('Name', $invoice['deskripsi'][$key]);
-                        $listOfGoodService->addChild('Unit', $attr['units'][$invoice['satuan'][$key]]);
+                        $listOfGoodService->addChild('Unit', $attr['units'][$invoice['satuan'][$key]] ?? 'UM.0033');
                         $listOfGoodService->addChild('Price', intval($invoice['jumlah'][$key]) / floatval($invoice['qty'][$key]));
                         $listOfGoodService->addChild('Qty', $invoice['qty'][$key]);
                         $listOfGoodService->addChild('TotalDiscount', '0');
@@ -322,7 +324,7 @@ class NonOperasionalController extends Controller
             $sheet->setCellValue('A1', 'No Invoice');
             $sheet->setCellValue('B1', 'Tanggal Invoice');
             $sheet->setCellValue('C1', 'Nama Pelanggan');
-            $sheet->setCellValue('D1', 'Kuantitas');
+            $sheet->setCellValue('D1', 'Qty');
             $sheet->setCellValue('E1', 'Deskripsi');
             $sheet->setCellValue('F1', 'DPP');
             $sheet->setCellValue('G1', 'PPN 1,1%');
@@ -351,6 +353,7 @@ class NonOperasionalController extends Controller
                     $sheet->setCellValue('E' . $row, $invoice['deskripsi']);
                     $sheet->setCellValue('F' . $row, number_format($invoice['jumlah'], 0, '.', ','));
                     $sheet->setCellValue('G' . $row, number_format($ppn, 0, '.', ','));
+                    $row++;
                 } else {
                     foreach (array_keys($invoice['deskripsi']) as $key) {
                         $sumJumlah = array_sum($invoice['jumlah']);
@@ -403,6 +406,141 @@ class NonOperasionalController extends Controller
 
             // Center align all cells and set font to Calibri with size 11
             $sheet->getStyle('A1:G' . ($row - 1))->applyFromArray([
+                'font' => [
+                    'name' => 'Calibri',
+                    'size' => 11,
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+            ]);
+
+            // Set print settings
+            $sheet->getPageSetup()->setFitToWidth(1);
+            $sheet->getPageSetup()->setFitToHeight(0);
+            $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_FOLIO);
+            $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+
+            // Set repeating rows for print title
+            $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 1);
+
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $filename = storage_path('app/public/' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx');
+            $writer->save($filename);
+
+            return response()->download($filename)->deleteFileAfterSend(true);
+        } elseif (request()->invoice == 'bkl') {
+            $import = new invoiceBengkel;
+            Excel::import($import, request()->file('file'));
+            $attr = [
+                'sbu' => Customers::all()->sortBy('name'),
+                'invoices' => $import->data,
+                'units' => [
+                    'kg' => 'UM.0003',
+                    'unit' => 'UM.0018',
+                    'm' => 'UM.0013',
+                    'set' => 'UM.0019',
+                    'pcs' => 'UM.0021',
+                    'ltr' => 'UM.0007',
+                    'lbr' => 'UM.0020',
+
+                ]
+            ];
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'No Invoice');
+            $sheet->setCellValue('B1', 'Tanggal Invoice');
+            $sheet->setCellValue('C1', 'Nama Pelanggan');
+            $sheet->setCellValue('D1', 'Qty');
+            $sheet->setCellValue('E1', 'Deskripsi');
+            $sheet->setCellValue('F1', 'DPP');
+            $sheet->setCellValue('G1', 'DPP Nilai Lain');
+            $sheet->setCellValue('H1', 'PPN 11%');
+
+            // Set header with bold text, center text, and font size 11
+            $headerStyleArray = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 11,
+                    'name' => 'Calibri',
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+            ];
+            $sheet->getStyle('A1:H1')->applyFromArray($headerStyleArray);
+
+            $row = 2;
+            foreach ($attr['invoices'] as $invoice) {
+                if ($invoice['status'] == 'Tidak Terdaftar') {
+                    Alert::error('Gagal', 'Pelanggan ' . $invoice['nama_pelanggan'] . ' tidak terdaftar');
+                    return redirect()->route('xml-coretax');
+                }
+                if (gettype($invoice['deskripsi']) == 'string') {
+                    $otherTaxBase = intval($invoice['jumlah']) * 11 / 12;
+                    $vat = $otherTaxBase * 0.12;
+                    $sheet->setCellValue('A' . $row, $invoice['no_invoice']);
+                    $sheet->setCellValue('B' . $row, Carbon::parse($invoice['tanggal_invoice'])->translatedFormat('d-m-Y'));
+                    $sheet->setCellValue('C' . $row, $invoice['nama_pelanggan']);
+                    $sheet->setCellValue('D' . $row, $invoice['qty']);
+                    $sheet->setCellValue('E' . $row, $invoice['deskripsi']);
+                    $sheet->setCellValue('F' . $row, number_format($invoice['jumlah'], 0, '.', ','));
+                    $sheet->setCellValue('G' . $row, number_format($otherTaxBase, 2, '.', ','));
+                    $sheet->setCellValue('H' . $row, number_format($vat, 0, '.', ','));
+                    $row++;
+                } else {
+                    foreach (array_keys($invoice['deskripsi']) as $key) {
+                        $otherTaxBase = intval($invoice['jumlah'][$key]) * 11 / 12;
+                        $vat = $otherTaxBase * 0.12;
+                        $sheet->setCellValue('A' . $row, $invoice['no_invoice']);
+                        $sheet->setCellValue('B' . $row, Carbon::parse($invoice['tanggal_invoice'])->translatedFormat('d-m-Y'));
+                        $sheet->setCellValue('C' . $row, $invoice['nama_pelanggan']);
+                        $sheet->setCellValue('D' . $row, $invoice['qty'][$key]);
+                        $sheet->setCellValue('E' . $row, $invoice['deskripsi'][$key]);
+                        $sheet->setCellValue('F' . $row, number_format($invoice['jumlah'][$key], 0, '.', ','));
+                        $sheet->setCellValue('G' . $row, number_format($otherTaxBase, 2, '.', ','));
+                        $sheet->setCellValue('H' . $row, number_format($vat, 0, '.', ','));
+                        $row++;
+                    }
+                    //Total
+                    $sheet->mergeCells('A' . $row . ':E' . $row);
+                    $sheet->setCellValue('A' . $row, 'Total');
+                    $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+                    $sheet->setCellValue('F' . $row, number_format(array_sum($invoice['jumlah']), 0, '.', ','));
+                    $sheet->setCellValue('G' . $row, number_format(array_sum($invoice['jumlah']) * 11 / 12, 2, '.', ','));
+                    $sheet->setCellValue('H' . $row, number_format(array_sum($invoice['jumlah']) * 0.011, 0, '.', ','));
+                    $sheet->getStyle('F' . $row . ':H' . $row)->getFont()->setBold(true);
+                    $sheet->mergeCells('A' . ($row - count($invoice['deskripsi'])) . ':A' . ($row - 1));
+                    $sheet->mergeCells('B' . ($row - count($invoice['deskripsi'])) . ':B' . ($row - 1));
+                    $sheet->mergeCells('C' . ($row - count($invoice['deskripsi'])) . ':C' . ($row - 1));
+                    $sheet->getStyle('A' . ($row - count($invoice['deskripsi'])) . ':A' . ($row - 1))
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $sheet->getStyle('B' . ($row - count($invoice['deskripsi'])) . ':B' . ($row - 1))
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $sheet->getStyle('C' . ($row - count($invoice['deskripsi'])) . ':C' . ($row - 1))
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                }
+                $row++;
+            }
+
+            // Auto size columns to fit content
+            foreach (range('A', 'H') as $columnID) {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+
+            // Add border to cells
+            $styleArray = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '00000000'],
+                    ],
+                ],
+            ];
+            $sheet->getStyle('A1:H' . ($row - 1))->applyFromArray($styleArray);
+
+            // Center align all cells and set font to Calibri with size 11
+            $sheet->getStyle('A1:H' . ($row - 1))->applyFromArray([
                 'font' => [
                     'name' => 'Calibri',
                     'size' => 11,

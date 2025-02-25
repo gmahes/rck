@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-8">
                                 <input type="password" class="form-control form-control-sm" id="password1"
-                                    placeholder="Masukkan Password Saat Ini" name="oldpassword">
+                                    placeholder="Masukkan Password Saat Ini" name="oldpassword" required>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-8">
                                 <input type="password" class="form-control form-control-sm" id="password2"
-                                    placeholder="Masukkan Password Baru" name="newpassword">
+                                    placeholder="Masukkan Password Baru" name="newpassword" required>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             </div>
                             <div class="col-8">
                                 <input type="password" class="form-control form-control-sm" id="password3"
-                                    placeholder="Masukkan Lagi Password Baru" name="newpassword1">
+                                    placeholder="Masukkan Lagi Password Baru" name="newpassword1" required>
                             </div>
                         </div>
                     </div>

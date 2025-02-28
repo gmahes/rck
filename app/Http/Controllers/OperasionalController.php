@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Drivers;
 use App\Models\Omzet;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
-use Illuminate\Contracts\Concurrency\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -59,7 +58,7 @@ class OperasionalController extends Controller
         $omzet->omzet = $omzetSum;
         $omzet->created_by = Auth::user()->username;
         $omzet->save();
-        Alert::success('Berhasil', 'Omzet ' . Drivers::find($validated['driver_id'])->fullname . ' dengan nominal ' . $validated['omzet'] . ' berhasil ditambahkan')->autoClose(10000);
+        Alert::success('Berhasil', 'Omzet ' . Drivers::find($validated['driver_id'])->fullname . ' dengan nominal ' . $validated['omzet'] . ' berhasil ditambahkan');
         return redirect()->route('omzet');
     }
     public function filterOmzet(Request $request)

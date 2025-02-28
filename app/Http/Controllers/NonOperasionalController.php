@@ -121,7 +121,7 @@ class NonOperasionalController extends Controller
             return response($dom->saveXML(), 200)
                 ->header('Content-Type', 'text/xml')
                 ->header('Content-Disposition', 'attachment; filename="' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xml"');
-        } elseif (request()->invoice == "bkl" or Auth::user()->userDetail->position == 'Bengkel') {
+        } elseif (request()->invoice == "bkl" or Auth::user()->userDetail->position == 'Admin MR') {
             $import = new invoiceBengkel;
             Excel::import($import, request()->file('file'));
             $attr = [

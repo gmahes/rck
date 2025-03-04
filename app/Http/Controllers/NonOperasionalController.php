@@ -52,6 +52,7 @@ class NonOperasionalController extends Controller
                 $taxInvoice->addChild('TrxCode', '05');
                 $taxInvoice->addChild('AddInfo');
                 $taxInvoice->addChild('CustomDoc');
+                $taxInvoice->addChild('CustomDocMonthYear');
                 $taxInvoice->addChild('RefDesc', $invoice['no_invoice']);
                 $taxInvoice->addChild('FacilityStamp');
                 $taxInvoice->addChild('SellerIDTKU', '0704142322402000000000');
@@ -152,6 +153,7 @@ class NonOperasionalController extends Controller
                 $taxInvoice->addChild('TrxCode', '04');
                 $taxInvoice->addChild('AddInfo');
                 $taxInvoice->addChild('CustomDoc');
+                $taxInvoice->addChild('CustomDocMonthYear');
                 $taxInvoice->addChild('RefDesc', $invoice['no_invoice']);
                 $taxInvoice->addChild('FacilityStamp');
                 $taxInvoice->addChild('SellerIDTKU', '0704142322402000000000');
@@ -258,6 +260,7 @@ class NonOperasionalController extends Controller
                 $taxInvoice->addChild('TrxCode', '08');
                 $taxInvoice->addChild('AddInfo', 'TD.00510');
                 $taxInvoice->addChild('CustomDoc', 'INVOICE');
+                $taxInvoice->addChild('CustomDocMonthYear');
                 $taxInvoice->addChild('RefDesc', $invoice['no_invoice']);
                 $taxInvoice->addChild('FacilityStamp', 'TD.01110');
                 $taxInvoice->addChild('SellerIDTKU', '0704142322402000000000');

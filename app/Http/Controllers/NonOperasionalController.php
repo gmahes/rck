@@ -11,6 +11,7 @@ use App\Imports\xls;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Customers;
 use DOMDocument;
+use App\Models\Suppliers;
 use RealRashid\SweetAlert\Facades\Alert;
 use SimpleXMLElement;
 use Illuminate\Support\Facades\Auth;

@@ -36,3 +36,5 @@ Route::get('download-xml', [NonOperasionalController::class, 'downloadXml'])->mi
 Route::post('download-dpp-excel', [NonOperasionalController::class, 'convertXlsToXlsx'])->middleware('auth')->name('download-dpp-excel');
 Route::post('tax-invoice-correction', [NonOperasionalController::class, 'taxInvoiceCorrection'])->middleware('auth')->name('tax-invoice-correction');
 Route::get('tab-ban', [OperasionalController::class, 'tabBan'])->middleware('auth')->name('tab-ban');
+Route::get('suppliers', [MasterController::class, 'suppliers'])->middleware('auth')->name('suppliers');
+Route::post('add-supplier', [MasterController::class, 'addSupplier'])->middleware('auth')->name('add-supplier');

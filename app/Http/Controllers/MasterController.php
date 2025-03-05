@@ -6,6 +6,7 @@ use App\Models\Drivers;
 use App\Models\UserAuth;
 use App\Models\UserDetail;
 use App\Models\Customers;
+use App\Models\Suppliers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -296,5 +297,52 @@ class MasterController extends Controller
         Customers::where('id', $id)->delete();
         Alert::success('Sukses', 'Data pelanggan berhasil dihapus');
         return redirect()->route('customers');
+    }
+    public function suppliers()
+    {
+        $attr = [
+            'title' => 'Data Supplier',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'sbu' => Customers::all()->sortBy('name'),
+            'suppliers' => Suppliers::all()->sortBy('name'),
+        ];
+        return view('masters.suppliers.suppliers', $attr);
+    }
+    public function addSupplier(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'idNumber' => 'required',
+                'idNumberType' => 'required',
+                'address' => 'required',
+                'sbu' => 'required',
+            ],
+            [
+                'name.required' => 'Nama supplier belum diisi',
+                'idNumber.required' => 'ID supplier belum diisi',
+                'idNumberType.required' => 'Tipe supplier belum dipilih',
+                'address.required' => 'Alamat supplier belum diisi',
+                'sbu.required' => 'SBU supplier belum dipilih',
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('suppliers');
+        }
+        $validated = $validator->validated();
+        $supplier = [
+            'id' => $validated['idNumber'],
+            'name' => $validated['name'],
+            'type' => $validated['idNumberType'],
+            'address' => $validated['address'],
+            'sbu' => $validated['sbu'],
+            'created_by' => Auth::user()->username
+        ];
+        Suppliers::create($supplier);
+        Alert::success('Sukses', 'Data supplier berhasil ditambahkan');
+        return redirect()->route('suppliers');
     }
 }

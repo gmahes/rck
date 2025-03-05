@@ -17,7 +17,7 @@
                 <i class="bi bi-database-fill"></i><span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="master-data"
-                class="nav-content collapse @if(url()->current() == route('employees') or url()->current() == route('drivers') or url()->current() == route('customers'))show @endif"
+                class="nav-content collapse @if(url()->current() == route('employees') or url()->current() == route('drivers') or url()->current() == route('customers') or url()->current() == route('suppliers'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('employees') }}">
@@ -32,6 +32,11 @@
                 <li>
                     <a href="{{ route('customers') }}">
                         <i class="bi bi-circle-fill"></i><span>Data Pelanggan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('suppliers') }}">
+                        <i class="bi bi-circle-fill"></i><span>Data Supplier</span>
                     </a>
                 </li>
             </ul>

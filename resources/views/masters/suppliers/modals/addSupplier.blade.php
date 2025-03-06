@@ -19,7 +19,7 @@
                             </div>
                             <div class="col-8">
                                 <input type="text" class="form-control form-control-sm" id="idNumber"
-                                    placeholder="Masukkan Nomor Identitas Pelanggan" name="id" required>
+                                    placeholder="Masukkan Nomor Identitas Supplier" name="id" required>
                             </div>
                         </div>
                     </div>
@@ -27,11 +27,11 @@
                         <div class="row">
                             <div class="col-4">
                                 <label for="name" class="form-label">Nama
-                                    Pelanggan</label>
+                                    Supplier</label>
                             </div>
                             <div class="col-8">
                                 <input type="text" class="form-control form-control-sm" id="name"
-                                    placeholder="Masukkan Nama Pelanggan" name="name" required>
+                                    placeholder="Masukkan Nama Supplier" name="name" required>
                             </div>
                         </div>
                     </div>
@@ -59,33 +59,34 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-3 mt-2">
-                            <div class="row">
-                                <div class="col-4">
-                                    <label for="facility" class="form-label">Fasilitas</label>
-                                </div>
-                                <div class="col-8">
-                                    <select class="form-select form-select-sm" id="facility" name="facility" required>
-                                        <option value="" selected disabled>Pilih Fasilitas</option>
-                                        <option value="N/A">Tanpa Fasilitas</option>
-                                        <option value="TaxExAr22">SKB PPh Pasal 22</option>
-                                        <option value="TaxExAr23">SKB PPh Pasal 23</option>
-                                        <option value="PP23">SK PP 23/2018</option>
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="facility" class="form-label">Fasilitas</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" id="facility" name="facility" required>
+                                    <option value="" selected disabled>Pilih Fasilitas</option>
+                                    <option value="N/A">Tanpa Fasilitas</option>
+                                    <option value="TaxExAr22">SKB PPh Pasal 22</option>
+                                    <option value="TaxExAr23">SKB PPh Pasal 23</option>
+                                    <option value="PP23">SK PP 23/2018</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="mt-2">
-                            <div class="d-flex flex-row-reverse">
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
-                                </div>
-                                <div class="text-end me-2">
-                                    <button type="button" class="btn btn-secondary btn-sm"
-                                        data-bs-dismiss="modal">Tutup</button>
-                                </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="d-flex flex-row-reverse">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                            </div>
+                            <div class="text-end me-2">
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-bs-dismiss="modal">Tutup</button>
                             </div>
                         </div>
+                    </div>
                 </form>
             </div>
         </div>

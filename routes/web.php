@@ -38,3 +38,5 @@ Route::post('tax-invoice-correction', [NonOperasionalController::class, 'taxInvo
 Route::get('tab-ban', [OperasionalController::class, 'tabBan'])->middleware('auth')->name('tab-ban');
 Route::get('suppliers', [MasterController::class, 'suppliers'])->middleware('auth')->name('suppliers');
 Route::post('add-supplier', [MasterController::class, 'addSupplier'])->middleware('auth')->name('add-supplier');
+Route::put('edit-supplier/{id}', [MasterController::class, 'editSupplier'])->middleware('auth')->name('edit-supplier');
+Route::delete('del-supplier/{id}', [MasterController::class, 'delSupplier'])->middleware('auth')->name('del-supplier');

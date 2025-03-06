@@ -304,28 +304,44 @@ class MasterController extends Controller
             'title' => 'Data Supplier',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'sbu' => Customers::all()->sortBy('name'),
             'suppliers' => Suppliers::all()->sortBy('name'),
         ];
+        $document = [
+            'TaxInvoice' => 'Faktur Pajak',
+            'PaymentProof' => 'Bukti Pembayaran',
+        ];
+        $facility = [
+            'N/A' => 'Tanpa Fasilitas',
+            'TaxExAr22' => 'SKB PPh Pasal 22',
+            'TaxExAr23' => 'SKB PPh Pasal 23',
+            'PP23' => 'SK PP 23/2018'
+        ];
+        $attr['document'] = $document;
+        $attr['facility'] = $facility;
+        foreach ($attr['suppliers'] as $supplier) {
+            $supplier->document = $document[$supplier->document];
+            $supplier->facility = $facility[$supplier->facility];
+        }
         return view('masters.suppliers.suppliers', $attr);
     }
     public function addSupplier(Request $request)
     {
+        // dd(request()->all());
         $validator = Validator::make(
             $request->all(),
             [
+                'id' => 'required',
                 'name' => 'required',
-                'idNumber' => 'required',
-                'idNumberType' => 'required',
-                'address' => 'required',
-                'sbu' => 'required',
+                'code' => 'required',
+                'document' => 'required',
+                'facility' => 'required',
             ],
             [
+                'id.required' => 'ID supplier belum diisi',
                 'name.required' => 'Nama supplier belum diisi',
-                'idNumber.required' => 'ID supplier belum diisi',
-                'idNumberType.required' => 'Tipe supplier belum dipilih',
-                'address.required' => 'Alamat supplier belum diisi',
-                'sbu.required' => 'SBU supplier belum dipilih',
+                'code.required' => 'Kode supplier belum diisi',
+                'document.required' => 'Dokumen supplier belum dipilih',
+                'facility.required' => 'Fasilitas supplier belum dipilih',
             ],
         );
         if ($validator->fails()) {
@@ -334,11 +350,11 @@ class MasterController extends Controller
         }
         $validated = $validator->validated();
         $supplier = [
-            'id' => $validated['idNumber'],
+            'id' => $validated['id'],
             'name' => $validated['name'],
-            'type' => $validated['idNumberType'],
-            'address' => $validated['address'],
-            'sbu' => $validated['sbu'],
+            'code' => $validated['code'],
+            'document' => $validated['document'],
+            'facility' => $validated['facility'],
             'created_by' => Auth::user()->username
         ];
         Suppliers::create($supplier);

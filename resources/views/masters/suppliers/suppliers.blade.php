@@ -39,7 +39,7 @@
                                 <tr class="text-center">
                                     <th>No</th>
                                     <th>Nomor Identitas</th>
-                                    <th>Nama Pelanggan</th>
+                                    <th>Nama Supplier</th>
                                     <th>Kode Objek</th>
                                     <th>Fasilitas</th>
                                     <th>Jenis Dokumen</th>
@@ -52,7 +52,7 @@
                             <tbody>
                                 @foreach ($suppliers as $supplier)
                                 @include('masters.suppliers.modals.editSupplier')
-                                @include('masters.suppliers.modals.deleteSupplier')
+                                {{-- @include('masters.suppliers.modals.deleteSupplier') --}}
                                 <tr>
                                     <td class="fw-bold text-center">{{ $loop->iteration }}</td>
                                     <td class="">{{ $supplier->id }}</td>

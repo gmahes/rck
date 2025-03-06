@@ -1,52 +1,82 @@
 <!-- Modal -->
-<div class="modal fade" id="editCustomer{{ $customer->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="editSupplier{{ $supplier->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Edit Data Pelanggan</strong></h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Edit Data Supplier</strong></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('edit-customer', $customer->id) }}" method="POST">
+                <form action="{{ route('edit-supplier', $supplier->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="editname{{ $customer->id }}" class="form-label">Nama
-                                    Pelanggan</label>
+                                <label for="editid{{ $supplier->id }}" class="form-label">Nomor Identitas</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm" id="editname{{ $customer->id }}"
-                                    placeholder="Masukkan Nama Lengkap" name="name" value="{{ $customer->name }}"
-                                    required>
+                                <input type="text" class="form-control form-control-sm" id="editid{{ $supplier->id }}"
+                                    placeholder="Masukkan Nomor Identitas Supplier" name="id" disabled
+                                    value="{{ $supplier->id }}">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="editidNumber{{ $customer->id }}" class="form-label">Nomor Identitas
-                                    Pelanggan</label>
+                                <label for="editname{{ $supplier->id }}" class="form-label">Nama
+                                    Supplier</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm"
-                                    id="editidNumber{{ $customer->id }}"
-                                    placeholder="Masukkan Nomor Identitas Pelanggan" name="idNumber"
-                                    value="{{ $customer->id }}" disabled>
+                                <input type="text" class="form-control form-control-sm" id="editname{{ $supplier->id }}"
+                                    placeholder="Masukkan Nama Supplier" name="name" required
+                                    value="{{ $supplier->name }}">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="editAddress{{ $customer->id }}" class="form-label">Alamat Pelanggan</label>
+                                <label for="editcode{{ $supplier->id }}" class="form-label">Kode Objek</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm"
-                                    id="editAddress{{ $customer->id }}" placeholder="Masukkan Alamat" name="address"
-                                    value="{{ $customer->address }}" required>
+                                <input type="text" class="form-control form-control-sm" id="editcode{{ $supplier->id }}"
+                                    placeholder="Masukkan Kode Objek" name="code" required
+                                    value="{{ $supplier->code }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="editdocument{{ $supplier->id }}" class="form-label">Jenis Dokumen</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" id="editdocument"
+                                    name="document{{ $supplier->id }}" required>
+                                    @foreach ($document as $key => $dokumen)
+                                    <option value="{{ $key }}" @if ($key==$supplier->document) selected
+                                        @endif>{{ $dokumen }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="editfacility{{ $supplier->id }}" class="form-label">Fasilitas</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" id="editfacility{{ $supplier->id }}"
+                                    name="facility" required>
+                                    @foreach ($facility as $key => $fasilitas)
+                                    <option value="{{ $key }}" @if ($key==$supplier->facility) selected
+                                        @endif>{{ $fasilitas }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>

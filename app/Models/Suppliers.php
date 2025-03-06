@@ -10,9 +10,9 @@ class Suppliers extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
-        'type',
         'name',
         'code',
+        'facility',
         'document',
         'created_by',
         'updated_by'

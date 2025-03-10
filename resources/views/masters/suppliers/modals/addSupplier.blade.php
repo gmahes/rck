@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-8">
                                 <input type="text" class="form-control form-control-sm" id="percentage"
-                                    placeholder="Masukkan Persentase" name="percentage" required>
+                                    placeholder="Masukkan hanya angka tanpa simbol %" name="percentage" required>
                             </div>
                         </div>
                     </div>

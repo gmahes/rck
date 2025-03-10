@@ -39,6 +39,15 @@
                     <input type="text" id="dpp" class="form-control form-control-sm" name="dpp">
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <label for="whdate">Tanggal Potong</label>
+                </div>
+                <div class="col">
+                    <input type="date" id="whdate" class="form-control form-control-sm" name="date"
+                        value="{{ date('Y-m-d') }}">
+                </div>
+            </div>
         </div>
         <div class="col">
             <div class="row">

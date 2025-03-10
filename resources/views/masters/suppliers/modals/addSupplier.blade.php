@@ -49,6 +49,17 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
+                                <label for="percentage" class="form-label">Persentase</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-sm" id="percentage"
+                                    placeholder="Masukkan Persentase" name="percentage" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="document" class="form-label">Jenis Dokumen</label>
                             </div>
                             <div class="col-8">

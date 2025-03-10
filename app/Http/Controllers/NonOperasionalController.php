@@ -681,4 +681,14 @@ class NonOperasionalController extends Controller
         ];
         return view('non-operasional.upxlstable', $attr);
     }
+    public function bupot()
+    {
+        $attr = [
+            'title' => 'Fitur Coretax',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'supplier' => Suppliers::all()->sortBy('name'),
+        ];
+        return view('non-operasional.bupot', $attr);
+    }
 }

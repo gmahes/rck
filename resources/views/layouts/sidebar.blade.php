@@ -68,11 +68,16 @@
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="nonoperasional"
-                class="nav-content collapse @if(url()->current() == route('xml-coretax'))show @endif"
+                class="nav-content collapse @if(url()->current() == route('xml-coretax') or url()->current() == route('bupot'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('xml-coretax') }}">
                         <i class="bi bi-circle-fill"></i><span>Fitur Coretax</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('bupot') }}">
+                        <i class="bi bi-circle-fill"></i><span>Bupot PPh</span>
                     </a>
                 </li>
             </ul>

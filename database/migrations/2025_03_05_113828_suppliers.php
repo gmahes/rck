@@ -15,8 +15,9 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->string('name');
             $table->string('code');
-            $table->string('facility');
+            $table->string('percentage');
             $table->string('document');
+            $table->string('facility');
             $table->timestamps();
             $table->string('created_by', 255);
             $table->string('updated_by', 255)->nullable();

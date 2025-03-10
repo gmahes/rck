@@ -322,6 +322,7 @@ class MasterController extends Controller
             $supplier->document = $document[$supplier->document];
             $supplier->facility = $facility[$supplier->facility];
         }
+        // dd($attr['suppliers']);
         return view('masters.suppliers.suppliers', $attr);
     }
     public function addSupplier(Request $request)
@@ -333,6 +334,7 @@ class MasterController extends Controller
                 'id' => 'required',
                 'name' => 'required',
                 'code' => 'required',
+                'percentage' => 'required|numeric',
                 'document' => 'required',
                 'facility' => 'required',
             ],
@@ -340,6 +342,8 @@ class MasterController extends Controller
                 'id.required' => 'ID supplier belum diisi',
                 'name.required' => 'Nama supplier belum diisi',
                 'code.required' => 'Kode supplier belum diisi',
+                'percentage.required' => 'Persentase supplier belum diisi',
+                'percentage.numeric' => 'Persentase supplier hanya boleh berisi angka. Anda membuat ' . "'$request->percentage'",
                 'document.required' => 'Dokumen supplier belum dipilih',
                 'facility.required' => 'Fasilitas supplier belum dipilih',
             ],
@@ -353,12 +357,57 @@ class MasterController extends Controller
             'id' => $validated['id'],
             'name' => $validated['name'],
             'code' => $validated['code'],
+            'percentage' => $validated['percentage'],
             'document' => $validated['document'],
             'facility' => $validated['facility'],
             'created_by' => Auth::user()->username
         ];
+        // dd($supplier);
         Suppliers::create($supplier);
         Alert::success('Sukses', 'Data supplier berhasil ditambahkan');
+        return redirect()->route('suppliers');
+    }
+    public function editSupplier(Request $request, $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+                'code' => 'required',
+                'percentage' => 'required|numeric',
+                'document' => 'required',
+                'facility' => 'required',
+            ],
+            [
+                'name.required' => 'Nama supplier belum diisi',
+                'code.required' => 'Kode supplier belum diisi',
+                'percentage.required' => 'Persentase supplier belum diisi',
+                'percentage.numeric' => 'Persentase supplier hanya boleh berisi angka. Anda membuat ' . "'$request->percentage'",
+                'document.required' => 'Dokumen supplier belum dipilih',
+                'facility.required' => 'Fasilitas supplier belum dipilih',
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('suppliers');
+        }
+        $validated = $validator->validated();
+        $supplier = [
+            'name' => $validated['name'],
+            'code' => $validated['code'],
+            'percentage' => $validated['percentage'],
+            'document' => $validated['document'],
+            'facility' => $validated['facility'],
+            'updated_by' => Auth::user()->username
+        ];
+        Suppliers::where('id', $id)->update($supplier);
+        Alert::success('Sukses', 'Data supplier berhasil diubah');
+        return redirect()->route('suppliers');
+    }
+    public function delSupplier($id)
+    {
+        Suppliers::where('id', $id)->delete();
+        Alert::success('Sukses', 'Data supplier berhasil dihapus');
         return redirect()->route('suppliers');
     }
 }

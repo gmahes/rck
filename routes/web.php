@@ -40,3 +40,4 @@ Route::get('suppliers', [MasterController::class, 'suppliers'])->middleware('aut
 Route::post('add-supplier', [MasterController::class, 'addSupplier'])->middleware('auth')->name('add-supplier');
 Route::put('edit-supplier/{id}', [MasterController::class, 'editSupplier'])->middleware('auth')->name('edit-supplier');
 Route::delete('del-supplier/{id}', [MasterController::class, 'delSupplier'])->middleware('auth')->name('del-supplier');
+Route::get('bupot', [NonOperasionalController::class, 'bupot'])->middleware('auth')->name('bupot');

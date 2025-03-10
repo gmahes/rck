@@ -51,13 +51,26 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
-                                <label for="editdocument{{ $supplier->id }}" class="form-label">Jenis Dokumen</label>
+                                <label for="editpercentage{{ $supplier->id }}" class="form-label">Persentase</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select form-select-sm" id="editdocument"
-                                    name="document{{ $supplier->id }}" required>
+                                <input type="text" class="form-control form-control-sm"
+                                    id="editpercentage{{ $supplier->id }}" placeholder="Masukkan Persentase"
+                                    name="percentage" required value="{{ $supplier->percentage }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="editdocument{{ $supplier->id }}" class="form-label">Jenis
+                                    Dokumen</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" id="editdocument{{ $supplier->id }}"
+                                    name="document" required>
                                     @foreach ($document as $key => $dokumen)
-                                    <option value="{{ $key }}" @if ($key==$supplier->document) selected
+                                    <option value="{{ $key }}" @if ($dokumen==$supplier->document) selected
                                         @endif>{{ $dokumen }}</option>
                                     @endforeach
                                 </select>
@@ -73,7 +86,7 @@
                                 <select class="form-select form-select-sm" id="editfacility{{ $supplier->id }}"
                                     name="facility" required>
                                     @foreach ($facility as $key => $fasilitas)
-                                    <option value="{{ $key }}" @if ($key==$supplier->facility) selected
+                                    <option value="{{ $key }}" @if ($fasilitas==$supplier->facility) selected
                                         @endif>{{ $fasilitas }}</option>
                                     @endforeach
                                 </select>

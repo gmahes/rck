@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div class="modal fade" id="deleteSupplier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    role="dialog">
+<div class="modal fade" id="deleteSupplier{{ $supplier->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('del-customer') }}" method="POST">
+                <form action="{{ route('del-supplier',$supplier->id) }}" method="POST">
                     @csrf
                     @method('delete')
                     <div class="row text-center">

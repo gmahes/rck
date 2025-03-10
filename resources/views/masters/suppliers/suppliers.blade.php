@@ -41,8 +41,9 @@
                                     <th>Nomor Identitas</th>
                                     <th>Nama Supplier</th>
                                     <th>Kode Objek</th>
-                                    <th>Fasilitas</th>
+                                    <th>Persen</th>
                                     <th>Jenis Dokumen</th>
+                                    <th>Fasilitas</th>
                                     @if (auth()->user()->role == 'superadmin' or auth()->user()->role ==
                                     'administrator')
                                     <th>Aksi</th>
@@ -52,14 +53,15 @@
                             <tbody>
                                 @foreach ($suppliers as $supplier)
                                 @include('masters.suppliers.modals.editSupplier')
-                                {{-- @include('masters.suppliers.modals.deleteSupplier') --}}
+                                @include('masters.suppliers.modals.deleteSupplier')
                                 <tr>
                                     <td class="fw-bold text-center">{{ $loop->iteration }}</td>
-                                    <td class="">{{ $supplier->id }}</td>
-                                    <td class="">{{ $supplier->name }}</td>
-                                    <td class="">{{ $supplier->code }}</td>
-                                    <td>{{ $supplier->facility }}</td>
-                                    <td>{{ $supplier->document }}</td>
+                                    <td>{{ $supplier->id }}</td>
+                                    <td>{{ $supplier->name }}</td>
+                                    <td class="text-center">{{ $supplier->code }}</td>
+                                    <td class="text-center">{{ $supplier->percentage . "%" }}</td>
+                                    <td class="text-center">{{ $supplier->document }}</td>
+                                    <td class="text-center">{{ $supplier->facility }}</td>
                                     @if (auth()->user()->role == 'superadmin' or auth()->user()->role ==
                                     'administrator')
                                     <td class="text-center">

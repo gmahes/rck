@@ -14,6 +14,7 @@ class Suppliers extends Model
         'code',
         'facility',
         'document',
+        'percentage',
         'created_by',
         'updated_by'
     ];

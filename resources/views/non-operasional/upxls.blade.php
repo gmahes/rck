@@ -16,7 +16,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-2">
@@ -118,7 +118,7 @@
         auth()->user()->role == 'superadmin')
         <div class="row">
             <div class="col">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-body">
                         <div class="row">
                             <div class="col mt-2">

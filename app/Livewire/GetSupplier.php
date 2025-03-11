@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Suppliers;
 use Livewire\Component;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class GetSupplier extends Component
 {

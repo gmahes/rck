@@ -15,6 +15,7 @@ use App\Models\Suppliers;
 use RealRashid\SweetAlert\Facades\Alert;
 use SimpleXMLElement;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class NonOperasionalController extends Controller
@@ -684,11 +685,50 @@ class NonOperasionalController extends Controller
     public function bupot()
     {
         $attr = [
-            'title' => 'Fitur Coretax',
+            'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
             'supplier' => Suppliers::all()->sortBy('name'),
         ];
+        return view('non-operasional.bupot', $attr);
+    }
+    public function saveBupot()
+    {
+        $attr = [
+            'title' => 'Bupot PPh',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'suppliers' => Suppliers::all()->sortBy('name'),
+        ];
+        $validator = Validator::make(request()->all(), [
+            'supplier' => 'required',
+            'date' => 'required',
+            'docId' => 'required',
+            'dpp' => 'required',
+            'whdate' => 'required',
+        ], [
+            'supplier.required' => 'Supplier wajib diisi',
+            'date.required' => 'Tanggal
+            wajib diisi',
+            'docId.required' => 'Nomor Dokumen wajib diisi
+            ',
+            'dpp.required' => 'DPP wajib diisi',
+            'whdate.required' => 'Tanggal WH wajib diisi',
+        ]);
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('bupot');
+        }
+        $validated = $validator->validated();
+        $listBupot = collect([
+            'supplier' => $attr['suppliers']->where('id', $validated['supplier'])->first()->name,
+            'date' => $validated['date'],
+            'docId' => $validated['docId'],
+            'dpp' => $validated['dpp'],
+            'whdate' => $validated['whdate'],
+        ])->all();
+        $attr['listBupot'] = $listBupot;
+        // dd($attr['suppliers']);
         return view('non-operasional.bupot', $attr);
     }
 }

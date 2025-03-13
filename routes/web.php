@@ -32,7 +32,6 @@ Route::put('edit-customer/{id}', [MasterController::class, 'editCustomer'])->mid
 Route::delete('del-customer/{id}', [MasterController::class, 'delCustomer'])->middleware('auth')->name('del-customer');
 Route::get('xml-coretax', [NonOperasionalController::class, 'xmlCoretax'])->middleware('auth')->name('xml-coretax');
 Route::post('convert-xls-to-xml', [NonOperasionalController::class, 'convertXlsToXml'])->middleware('auth')->name('convert-xls-to-xml');
-Route::get('download-xml', [NonOperasionalController::class, 'downloadXml'])->middleware('auth')->name('download-xml');
 Route::post('download-dpp-excel', [NonOperasionalController::class, 'convertXlsToXlsx'])->middleware('auth')->name('download-dpp-excel');
 Route::post('tax-invoice-correction', [NonOperasionalController::class, 'taxInvoiceCorrection'])->middleware('auth')->name('tax-invoice-correction');
 Route::get('tab-ban', [OperasionalController::class, 'tabBan'])->middleware('auth')->name('tab-ban');
@@ -42,3 +41,6 @@ Route::put('edit-supplier/{id}', [MasterController::class, 'editSupplier'])->mid
 Route::delete('del-supplier/{id}', [MasterController::class, 'delSupplier'])->middleware('auth')->name('del-supplier');
 Route::get('bupot', [NonOperasionalController::class, 'bupot'])->middleware('auth')->name('bupot');
 Route::post('save-bupot', [NonOperasionalController::class, 'saveBupot'])->middleware('auth')->name('save-bupot');
+Route::post('bupot/filter-bupot', [NonOperasionalController::class, 'filterBupot'])->middleware('auth')->name('filter-bupot');
+Route::delete('del-bupot/{id}', [NonOperasionalController::class, 'deleteBupot'])->middleware('auth')->name('del-bupot');
+Route::post('xmlBupot', [NonOperasionalController::class, 'xmlBupot'])->middleware('auth')->name('xmlBupot');

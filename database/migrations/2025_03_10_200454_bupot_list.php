@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bupot-list', function (Blueprint $table) {
+        Schema::create('bupot_list', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('code');
-            $table->string('document');
-            $table->string('facility');
-            $table->string('percentage');
+            $table->string('supplier_id');
+            $table->date('date');
+            $table->string('docId');
+            $table->string('dpp');
+            $table->string('pph');
+            $table->string('whdate');
             $table->timestamps();
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->restrictOnDelete();
         });
     }
 

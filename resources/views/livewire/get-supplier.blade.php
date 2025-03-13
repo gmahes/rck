@@ -5,9 +5,9 @@
                 <div class="col-md-4">
                     <label for="supplier" class="">Nama Supplier</label>
                 </div>
-                <div class="col">
-                    <select wire:model.live="selectedSupplier" id="supplier" class="form-select form-select-sm"
-                        name="supplier">
+                <div class="col" wire:ignore>
+                    <select wire:model.live="selectedSupplier" id="supplier" class="selectpicker" name="supplier"
+                        data-live-search="true" data-size="4" data-width="100%" required>
                         <option value="">-- Pilih Supplier --</option>
                         @foreach ($suppliers as $supplier)
                         <option value="{{ $supplier->id }}" wire:key="{{ $supplier->id }}">{{ $supplier->name }}
@@ -21,8 +21,7 @@
                     <label for="date">Tanggal Dokumen</label>
                 </div>
                 <div class="col">
-                    <input type="date" wire:model='inputDate' id="date" class="form-control form-control-sm"
-                        name="date">
+                    <input type="date" id="date" class="form-control form-control-sm" name="date" required>
                 </div>
             </div>
             <div class="row mt-2">
@@ -30,8 +29,7 @@
                     <label for="docId">Nomor Dokumen</label>
                 </div>
                 <div class="col">
-                    <input type="text" wire:model='inputDocId' id="docId" class="form-control form-control-sm"
-                        name="docId">
+                    <input type="text" id="docId" class="form-control form-control-sm" name="docId" required>
                 </div>
             </div>
             <div class="row mt-2">
@@ -39,7 +37,7 @@
                     <label for="dpp">DPP</label>
                 </div>
                 <div class="col">
-                    <input type="text" wire:model='inputDPP' id="dpp" class="form-control form-control-sm" name="dpp">
+                    <input type="text" id="dpp" class="form-control form-control-sm" name="dpp" required>
                 </div>
             </div>
             <div class="row mt-2">
@@ -47,8 +45,7 @@
                     <label for="whdate">Tanggal Potong</label>
                 </div>
                 <div class="col">
-                    <input type="date" wire:model='inputWhDate' id="whdate" class="form-control form-control-sm"
-                        name="whdate" value="{{ date('Y-m-d') }}">
+                    <input type="date" id="whdate" class="form-control form-control-sm" name="whdate" required>
                 </div>
             </div>
         </div>

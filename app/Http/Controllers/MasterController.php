@@ -7,6 +7,8 @@ use App\Models\UserAuth;
 use App\Models\UserDetail;
 use App\Models\Customers;
 use App\Models\Suppliers;
+use GuzzleHttp\Psr7\Query;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -406,8 +408,13 @@ class MasterController extends Controller
     }
     public function delSupplier($id)
     {
-        Suppliers::where('id', $id)->delete();
-        Alert::success('Sukses', 'Data supplier berhasil dihapus');
+        try {
+            Suppliers::where('id', $id)->delete();
+            Alert::success('Sukses', 'Data supplier berhasil dihapus');
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Data supplier tidak bisa dihapus karena masih terdapat data yang terkait');
+            return redirect()->route('suppliers');
+        }
         return redirect()->route('suppliers');
     }
 }

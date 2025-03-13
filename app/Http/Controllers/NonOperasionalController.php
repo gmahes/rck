@@ -17,6 +17,8 @@ use SimpleXMLElement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use App\Models\BupotList;
+use Illuminate\Support\Str;
 
 class NonOperasionalController extends Controller
 {
@@ -29,7 +31,7 @@ class NonOperasionalController extends Controller
             'position' => Auth::user()->userDetail->position,
             'sbu' => Customers::all()->sortBy('name')
         ];
-        return view('non-operasional.upxls', $attr);
+        return view('non-operasional.coretax-taxinvoice.taxinvoice', $attr);
     }
     public function convertXlsToXml()
     {
@@ -680,7 +682,7 @@ class NonOperasionalController extends Controller
             'coretax' => $coretax,
             'accounting' => $accounting,
         ];
-        return view('non-operasional.upxlstable', $attr);
+        return view('non-operasional.coretax-taxinvoice.taxinvoice-table', $attr);
     }
     public function bupot()
     {
@@ -690,16 +692,10 @@ class NonOperasionalController extends Controller
             'position' => Auth::user()->userDetail->position,
             'supplier' => Suppliers::all()->sortBy('name'),
         ];
-        return view('non-operasional.bupot', $attr);
+        return view('non-operasional.coretax-bupot.bupot', $attr);
     }
     public function saveBupot()
     {
-        $attr = [
-            'title' => 'Bupot PPh',
-            'fullname' => Auth::user()->userDetail->fullname,
-            'position' => Auth::user()->userDetail->position,
-            'suppliers' => Suppliers::all()->sortBy('name'),
-        ];
         $validator = Validator::make(request()->all(), [
             'supplier' => 'required',
             'date' => 'required',
@@ -720,15 +716,82 @@ class NonOperasionalController extends Controller
             return redirect()->route('bupot');
         }
         $validated = $validator->validated();
-        $listBupot = collect([
-            'supplier' => $attr['suppliers']->where('id', $validated['supplier'])->first()->name,
+        $bupotList = [
+            'id' => Str::uuid7(),
+            'supplier_id' => $validated['supplier'],
             'date' => $validated['date'],
             'docId' => $validated['docId'],
             'dpp' => $validated['dpp'],
+            'pph' => number_format(intval(preg_replace('/[^0-9]/', '', $validated['dpp'])) * Suppliers::find($validated['supplier'])->percentage / 100, 0, '', '.'),
             'whdate' => $validated['whdate'],
-        ])->all();
-        $attr['listBupot'] = $listBupot;
-        // dd($attr['suppliers']);
-        return view('non-operasional.bupot', $attr);
+        ];
+        BupotList::create($bupotList);
+        Alert::toast('Data berhasil disimpan', 'success');
+        return redirect()->route('bupot');
+    }
+    public function filterBupot()
+    {
+        $attr = [
+            'title' => 'Bupot PPh',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'bupots' => BupotList::all()->whereBetween('created_at', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]),
+        ];
+        session([
+            'start_date' => request()->start_date,
+            'end_date' => Carbon::parse(request()->end_date)->setTime(23, 59, 59)
+        ]);
+        return view('non-operasional.coretax-bupot.bupotTable', $attr);
+    }
+    public function deleteBupot($id)
+    {
+        BupotList::find($id)->delete();
+        Alert::toast('Data berhasil dihapus', 'success');
+        return redirect()->route('bupot');
+    }
+    public function xmlBupot()
+    {
+        $attr = [
+            'title' => 'Bupot PPh',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'bupots' => BupotList::all()->whereBetween('created_at', [request()->start_date, request()->end_date]),
+        ];
+        if (count($attr['bupots']) == 0) {
+            Alert::error('Gagal', 'Data tidak ditemukan');
+            return redirect()->route('bupot');
+        }
+        $this->xml = new SimpleXMLElement('<BpuBulk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd"></BpuBulk>');
+        $this->xml->addChild('TIN', '0704142322402000');
+        $this->xml->addChild('ListOfBpu');
+        foreach ($attr['bupots'] as $bupot) {
+            $taxBase = intval(preg_replace('/[^0-9]/', '', $bupot->dpp));
+            $bpu = $this->xml->ListOfBpu->addChild('Bpu');
+            $bpu->addChild('TaxPeriodMonth', Carbon::parse($bupot->whdate)->format('n'));
+            $bpu->addChild('TaxPeriodYear', Carbon::parse($bupot->whdate)->format('Y'));
+            $bpu->addChild('CounterpartTin', $bupot->supplier_id);
+            $bpu->addChild('IDPlaceOfBusinessActivityOfIncomeRecipient', '000000');
+            $bpu->addChild('TaxCertificate', $bupot->supplier->facility);
+            $bpu->addChild('TaxObjectCode', $bupot->supplier->code);
+            $bpu->addChild('TaxBase', $taxBase);
+            $bpu->addChild('Rate', $bupot->supplier->percentage);
+            $bpu->addChild('Document', $bupot->supplier->document);
+            $bpu->addChild('DocumentNumber', $bupot->docId);
+            $bpu->addChild('DocumentDate', $bupot->date);
+            $bpu->addChild('IDPlaceOfBusinessActivity', '000000');
+            $bpu->addChild('GovTreasurerOpt', 'N/A');
+            $bpu->addChild('SP2DNumber');
+            $bpu->addChild('WithholdingDate', $bupot->whdate);
+        }
+        $attr['xml'] = $this->xml;
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+
+        $dom->loadXML($attr['xml']->asXML());
+
+        return response($dom->saveXML(), 200)
+            ->header('Content-Type', 'text/xml')
+            ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::now()->format('d M Y') . '.xml"');
     }
 }

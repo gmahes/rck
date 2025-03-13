@@ -38,6 +38,17 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
+                                <label for="alias" class="form-label">Alias</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-sm" id="alias"
+                                    placeholder="Masukkan Alias" name="alias">
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" mb-3">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="code" class="form-label">Kode Objek</label>
                             </div>
                             <div class="col-8">

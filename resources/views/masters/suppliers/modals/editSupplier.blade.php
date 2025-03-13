@@ -39,6 +39,18 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
+                                <label for="editalias{{ $supplier->id }}" class="form-label">Alias</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-sm"
+                                    id="editalias{{ $supplier->id }}" placeholder="Masukkan Alias" name="alias"
+                                    value="{{ $supplier->alias }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
                                 <label for="editcode{{ $supplier->id }}" class="form-label">Kode Objek</label>
                             </div>
                             <div class="col-8">

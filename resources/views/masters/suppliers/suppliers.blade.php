@@ -40,6 +40,7 @@
                                     <th>No</th>
                                     <th>Nomor Identitas</th>
                                     <th>Nama Supplier</th>
+                                    <th>Alias</th>
                                     <th>Kode Objek</th>
                                     <th>Persen</th>
                                     <th>Jenis Dokumen</th>
@@ -58,6 +59,7 @@
                                     <td class="fw-bold text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $supplier->id }}</td>
                                     <td>{{ $supplier->name }}</td>
+                                    <td class="text-center">{{ $supplier->alias }}</td>
                                     <td class="text-center">{{ $supplier->code }}</td>
                                     <td class="text-center">{{ $supplier->percentage . "%" }}</td>
                                     <td class="text-center">{{ $supplier->document }}</td>

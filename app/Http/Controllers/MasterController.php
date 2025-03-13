@@ -329,7 +329,6 @@ class MasterController extends Controller
     }
     public function addSupplier(Request $request)
     {
-        // dd(request()->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -358,13 +357,13 @@ class MasterController extends Controller
         $supplier = [
             'id' => $validated['id'],
             'name' => $validated['name'],
+            'alias' => request()->alias == null ? '' : request()->alias,
             'code' => $validated['code'],
             'percentage' => $validated['percentage'],
             'document' => $validated['document'],
             'facility' => $validated['facility'],
             'created_by' => Auth::user()->username
         ];
-        // dd($supplier);
         Suppliers::create($supplier);
         Alert::success('Sukses', 'Data supplier berhasil ditambahkan');
         return redirect()->route('suppliers');
@@ -396,6 +395,7 @@ class MasterController extends Controller
         $validated = $validator->validated();
         $supplier = [
             'name' => $validated['name'],
+            'alias' => request()->alias == null ? '' : request()->alias,
             'code' => $validated['code'],
             'percentage' => $validated['percentage'],
             'document' => $validated['document'],

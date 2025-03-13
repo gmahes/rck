@@ -10,7 +10,9 @@
                         data-live-search="true" data-size="4" data-width="100%" required>
                         <option value="">-- Pilih Supplier --</option>
                         @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier->id }}" wire:key="{{ $supplier->id }}">{{ $supplier->name }}
+                        <option value="{{ $supplier->id }}" wire:key="{{ $supplier->id }}">{{ $supplier->alias == ''
+                            ? $supplier->name : $supplier->name. '
+                            ('.$supplier->alias.')' }}
                         </option>
                         @endforeach
                     </select>

@@ -735,9 +735,10 @@ class NonOperasionalController extends Controller
             'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'bupots' => BupotList::all()->whereBetween('created_at', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]),
+            'bupots' => request()->filteropt == 'createDate' ? BupotList::all()->whereBetween('created_at', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]) : BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]),
         ];
         session([
+            'filteropt' => request()->filteropt,
             'start_date' => request()->start_date,
             'end_date' => Carbon::parse(request()->end_date)->setTime(23, 59, 59)
         ]);
@@ -755,7 +756,7 @@ class NonOperasionalController extends Controller
             'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'bupots' => BupotList::all()->whereBetween('created_at', [request()->start_date, request()->end_date]),
+            'bupots' => request()->filteropt == 'createDate' ? BupotList::all()->whereBetween('created_at', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]) : BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]),
         ];
         if (count($attr['bupots']) == 0) {
             Alert::error('Gagal', 'Data tidak ditemukan');

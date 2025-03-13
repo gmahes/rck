@@ -42,6 +42,23 @@
                                     @csrf
                                     <div class="row mt-1">
                                         <div class="col-md-4">
+                                            <p class="card-text mt-1 fs-6">Opsi Filter</p>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="filteropt"
+                                                    id="createDate" value="createDate" required>
+                                                <label class="form-check-label" for="createDate">Tanggal Simpan</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="filteropt"
+                                                    id="docDate" value="docDate">
+                                                <label class="form-check-label" for="docDate">Tanggal Dokumen</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-4">
                                             <p class="card-text fs-6">Tanggal Awal</p>
                                         </div>
                                         <div class="col">

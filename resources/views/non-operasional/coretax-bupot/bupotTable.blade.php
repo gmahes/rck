@@ -42,6 +42,23 @@
                                     @csrf
                                     <div class="row mt-1">
                                         <div class="col-md-4">
+                                            <p class="card-text mt-1 fs-6">Opsi Filter</p>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="filteropt"
+                                                    id="createDate" value="createDate" required>
+                                                <label class="form-check-label" for="createDate">Tanggal Simpan</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="filteropt"
+                                                    id="docDate" value="docDate">
+                                                <label class="form-check-label" for="docDate">Tanggal Dokumen</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-4">
                                             <p class="card-text mt-1 fs-6">Tanggal Awal</p>
                                         </div>
                                         <div class="col">
@@ -61,6 +78,7 @@
                                 </form>
                                 <form action="{{ route('xmlBupot') }}" method="POST" id="xmlBupot">
                                     @csrf
+                                    <input type="hidden" name="filteropt" value="{{ session('filteropt') }}">
                                     <input type="hidden" name="start_date" value="{{ session('start_date') }}">
                                     <input type="hidden" name="end_date" value="{{ session('end_date') }}">
                                 </form>
@@ -87,7 +105,10 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="row mt-1">
-                            <p class="card-text fw-bold">List Bupot {{ date('d M Y') }}</p>
+                            <p class="card-text fw-bold">List Bupot {{
+                                \Carbon\Carbon::parse(session()->get('start_date'))->translatedFormat('d M Y') . ' - '.
+                                \Carbon\Carbon::parse(session()->get('end_date'))->translatedFormat('d M
+                                Y') }}</p>
                         </div>
                         <div class="row mt-3">
                             <div class="col">

@@ -10,7 +10,8 @@
             </a>
         </li><!-- End Dashboard Nav -->
         <li class="nav-heading">Pages</li>
-        @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator')
+        @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator' or
+        Auth::user()->userDetail->position=='Admin Akuntansi')
         <li class="nav-item">
             <a class="nav-link @if(url()->current() != route('employees'))collapsed @endif"
                 data-bs-target="#master-data" data-bs-toggle="collapse" href="#">
@@ -19,6 +20,7 @@
             <ul id="master-data"
                 class="nav-content collapse @if(url()->current() == route('employees') or url()->current() == route('drivers') or url()->current() == route('customers') or url()->current() == route('suppliers'))show @endif"
                 data-bs-parent="#sidebar-nav">
+                @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator')
                 <li>
                     <a href="{{ route('employees') }}">
                         <i class="bi bi-circle-fill"></i><span>Data Karyawan</span>
@@ -34,6 +36,7 @@
                         <i class="bi bi-circle-fill"></i><span>Data Pelanggan</span>
                     </a>
                 </li>
+                @endif
                 <li>
                     <a href="{{ route('suppliers') }}">
                         <i class="bi bi-circle-fill"></i><span>Data Supplier</span>

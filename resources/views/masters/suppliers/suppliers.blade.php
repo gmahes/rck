@@ -14,7 +14,8 @@
                                 <div class="col">
                                     <p class="card-text fw-bold text-dark fs-5">Data Suppliers</p>
                                 </div>
-                                @if (auth()->user()->role == 'superadmin' or auth()->user()->role == 'administrator')
+                                @if (auth()->user()->role == 'superadmin' or auth()->user()->role == 'administrator' or
+                                auth()->user()->userDetail->position=='Admin Akuntansi')
                                 <div class="col text-end">
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
@@ -46,7 +47,7 @@
                                     <th>Jenis Dokumen</th>
                                     <th>Fasilitas</th>
                                     @if (auth()->user()->role == 'superadmin' or auth()->user()->role ==
-                                    'administrator')
+                                    'administrator' or auth()->user()->userDetail->position=='Admin Akuntansi')
                                     <th>Aksi</th>
                                     @endif
                                 </tr>
@@ -65,7 +66,7 @@
                                     <td class="text-center">{{ $supplier->document }}</td>
                                     <td class="text-center">{{ $supplier->facility }}</td>
                                     @if (auth()->user()->role == 'superadmin' or auth()->user()->role ==
-                                    'administrator')
+                                    'administrator' or auth()->user()->userDetail->position=='Admin Akuntansi')
                                     <td class="text-center">
                                         <div class="btn-group dropstart">
                                             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"

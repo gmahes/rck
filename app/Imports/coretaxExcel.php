@@ -21,9 +21,9 @@ class coretaxExcel implements ToArray, WithStartRow
             // }
             $this->data[] =
                 [
-                    'no_invoice' => $row[13],
+                    'no_invoice' => $row[14],
                     'nama_pelanggan' => $row[1],
-                    'sub_total' => $row[8],
+                    'sub_total' => $row[9],
                 ];
         }
     }

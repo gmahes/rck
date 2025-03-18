@@ -762,8 +762,9 @@ class NonOperasionalController extends Controller
             Alert::error('Gagal', 'Data tidak ditemukan');
             return redirect()->route('bupot');
         }
+        $tin = '0704142322402000';
         $this->xml = new SimpleXMLElement('<BpuBulk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd"></BpuBulk>');
-        $this->xml->addChild('TIN', '0704142322402000');
+        $this->xml->addChild('TIN', $tin);
         $this->xml->addChild('ListOfBpu');
         foreach ($attr['bupots'] as $bupot) {
             $taxBase = intval(preg_replace('/[^0-9]/', '', $bupot->dpp));
@@ -771,7 +772,7 @@ class NonOperasionalController extends Controller
             $bpu->addChild('TaxPeriodMonth', Carbon::parse($bupot->whdate)->format('n'));
             $bpu->addChild('TaxPeriodYear', Carbon::parse($bupot->whdate)->format('Y'));
             $bpu->addChild('CounterpartTin', $bupot->supplier_id);
-            $bpu->addChild('IDPlaceOfBusinessActivityOfIncomeRecipient', '000000');
+            $bpu->addChild('IDPlaceOfBusinessActivityOfIncomeRecipient', $bupot->supplier_id . '000000');
             $bpu->addChild('TaxCertificate', $bupot->supplier->facility);
             $bpu->addChild('TaxObjectCode', $bupot->supplier->code);
             $bpu->addChild('TaxBase', $taxBase);
@@ -779,7 +780,7 @@ class NonOperasionalController extends Controller
             $bpu->addChild('Document', $bupot->supplier->document);
             $bpu->addChild('DocumentNumber', $bupot->docId);
             $bpu->addChild('DocumentDate', $bupot->date);
-            $bpu->addChild('IDPlaceOfBusinessActivity', '000000');
+            $bpu->addChild('IDPlaceOfBusinessActivity', $tin . '000000');
             $bpu->addChild('GovTreasurerOpt', 'N/A');
             $bpu->addChild('SP2DNumber');
             $bpu->addChild('WithholdingDate', $bupot->whdate);

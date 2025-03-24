@@ -78,11 +78,14 @@
                         <i class="bi bi-circle-fill"></i><span>Fitur Coretax</span>
                     </a>
                 </li>
+                @if (Auth::user()->userDetail->position == 'Admin Akuntansi' or Auth::user()->role == 'superadmin' or
+                Auth::user()->role == 'administrator')
                 <li>
                     <a href="{{ route('bupot') }}">
                         <i class="bi bi-circle-fill"></i><span>Bupot PPh</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </li><!-- End Non Operasional Nav -->
         @endif

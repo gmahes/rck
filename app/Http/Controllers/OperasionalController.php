@@ -28,7 +28,7 @@ class OperasionalController extends Controller
             [
                 'driver_id' => 'required',
                 'date' => 'required|date',
-                'omzet' => 'required|regex:/^[0-9,]+$/',
+                'omzet' => 'required|regex:/^[0-9.;]+$/',
             ],
             [
                 'driver_id.required' => 'Driver belum dipilih',
@@ -49,8 +49,14 @@ class OperasionalController extends Controller
         }
         $validated = $validator->validated();
         // Process the 'omzet' input
-        $omzetParts = explode(',', $validated['omzet']);
+        $omzetParts = explode(';', $validated['omzet']);
+        // Remove dots from each value in the array
+        $omzetParts = array_map(function ($value) {
+            return str_replace('.', '', $value);
+        }, $omzetParts);
+        // dd($omzetParts);
         $omzetSum = array_sum(array_map('intval', $omzetParts));
+        // dd($omzetSum);
         // Save to Omzet model
         $omzet = new Omzet();
         $omzet->driver_id = $validated['driver_id'];
@@ -58,7 +64,7 @@ class OperasionalController extends Controller
         $omzet->omzet = $omzetSum;
         $omzet->created_by = Auth::user()->username;
         $omzet->save();
-        Alert::success('Berhasil', 'Omzet ' . Drivers::find($validated['driver_id'])->fullname . ' dengan nominal ' . $validated['omzet'] . ' berhasil ditambahkan');
+        Alert::success('Berhasil', 'Omzet ' . Drivers::find($validated['driver_id'])->fullname . ' dengan nominal Rp ' . number_format($omzetSum, 0, ',', '.') . ' berhasil ditambahkan');
         return redirect()->route('omzet');
     }
     public function filterOmzet(Request $request)

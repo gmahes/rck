@@ -28,7 +28,7 @@
                                             <div class="col-md-3">
                                                 <p class="card-text">Supir</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 @livewire('driver-list')
                                             </div>
                                         </div>
@@ -36,7 +36,7 @@
                                             <div class="col-md-3">
                                                 <p class="card-text fs-6">Tanggal Awal</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <input type="date" class="form-control form-control-sm"
                                                     name="start_date" required>
                                             </div>
@@ -45,7 +45,7 @@
                                             <div class="col-md-3">
                                                 <p class="card-text fs-6">Tanggal Akhir</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <input type="date" class="form-control form-control-sm" name="end_date"
                                                     required>
                                             </div>
@@ -64,10 +64,10 @@
                                     <form action="{{ route('add-omzet') }}" method="POST">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 mt-1">
                                                 <p class="card-text">Supir</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 @livewire('driver-list-add')
                                             </div>
                                         </div>
@@ -75,7 +75,7 @@
                                             <div class="col-md-3">
                                                 <p class="card-text fs-6">Tanggal</p>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <input type="date" class="form-control form-control-sm" name="date">
                                             </div>
                                         </div>
@@ -83,8 +83,9 @@
                                             <div class="col-md-3">
                                                 <p class="card-text fs-6">Omzet</p>
                                             </div>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control form-control-sm" name="omzet">
+                                            <div class="col-md-6">
+                                                <input type="text" id="omzet" class="form-control form-control-sm"
+                                                    name="omzet">
                                             </div>
                                         </div>
                                         <div class="row mt-2">

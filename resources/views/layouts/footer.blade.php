@@ -22,6 +22,7 @@
 <!-- Template Main JS File -->
 <script src="{{ asset('js/main.js') }}"></script>
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
-@if (url()->current() == route('bupot') or url()->current() == route('filter-bupot'))
+@if (url()->current() == route('bupot') or url()->current() == route('filter-bupot') or url()->current() ==
+route('omzet') or url()->current() == route('filter-omzet'))
 <script src="{{ asset('js/numberSeparator.js') }}"></script>
 @endif

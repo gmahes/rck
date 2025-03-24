@@ -1,7 +1,18 @@
 const dppInput = document.getElementById("dpp");
-dppInput.addEventListener("input", function () {
-    // Hapus semua karakter non-angka
-    let value = this.value.replace(/\D/g, "");
-    // Format angka dengan titik ribuan
-    this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-});
+const omzetInput = document.getElementById("omzet");
+if (dppInput) {
+    dppInput.addEventListener("input", function () {
+        // Hapus semua karakter non-angka
+        let value = this.value.replace(/\D/g, "");
+        // Format angka dengan titik ribuan
+        this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+}
+if (omzetInput) {
+    omzetInput.addEventListener("input", function () {
+        // Hapus semua karakter selain angka dan semicolon
+        let value = this.value.replace(/[^0-9;]/g, "");
+        // Format angka dengan titik ribuan
+        this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+}

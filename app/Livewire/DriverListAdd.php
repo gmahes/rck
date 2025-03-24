@@ -7,16 +7,10 @@ use Livewire\Component;
 
 class DriverListAdd extends Component
 {
-    public $vehicleType = '';
     public $drivers = [];
     public function mount()
     {
         $this->drivers = Drivers::all()->sortBy('fullname');
-    }
-
-    public function updatedVehicleType()
-    {
-        $this->drivers = Drivers::all()->where('vehicle_type', $this->vehicleType)->sortBy('fullname');
     }
 
     public function render()

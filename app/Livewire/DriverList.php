@@ -9,10 +9,10 @@ class DriverList extends Component
 {
     public $vehicleType = '';
     public $drivers = [];
-    public function mount()
-    {
-        $this->drivers = Drivers::all()->sortBy('fullname');
-    }
+    // public function mount()
+    // {
+    //     $this->drivers = Drivers::all()->sortBy('fullname');
+    // }
 
     public function updatedVehicleType()
     {

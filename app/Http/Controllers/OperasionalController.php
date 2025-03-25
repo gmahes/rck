@@ -18,6 +18,8 @@ class OperasionalController extends Controller
             'title' => 'Omzet',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
+            'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+            'smallvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
         ];
         return view('operasional.omzet', $attr);
     }
@@ -38,7 +40,6 @@ class OperasionalController extends Controller
                 'omzet.regex' => 'Omzet hanya boleh berisi angka dan koma. Anda membuat ' . "'$request->omzet'",
             ],
         );
-        // dd($request->all());
         if ($validator->fails()) {
             Alert::error('Gagal', $validator->errors()->first());
             return redirect()->route('omzet');
@@ -54,9 +55,7 @@ class OperasionalController extends Controller
         $omzetParts = array_map(function ($value) {
             return str_replace('.', '', $value);
         }, $omzetParts);
-        // dd($omzetParts);
         $omzetSum = array_sum(array_map('intval', $omzetParts));
-        // dd($omzetSum);
         // Save to Omzet model
         $omzet = new Omzet();
         $omzet->driver_id = $validated['driver_id'];
@@ -73,11 +72,11 @@ class OperasionalController extends Controller
             $request->all(),
             [
                 'driver' => 'required',
-                'vehicleType' => 'required',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
             ],
             [
+                'driver.required' => 'Driver belum dipilih',
                 'start_date.required' => 'Tanggal awal belum diisi',
                 'start_date.date' => 'Tanggal awal tidak valid',
                 'end_date.required' => 'Tanggal akhir belum diisi',
@@ -88,10 +87,6 @@ class OperasionalController extends Controller
             Alert::error('Gagal', $validator->errors()->first());
             return redirect()->route('omzet');
         }
-        if ($request->vehicleType == 'null') {
-            Alert::error('Gagal', 'Tipe kendaraan belum dipilih');
-            return redirect()->route('omzet');
-        }
         if ($request->driver == 'null') {
             Alert::error('Gagal', 'Driver belum dipilih');
             return redirect()->route('omzet');
@@ -99,7 +94,6 @@ class OperasionalController extends Controller
         $validated = $validator->validated();
         session([
             'driver' => $validated['driver'],
-            'vehicleType' => $validated['vehicleType'],
             'start_date' => strtotime($validated['start_date']),
             'end_date' => strtotime($validated['end_date']),
         ]);
@@ -107,214 +101,166 @@ class OperasionalController extends Controller
             Alert::error('Gagal', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
             return redirect()->route('omzet');
         }
-        if ($request->vehicleType == 'Kendaraan Besar') {
-            if ($validated['driver'] == 'all') {
-                $omzet = Omzet::whereBetween('date', [$validated['start_date'], $validated['end_date']])
-                    ->get()
-                    ->groupBy('driver_id');
-                $totalOmzetPerDriver = $omzet->map(function ($group) {
-                    return $group->sum('omzet');
-                });
-                $totalOmzet = $totalOmzetPerDriver->sum();
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
-                    'supir' => null,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'totalOmzetPerDriver' => $totalOmzetPerDriver,
-                    'filter' => [
-                        'driver' => $validated['driver'],
-                        'vehicleType' => $validated['vehicleType'],
-                        'start_date' => $validated['start_date'],
-                        'end_date' => $validated['end_date'],
-                    ],
-                    'start_date' => strtotime($validated['start_date']),
-                    'end_date' => strtotime($validated['end_date']),
-                ];
-                return view('operasional.filterOmzet', $attr);
-            } else {
-                $driver = Drivers::where('id', $validated['driver'])->get();
-                $omzet = Omzet::where('driver_id', $validated['driver'])
-                    ->whereBetween('date', [$validated['start_date'], $validated['end_date']])
-                    ->get();
-                $totalOmzet = $omzet->sum('omzet');
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
-                    'supir' => $driver,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'filter' => [
-                        'driver' => $validated['driver'],
-                        'vehicleType' => $validated['vehicleType'],
-                        'start_date' => $validated['start_date'],
-                        'end_date' => $validated['end_date'],
-                    ],
-                    'start_date' => strtotime($validated['start_date']),
-                    'end_date' => strtotime($validated['end_date']),
-                ];
-                return view('operasional.filterOmzet', $attr);
-            }
-        } elseif ($request->vehicleType == 'Kendaraan Kecil') {
-            if ($validated['driver'] == 'all') {
-                $omzet = Omzet::whereBetween('date', [$validated['start_date'], $validated['end_date']])
-                    ->get()
-                    ->groupBy('driver_id');
-                $totalOmzetPerDriver = $omzet->map(function ($group) {
-                    return $group->sum('omzet');
-                });
-                $totalOmzet = $totalOmzetPerDriver->sum();
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
-                    'supir' => null,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'totalOmzetPerDriver' => $totalOmzetPerDriver,
-                    'filter' => [
-                        'driver' => $validated['driver'],
-                        'vehicleType' => $validated['vehicleType'],
-                        'start_date' => $validated['start_date'],
-                        'end_date' => $validated['end_date'],
-                    ],
-                    'start_date' => strtotime($validated['start_date']),
-                    'end_date' => strtotime($validated['end_date']),
-                ];
-                return view('operasional.filterOmzet', $attr);
-            } else {
-                $driver = Drivers::where('id', $validated['driver'])->get();
-                $omzet = Omzet::where('driver_id', $validated['driver'])
-                    ->whereBetween('date', [$validated['start_date'], $validated['end_date']])
-                    ->get();
-                $totalOmzet = $omzet->sum('omzet');
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
-                    'supir' => $driver,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'filter' => [
-                        'driver' => $validated['driver'],
-                        'vehicleType' => $validated['vehicleType'],
-                        'start_date' => $validated['start_date'],
-                        'end_date' => $validated['end_date'],
-                    ],
-                    'start_date' => strtotime($validated['start_date']),
-                    'end_date' => strtotime($validated['end_date']),
-                ];
-                return view('operasional.filterOmzet', $attr);
-            }
+        if ($validated['driver'] == 'allBig') {
+            $omzet = Omzet::whereBetween('date', [$validated['start_date'], $validated['end_date']])
+                ->get()
+                ->groupBy('driver_id');
+            $totalOmzetPerDriver = $omzet->map(function ($group) {
+                return $group->sum('omzet');
+            });
+            $totalOmzet = $totalOmzetPerDriver->sum();
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'supir' => null,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'totalOmzetPerDriver' => $totalOmzetPerDriver,
+                'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'smallvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'filter' => [
+                    'driver' => $validated['driver'],
+                    'start_date' => $validated['start_date'],
+                    'end_date' => $validated['end_date'],
+                ],
+                'start_date' => strtotime($validated['start_date']),
+                'end_date' => strtotime($validated['end_date']),
+            ];
+            return view('operasional.filterOmzet', $attr);
+        } elseif ($validated['driver'] == 'allSmall') {
+            $omzet = Omzet::whereBetween('date', [$validated['start_date'], $validated['end_date']])
+                ->get()
+                ->groupBy('driver_id');
+            $totalOmzetPerDriver = $omzet->map(function ($group) {
+                return $group->sum('omzet');
+            });
+            $totalOmzet = $totalOmzetPerDriver->sum();
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'supir' => null,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'totalOmzetPerDriver' => $totalOmzetPerDriver,
+                'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'smallvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'filter' => [
+                    'driver' => $validated['driver'],
+                    'start_date' => $validated['start_date'],
+                    'end_date' => $validated['end_date'],
+                ],
+                'start_date' => strtotime($validated['start_date']),
+                'end_date' => strtotime($validated['end_date']),
+            ];
+            return view('operasional.filterOmzet', $attr);
+        } else {
+            $driver = Drivers::where('id', $validated['driver'])->get();
+            $omzet = Omzet::where('driver_id', $validated['driver'])
+                ->whereBetween('date', [$validated['start_date'], $validated['end_date']])
+                ->get();
+            $totalOmzet = $omzet->sum('omzet');
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'supir' => $driver,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'smallvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'filter' => [
+                    'driver' => $validated['driver'],
+                    'start_date' => $validated['start_date'],
+                    'end_date' => $validated['end_date'],
+                ],
+                'start_date' => strtotime($validated['start_date']),
+                'end_date' => strtotime($validated['end_date']),
+            ];
+            return view('operasional.filterOmzet', $attr);
         }
     }
-    public function printOmzet($vehicleType, $driver, $start_date, $end_date)
+    public function printOmzet($driver, $start_date, $end_date)
     {
-        if ($vehicleType == 'Kendaraan Besar') {
-            if ($driver == 'all') {
-                $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
-                    ->get()
-                    ->groupBy('driver_id');
-                $totalOmzetPerDriver = $omzet->map(function ($group) {
-                    return $group->sum('omzet');
-                });
-                $totalOmzet = $totalOmzetPerDriver->sum();
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
-                    'supir' => null,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'totalOmzetPerDriver' => $totalOmzetPerDriver,
-                    'filter' => [
-                        'driver' => $driver,
-                        'vehicleType' => $vehicleType,
-                        'start_date' => strtotime($start_date),
-                        'end_date' => strtotime($end_date),
-                    ],
-                ];
-                return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
-            } else {
-                $driver = Drivers::where('id', $driver)->get();
-                $omzet = Omzet::where('driver_id', $driver)
-                    ->whereBetween('date', [$start_date, $end_date])
-                    ->get();
-                $totalOmzet = $omzet->sum('omzet');
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
-                    'supir' => $driver,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'filter' => [
-                        'driver' => $driver,
-                        'vehicleType' => $vehicleType,
-                        'start_date' => strtotime($start_date),
-                        'end_date' => strtotime($end_date),
-                    ],
-                ];
-                return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
-            }
+        if ($driver == 'allBig') {
+            $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
+                ->whereHas('drivers', function ($query) {
+                    $query->where('vehicle_type', 'Kendaraan Besar');
+                })
+                ->get()
+                ->groupBy('driver_id');
+            $totalOmzetPerDriver = $omzet->map(function ($group) {
+                return $group->sum('omzet');
+            });
+            $totalOmzet = $totalOmzetPerDriver->sum();
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'supir' => null,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'totalOmzetPerDriver' => $totalOmzetPerDriver,
+                'filter' => [
+                    'driver' => $driver,
+                    'start_date' => strtotime($start_date),
+                    'end_date' => strtotime($end_date),
+                ],
+            ];
+            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
+        } elseif ($driver == 'allSmall') {
+            $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
+                ->whereHas('drivers', function ($query) {
+                    $query->where('vehicle_type', 'Kendaraan Kecil');
+                })
+                ->get()
+                ->groupBy('driver_id');
+            $totalOmzetPerDriver = $omzet->map(function ($group) {
+                return $group->sum('omzet');
+            });
+            $totalOmzet = $totalOmzetPerDriver->sum();
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'supir' => null,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'totalOmzetPerDriver' => $totalOmzetPerDriver,
+                'filter' => [
+                    'driver' => $driver,
+                    'start_date' => strtotime($start_date),
+                    'end_date' => strtotime($end_date),
+                ],
+            ];
+            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
         } else {
-            if ($driver == 'all') {
-                $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
-                    ->get()
-                    ->groupBy('driver_id');
-                $totalOmzetPerDriver = $omzet->map(function ($group) {
-                    return $group->sum('omzet');
-                });
-                $totalOmzet = $totalOmzetPerDriver->sum();
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
-                    'supir' => null,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'totalOmzetPerDriver' => $totalOmzetPerDriver,
-                    'filter' => [
-                        'driver' => $driver,
-                        'vehicleType' => $vehicleType,
-                        'start_date' => strtotime($start_date),
-                        'end_date' => strtotime($end_date),
-                    ],
-                ];
-                return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
-            } else {
-                $driver = Drivers::where('id', $driver)->get();
-                $omzet = Omzet::where('driver_id', $driver)
-                    ->whereBetween('date', [$start_date, $end_date])
-                    ->get();
-                $totalOmzet = $omzet->sum('omzet');
-                $attr = [
-                    'title' => 'Omzet',
-                    'fullname' => Auth::user()->userDetail->fullname,
-                    'position' => Auth::user()->userDetail->position,
-                    'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
-                    'supir' => $driver,
-                    'omzet' => $omzet,
-                    'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
-                    'filter' => [
-                        'driver' => $driver,
-                        'vehicleType' => $vehicleType,
-                        'start_date' => strtotime($start_date),
-                        'end_date' => strtotime($end_date),
-                    ],
-                ];
-                return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
-            }
+            $driver = Drivers::where('id', $driver)->get();
+            $omzet = Omzet::where('driver_id', $driver->first()->id)
+                ->whereBetween('date', [$start_date, $end_date])
+                ->get();
+            $totalOmzet = $omzet->sum('omzet');
+            $attr = [
+                'title' => 'Omzet',
+                'fullname' => Auth::user()->userDetail->fullname,
+                'position' => Auth::user()->userDetail->position,
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
+                'supir' => $driver,
+                'omzet' => $omzet,
+                'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
+                'filter' => [
+                    'driver' => $driver,
+                    'start_date' => strtotime($start_date),
+                    'end_date' => strtotime($end_date),
+                ],
+            ];
+            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
         }
     }
 }

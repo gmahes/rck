@@ -29,7 +29,24 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-6">
-                                                @livewire('driver-list')
+                                                <select name="driver" id="" class="selectpicker" data-width="100%"
+                                                    data-size="5" data-live-search="true" required>
+                                                    <option value="">-- Pilih Supir --</option>
+                                                    <optgroup label="Kendaraan Besar">
+                                                        <option value="allBig">Semua Supir</option>
+                                                        @foreach ($bigvehicledrivers as $driver)
+                                                        <option value="{{ $driver->id }}">{{ $driver->fullname }}
+                                                        </option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                    <optgroup label="Kendaraan Kecil">
+                                                        <option value="allSmall">Semua Supir</option>
+                                                        @foreach ($smallvehicledrivers as $driver)
+                                                        <option value="{{ $driver->id }}">{{ $driver->fullname }}
+                                                        </option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row mt-1">
@@ -53,7 +70,7 @@
                                         <div class="row mt-2">
                                             <div class="col-auto d-flex">
                                                 <button type="submit" class="btn btn-sm btn-primary">Cari Data</button>
-                                                <a href="{{ route('print-omzet', [$filter['vehicleType'], $filter['driver'], $filter['start_date'], $filter['end_date']]) }}"
+                                                <a href="{{ route('print-omzet', [$filter['driver'], $filter['start_date'], $filter['end_date']]) }}"
                                                     class="btn btn-sm btn-success ms-1" target="_blank">Unduh Data</a>
                                             </div>
                                         </div>
@@ -68,7 +85,22 @@
                                                 <p class="card-text">Supir</p>
                                             </div>
                                             <div class="col-md-6">
-                                                @livewire('driver-list-add')
+                                                <select name="driver_id" class="selectpicker" data-live-search="true"
+                                                    data-size="4" data-width="100%" required>
+                                                    <option value="">-- Pilih Supir --</option>
+                                                    <optgroup label="Kendaraan Besar">
+                                                        @foreach ($bigvehicledrivers as $driver)
+                                                        <option value="{{ $driver->id }}">{{ $driver->fullname }}
+                                                        </option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                    <optgroup label="Kendaraan Kecil">
+                                                        @foreach ($smallvehicledrivers as $driver)
+                                                        <option value="{{ $driver->id }}">{{ $driver->fullname }}
+                                                        </option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row mt-1">

@@ -185,7 +185,7 @@ class NonOperasionalController extends Controller
                     }
                 }
                 $goodService = $taxInvoice->addChild('ListOfGoodService');
-                if (gettype($invoice['deskripsi']) == 'string') {
+                if (gettype($invoice['satuan']) == 'NULL') {
                     $otherTaxBase = intval($invoice['jumlah']) * 11 / 12;
                     $vat = $otherTaxBase * 0.12;
                     $listOfGoodService = $goodService->addChild('GoodService');
@@ -202,7 +202,7 @@ class NonOperasionalController extends Controller
                     $listOfGoodService->addChild('VAT', rtrim(rtrim(number_format($vat, 2, '.', ''), '0'), '.'));
                     $listOfGoodService->addChild('STLGRate', '0');
                     $listOfGoodService->addChild('STLG', '0');
-                } else {
+                } elseif (gettype($invoice['satuan']) == 'array') {
                     foreach (array_keys($invoice['deskripsi']) as $key) {
                         $otherTaxBase = intval($invoice['jumlah'][$key]) * 11 / 12;
                         $vat = $otherTaxBase * 0.12;
@@ -222,6 +222,23 @@ class NonOperasionalController extends Controller
                         $listOfGoodService->addChild('STLGRate', '0');
                         $listOfGoodService->addChild('STLG', '0');
                     }
+                } else {
+                    $otherTaxBase = intval($invoice['jumlah']) * 11 / 12;
+                    $vat = $otherTaxBase * 0.12;
+                    $listOfGoodService = $goodService->addChild('GoodService');
+                    $listOfGoodService->addChild('Opt', 'A');
+                    $listOfGoodService->addChild('Code', '000000');
+                    $listOfGoodService->addChild('Name', $invoice['deskripsi']);
+                    $listOfGoodService->addChild('Unit', 'UM.0033');
+                    $listOfGoodService->addChild('Price', intval($invoice['jumlah']) / floatval($invoice['qty']));
+                    $listOfGoodService->addChild('Qty', $invoice['qty']);
+                    $listOfGoodService->addChild('TotalDiscount', '0');
+                    $listOfGoodService->addChild('TaxBase', $invoice['jumlah']);
+                    $listOfGoodService->addChild('OtherTaxBase', rtrim(rtrim(number_format($otherTaxBase, 2, '.', ''), '0'), '.'));
+                    $listOfGoodService->addChild('VATRate', '12');
+                    $listOfGoodService->addChild('VAT', rtrim(rtrim(number_format($vat, 2, '.', ''), '0'), '.'));
+                    $listOfGoodService->addChild('STLGRate', '0');
+                    $listOfGoodService->addChild('STLG', '0');
                 }
             }
             $attr['xml'] = $this->xml;
@@ -495,6 +512,7 @@ class NonOperasionalController extends Controller
                     $sheet->setCellValue('G' . $row, number_format($otherTaxBase, 2, '.', ','));
                     $sheet->setCellValue('H' . $row, number_format($vat, 0, '.', ','));
                     $row++;
+                    $sheet->mergeCells('A' . $row . ':H' . $row);
                 } else {
                     foreach (array_keys($invoice['deskripsi']) as $key) {
                         $otherTaxBase = intval($invoice['jumlah'][$key]) * 11 / 12;
@@ -526,6 +544,8 @@ class NonOperasionalController extends Controller
                         ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                     $sheet->getStyle('C' . ($row - count($invoice['deskripsi'])) . ':C' . ($row - 1))
                         ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $row++;
+                    $sheet->mergeCells('A' . $row . ':H' . $row);
                 }
                 $row++;
             }

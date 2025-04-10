@@ -113,13 +113,14 @@
                         <div class="row mt-3">
                             <div class="col">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover">
+                                    <table class="table table-bordered table-hover" data-toggle="table"
+                                        data-pagination="true" data-search="true">
                                         <thead class="table-dark text-center">
                                             <tr>
                                                 <th>No</th>
-                                                <th>Tgl Potong</th>
-                                                <th>Nama Supplier</th>
                                                 <th>Tgl Dokumen</th>
+                                                <th>Nama Supplier</th>
+                                                <th>No Dokumen</th>
                                                 <th>DPP</th>
                                                 <th>PPh</th>
                                                 <th>Aksi</th>
@@ -128,23 +129,42 @@
                                         <tbody>
                                             @foreach ($bupots as $bupot)
                                             @include('non-operasional.coretax-bupot.modals.deleteBupotList')
+                                            @include('non-operasional.coretax-bupot.modals.editBupotList')
                                             <tr>
                                                 <td class="fw-bold text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{
-                                                    \Carbon\Carbon::parse($bupot->whdate)->translatedFormat('d M Y')
-                                                    }}</td>
-                                                <td>{{ $bupot->supplier->name }}</td>
-                                                <td class="text-center">{{
                                                     \Carbon\Carbon::parse($bupot->date)->translatedFormat('d M Y') }}
                                                 </td>
+                                                <td>{{ $bupot->supplier->name }}</td>
+                                                <td class="text-center">{{ $bupot->docId }}</td>
                                                 <td class="text-center">{{ "Rp ".$bupot->dpp }}</td>
                                                 <td class="text-center">{{ "Rp ".$bupot->pph }}</td>
-                                                <td>
-                                                    <div class="d-flex justify-content-center">
-                                                        <a type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#deleteBupot{{ $bupot->id }}"><i
-                                                                class="bi bi-trash3-fill text-danger fs-5"></i>
-                                                        </a>
+                                                <td class="text-center">
+                                                    <div class="btn-group dropstart">
+                                                        <button class="btn btn-sm btn-secondary dropdown-toggle"
+                                                            type="button" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <i class="bi bi-justify"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <button type="button"
+                                                                    class="btn btn-sm dropdown-item text-success"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#editBupotList{{ $bupot->id }}">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                    Edit Data
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button type="button"
+                                                                    class="btn btn-sm dropdown-item text-danger"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#deleteBupotList{{ $bupot->id }}">
+                                                                    <i class="bi bi-trash"></i>
+                                                                    Hapus Data
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </td>
                                             </tr>

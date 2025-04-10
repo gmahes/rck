@@ -749,6 +749,32 @@ class NonOperasionalController extends Controller
         Alert::toast('Data berhasil disimpan', 'success');
         return redirect()->route('bupot');
     }
+    public function editBupot($id)
+    {
+        $validator = Validator::make(request()->all(), [
+            'date' => 'required',
+            'docId' => 'required',
+            'dpp' => 'required',
+        ], [
+            'date.required' => 'Tanggal wajib diisi',
+            'docId.required' => 'Nomor Dokumen wajib diisi',
+            'dpp.required' => 'DPP wajib diisi',
+        ]);
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('bupot');
+        }
+        $validated = $validator->validated();
+        $bupotList = [
+            'date' => $validated['date'],
+            'docId' => $validated['docId'],
+            'dpp' => $validated['dpp'],
+            'pph' => number_format(intval(preg_replace('/[^0-9]/', '', $validated['dpp'])) * Suppliers::find(request()->supplier)->percentage / 100, 0, '', '.'),
+        ];
+        BupotList::where('id', $id)->update($bupotList);
+        Alert::toast('Data berhasil diubah', 'success');
+        return redirect()->route('bupot');
+    }
     public function filterBupot()
     {
         $attr = [

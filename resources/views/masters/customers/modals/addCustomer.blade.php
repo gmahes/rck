@@ -10,7 +10,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start text-dark">
-                <form action="{{ route('add-customer') }}" method="POST">
+                <form action="{{ route('add-customer') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="mb-3">
                         <div class="row">

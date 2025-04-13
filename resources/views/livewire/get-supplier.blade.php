@@ -31,7 +31,8 @@
                     <label for="docId">Nomor Dokumen</label>
                 </div>
                 <div class="col">
-                    <input type="text" id="docId" class="form-control form-control-sm" name="docId" required>
+                    <input type="text" id="docId" class="form-control form-control-sm" name="docId" required
+                        autocomplete="off">
                 </div>
             </div>
             <div class="row mt-2">
@@ -39,15 +40,8 @@
                     <label for="dpp">DPP</label>
                 </div>
                 <div class="col">
-                    <input type="text" id="dpp" class="form-control form-control-sm" name="dpp" required>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-4">
-                    <label for="whdate">Tanggal Potong</label>
-                </div>
-                <div class="col">
-                    <input type="date" id="whdate" class="form-control form-control-sm" name="whdate" required>
+                    <input type="text" id="dpp" class="form-control form-control-sm" name="dpp" autocomplete="off"
+                        required>
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start text-dark">
-                <form action="{{ route('add-employee') }}" method="POST">
+                <form action="{{ route('add-employee') }}" method="POST" autocomplete="off">
                     @csrf
                     @if (Auth::user()->role == 'administrator')
                     <input type="hidden" name="role" value="user">

@@ -41,6 +41,7 @@ Route::put('edit-supplier/{id}', [MasterController::class, 'editSupplier'])->mid
 Route::delete('del-supplier/{id}', [MasterController::class, 'delSupplier'])->middleware('auth')->name('del-supplier');
 Route::get('bupot', [NonOperasionalController::class, 'bupot'])->middleware('auth')->name('bupot');
 Route::post('save-bupot', [NonOperasionalController::class, 'saveBupot'])->middleware('auth')->name('save-bupot');
+Route::put('edit-bupot/{id}', [NonOperasionalController::class, 'editBupot'])->middleware('auth')->name('edit-bupot');
 Route::post('bupot/filter-bupot', [NonOperasionalController::class, 'filterBupot'])->middleware('auth')->name('filter-bupot');
 Route::delete('del-bupot/{id}', [NonOperasionalController::class, 'deleteBupot'])->middleware('auth')->name('del-bupot');
 Route::post('xmlBupot', [NonOperasionalController::class, 'xmlBupot'])->middleware('auth')->name('xmlBupot');

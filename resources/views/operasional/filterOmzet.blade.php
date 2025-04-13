@@ -117,7 +117,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <input type="text" id="omzet" class="form-control form-control-sm"
-                                                    name="omzet">
+                                                    name="omzet" autocomplete="off" placeholder="Pisahkan dengan ';'"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="row mt-2">

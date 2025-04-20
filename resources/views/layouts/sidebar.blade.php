@@ -52,7 +52,8 @@
                 data-bs-toggle="collapse" href="#">
                 <i class="bi bi-truck"></i><span>Operasional</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="operasional" class="nav-content collapse @if(url()->current() == route('omzet'))show @endif"
+            <ul id="operasional"
+                class="nav-content collapse @if(url()->current() == route('omzet') or url()->current() == route('filter-omzet'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('omzet') }}">

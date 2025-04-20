@@ -21,7 +21,7 @@ class OperasionalController extends Controller
             'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
             'smallvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
         ];
-        return view('operasional.omzet', $attr);
+        return view('operasional.omzet.omzet', $attr);
     }
     public function addOmzet(Request $request)
     {
@@ -128,7 +128,7 @@ class OperasionalController extends Controller
                 'start_date' => strtotime($validated['start_date']),
                 'end_date' => strtotime($validated['end_date']),
             ];
-            return view('operasional.filterOmzet', $attr);
+            return view('operasional.omzet.filterOmzet', $attr);
         } elseif ($validated['driver'] == 'allSmall') {
             $omzet = Omzet::whereBetween('date', [$validated['start_date'], $validated['end_date']])
                 ->get()
@@ -156,7 +156,7 @@ class OperasionalController extends Controller
                 'start_date' => strtotime($validated['start_date']),
                 'end_date' => strtotime($validated['end_date']),
             ];
-            return view('operasional.filterOmzet', $attr);
+            return view('operasional.omzet.filterOmzet', $attr);
         } else {
             $driver = Drivers::where('id', $validated['driver'])->get();
             $omzet = Omzet::where('driver_id', $validated['driver'])
@@ -181,7 +181,7 @@ class OperasionalController extends Controller
                 'start_date' => strtotime($validated['start_date']),
                 'end_date' => strtotime($validated['end_date']),
             ];
-            return view('operasional.filterOmzet', $attr);
+            return view('operasional.omzet.filterOmzet', $attr);
         }
     }
     public function printOmzet($driver, $start_date, $end_date)
@@ -212,7 +212,7 @@ class OperasionalController extends Controller
                     'end_date' => strtotime($end_date),
                 ],
             ];
-            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
+            return PDF::loadView('operasional.omzet.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
         } elseif ($driver == 'allSmall') {
             $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
                 ->whereHas('drivers', function ($query) {
@@ -239,7 +239,7 @@ class OperasionalController extends Controller
                     'end_date' => strtotime($end_date),
                 ],
             ];
-            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
+            return PDF::loadView('operasional.omzet.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
         } else {
             $driver = Drivers::where('id', $driver)->get();
             $omzet = Omzet::where('driver_id', $driver->first()->id)
@@ -260,7 +260,7 @@ class OperasionalController extends Controller
                     'end_date' => strtotime($end_date),
                 ],
             ];
-            return PDF::loadView('operasional.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
+            return PDF::loadView('operasional.omzet.printOmzet', $attr)->setPaper('legal')->setOptions(['disable-smart-shrinking' => true])->inline('Omzet.pdf');
         }
     }
 }

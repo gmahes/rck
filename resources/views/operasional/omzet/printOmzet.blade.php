@@ -65,14 +65,14 @@
                                 <td>{{ $driver->vehicle_number }}</td>
                                 <td>{{ $driver->vehicle_type }}</td>
                                 <td class="fw-bold">
-                                    {{ "Rp".number_format($totalOmzetPerDriver[$driver->id] ?? 0, 0, ',', '.')
+                                    {{ "Rp ".number_format($totalOmzetPerDriver[$driver->id] ?? 0, 0, ',', '.')
                                     }}
                                 </td>
                             </tr>
                             @endforeach
                             <tr class="text-center">
                                 <td colspan="3" class="fw-bold">Total Omzet</td>
-                                <td class="fw-bold">{{ "Rp".($totalOmzet) }}</td>
+                                <td class="fw-bold">{{ "Rp ".($totalOmzet) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -91,7 +91,7 @@
                                 <td>{{ $supir->first()->fullname }}</td>
                                 <td>{{ $supir->first()->vehicle_number }}</td>
                                 <td>{{ $supir->first()->vehicle_type }}</td>
-                                <td class="fw-bold">{{ "Rp".$totalOmzet }}</td>
+                                <td class="fw-bold">{{ "Rp ".$totalOmzet }}</td>
                             </tr>
                         </tbody>
                     </table>

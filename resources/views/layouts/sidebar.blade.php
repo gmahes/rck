@@ -3,7 +3,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item mb-3">
+        <li class="nav-item">
             <a class="nav-link @if(url()->current() != route('dashboard'))collapsed @endif" href="/">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
@@ -72,8 +72,9 @@
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="nonoperasional"
-                class="nav-content collapse @if(url()->current() == route('xml-coretax') or url()->current() == route('bupot'))show @endif"
+                class="nav-content collapse @if(url()->current() == route('xml-coretax') or url()->current() == route('bupot') or url()->current() == route('filter-bupot'))show @endif"
                 data-bs-parent="#sidebar-nav">
+                <ul class="mb-2 nav-heading">Akunting</ul>
                 <li>
                     <a href="{{ route('xml-coretax') }}">
                         <i class="bi bi-circle-fill"></i><span>Fitur Coretax</span>

@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col">
-                        <form action="{{ route('edit-bupot', $bupot->id) }}" method="POST">
+                        <form id="editBupot" action="{{ route('edit-bupot', $bupot->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="percentage" value="{{ $bupot->supplier->percentage }}">
@@ -52,61 +52,68 @@
                                         required>
                                 </div>
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-auto d-flex">
-                                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
-                                </div>
-                            </div>
                         </form>
                     </div>
                     <div class="col">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="idNumber">No Identitas</label>
+                                <label for="idNumber{{ $bupot->id }}">No Identitas</label>
                             </div>
                             <div class="col">
-                                <input type="text" id="idNumber" class="form-control form-control-sm"
+                                <input type="text" id="idNumber{{ $bupot->id }}" class="form-control form-control-sm"
                                     value="{{ $bupot->supplier->id }}" disabled>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-4">
-                                <label for="kode_objek">Kode Objek</label>
+                                <label for="kode_objek{{ $bupot->id }}">Kode Objek</label>
                             </div>
                             <div class="col">
-                                <input type="text" id="kode_objek" class="form-control form-control-sm"
+                                <input type="text" id="kode_objek{{ $bupot->id }}" class="form-control form-control-sm"
                                     value="{{ $bupot->supplier->code }}" disabled>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-4">
-                                <label for="persentase">Persentase</label>
+                                <label for="persentase{{ $bupot->id }}">Persentase</label>
                             </div>
                             <div class="col">
-                                <input type="text" id="persentase" class="form-control form-control-sm"
-                                    value="{{ $bupot->supplier->percentage }}" disabled>
+                                <input type="text" id="persentase{{ $bupot->id }}" class="form-control form-control-sm"
+                                    value="{{ $bupot->supplier->percentage . '%' }}" disabled>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-4">
-                                <label for="document">Jenis Dok</label>
+                                <label for="document{{ $bupot->id }}">Jenis Dok</label>
                             </div>
                             <div class="col">
-                                <input type="text" id="document" class="form-control form-control-sm"
+                                <input type="text" id="document{{ $bupot->id }}" class="form-control form-control-sm"
                                     value="{{ $bupot->supplier->document }}" disabled>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-4">
-                                <label for="facility">Fasilitas</label>
+                                <label for="facility{{ $bupot->id }}">Fasilitas</label>
                             </div>
                             <div class="col">
-                                <input type="text" id="facility" class="form-control form-control-sm"
+                                <input type="text" id="facility{{ $bupot->id }}" class="form-control form-control-sm"
                                     value="{{ $bupot->supplier->facility }}" disabled>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex flex-row-reverse">
+                        <div class="text-end">
+                            <button type="submit" form="editBupot" class="btn btn-sm btn-primary">Simpan</button>
+                        </div>
+                        <div class="text-end me-2">
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                data-bs-dismiss="modal">Tutup</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

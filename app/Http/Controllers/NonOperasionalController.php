@@ -780,7 +780,7 @@ class NonOperasionalController extends Controller
             'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'bupots' => BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]),
+            'bupots' => BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)])->sortBy('date'),
         ];
         if (count($attr['bupots']) == 0) {
             Alert::error('Gagal', 'Data tidak ditemukan');
@@ -818,7 +818,7 @@ class NonOperasionalController extends Controller
             'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'bupots' => request()->filteropt == 'createDate' ? BupotList::all()->whereBetween('created_at', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]) : BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)]),
+            'bupots' => BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)])->sortBy('date'),
         ];
         if (count($attr['bupots']) == 0) {
             Alert::error('Gagal', 'Data tidak ditemukan');
@@ -856,6 +856,6 @@ class NonOperasionalController extends Controller
 
         return response($dom->saveXML(), 200)
             ->header('Content-Type', 'text/xml')
-            ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::now()->format('d M Y') . '.xml"');
+            ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::parse(session('start_date'))->format('d M Y') . ' - ' . Carbon::parse(session('end_date'))->format('d M Y') . '.xml"');
     }
 }

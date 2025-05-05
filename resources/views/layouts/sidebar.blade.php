@@ -72,22 +72,31 @@
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="nonoperasional"
-                class="nav-content collapse @if(url()->current() == route('xml-coretax') or url()->current() == route('bupot') or url()->current() == route('filter-bupot'))show @endif"
+                class="nav-content collapse @if(url()->current() == route('xml-coretax') or url()->current() == route('bupot') or url()->current() == route('filter-bupot') or url()->current() == route('itdocs'))show @endif"
                 data-bs-parent="#sidebar-nav">
-                <ul class="mb-2 nav-heading">Akunting</ul>
+                <div class="d-none">
+                    <ul class="mb-2 nav-heading">Akunting</ul>
+                    <li>
+                        <a href="{{ route('xml-coretax') }}">
+                            <i class="bi bi-circle-fill"></i><span>Fitur Coretax</span>
+                        </a>
+                    </li>
+                    @if (Auth::user()->userDetail->position == 'Admin Akuntansi' or Auth::user()->role == 'superadmin'
+                    or
+                    Auth::user()->role == 'administrator')
+                    <li>
+                        <a href="{{ route('bupot') }}">
+                            <i class="bi bi-circle-fill"></i><span>Bupot PPh</span>
+                        </a>
+                    </li>
+                    @endif
+                </div>
+                <ul class="mb-2 nav-heading">IT</ul>
                 <li>
-                    <a href="{{ route('xml-coretax') }}">
-                        <i class="bi bi-circle-fill"></i><span>Fitur Coretax</span>
+                    <a href="{{ route('itdocs') }}">
+                        <i class="bi bi-circle-fill"></i><span>Dokumentasi IT</span>
                     </a>
                 </li>
-                @if (Auth::user()->userDetail->position == 'Admin Akuntansi' or Auth::user()->role == 'superadmin' or
-                Auth::user()->role == 'administrator')
-                <li>
-                    <a href="{{ route('bupot') }}">
-                        <i class="bi bi-circle-fill"></i><span>Bupot PPh</span>
-                    </a>
-                </li>
-                @endif
             </ul>
         </li><!-- End Non Operasional Nav -->
         @endif

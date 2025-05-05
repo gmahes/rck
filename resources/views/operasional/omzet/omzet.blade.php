@@ -92,12 +92,6 @@
                                                         </option>
                                                         @endforeach
                                                     </optgroup>
-                                                    <optgroup label="Kendaraan Kecil">
-                                                        @foreach ($smallvehicledrivers as $driver)
-                                                        <option value="{{ $driver->id }}">{{ $driver->fullname }}
-                                                        </option>
-                                                        @endforeach
-                                                    </optgroup>
                                                 </select>
                                             </div>
                                         </div>

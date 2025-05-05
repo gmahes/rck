@@ -858,4 +858,13 @@ class NonOperasionalController extends Controller
             ->header('Content-Type', 'text/xml')
             ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::parse(session('start_date'))->format('d M Y') . ' - ' . Carbon::parse(session('end_date'))->format('d M Y') . '.xml"');
     }
+    public function itdocs()
+    {
+        $attr = [
+            'title' => 'Dokumentasi IT',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+        ];
+        return view('non-operasional.itdocs.itdocs', $attr);
+    }
 }

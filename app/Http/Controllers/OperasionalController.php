@@ -15,7 +15,7 @@ class OperasionalController extends Controller
     public function omzet(Request $request)
     {
         $attr = [
-            'title' => 'Omzet',
+            'title' => 'Target Omzet',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
             'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),

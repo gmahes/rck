@@ -9,7 +9,19 @@
             <div class="col">
                 <div class="card shadow">
                     <div class="card-header">
-                        <p class="card-text fw-bold text-dark fs-5">Dokumentasi IT</p>
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text fw-bold text-dark fs-5">Dokumentasi IT</p>
+                            </div>
+                            <div class="col text-end">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addITDocs">
+                                    Tambah Data
+                                </button>
+                                @include('non-operasional.itdocs.modals.addITDocs')
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -22,7 +34,8 @@
                             <p class="mt-2 card-text fw-bold">Berikut adalah dokumentasi IT yang dapat diakses oleh
                                 seluruh
                                 karyawan RCK
-                                Office.</p>
+                                Office.
+                            </p>
                         </div>
                     </div>
                 </div>

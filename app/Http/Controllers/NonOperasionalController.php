@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Customers;
 use DOMDocument;
 use App\Models\Suppliers;
+use App\Models\UserDetail;
 use RealRashid\SweetAlert\Facades\Alert;
 use SimpleXMLElement;
 use Illuminate\Support\Facades\Auth;
@@ -864,6 +865,10 @@ class NonOperasionalController extends Controller
             'title' => 'Dokumentasi IT',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
+            'employees' => UserDetail::join('user_auth', 'user_detail.username', '=', 'user_auth.username')
+                ->where('user_auth.role', '!=', 'superadmin')
+                ->orderBy('user_detail.fullname')
+                ->get(['user_detail.*'])
         ];
         return view('non-operasional.itdocs.itdocs', $attr);
     }

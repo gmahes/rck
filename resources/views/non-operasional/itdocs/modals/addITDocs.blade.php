@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="addITDocs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title text-dark fw-bold fs-5" id="staticBackdropLabel">
@@ -16,27 +16,60 @@
                         <div class="col">
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-4 mt-1">
-                                        <label for="idDoc" class="form-label">Nomor ID</label>
+                                    <div class="col-4 my-auto">
+                                        <label for="troubleID" class="form-label">Trouble ID</label>
                                     </div>
                                     <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="idDoc"
-                                            placeholder="Masukkan Permasalahan" name="name" required disabled>
+                                        <input type="text" class="form-control form-control" id="troubleID"
+                                            placeholder="Masukkan Permasalahan" name="troubleID" required disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-4 my-auto">
+                                        <label for="name" class="form-label">Pengguna</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select name="" class="selectpicker" id="" data-width="100%"
+                                            data-live-search="true" data-size="4" required>
+                                            <option value="">-- Pilih Pengguna --</option>
+                                            @foreach ($employees as $employee)
+                                            <option value="{{ $employee->nik }}">{{ $employee->fullname }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-4 my-auto">
+                                        <label for="devices" class="form-label">Sistem yang
+                                            bermasalah</label>
+                                    </div>
+                                    <div class="col-8 my-auto">
+                                        <input type="text" class="form-control form-control" id="devices"
+                                            placeholder="Sistem yang bermasalah" name="name" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4 my-auto">
+                                        <label for="trouble" class="form-label">Permasalahan</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <textarea name="" id="trouble" class="form-control w-100" cols="" rows="3"
+                                            placeholder="Masukkan Permasalahan"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-4 my-auto">
+                                        <label for="action" class="form-label">Tindakan</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <textarea name="" id="action" class="form-control w-100" cols="" rows="3"
+                                            placeholder="Masukkan Tindakan"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-3">
-                                <div class="row">
-                                    <div class="col-4 mt-1">
-                                        <label for="name" class="form-label">Permasalahan</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="name"
-                                            placeholder="Masukkan Permasalahan" name="name" required autocomplete="off">
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

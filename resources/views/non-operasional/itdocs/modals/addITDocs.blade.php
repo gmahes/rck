@@ -10,7 +10,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start text-dark">
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('add-itdocs') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col">
@@ -20,16 +20,16 @@
                                 </div>
                                 <div class="col-8">
                                     <input type="text" class="form-control form-control" id="troubleID"
-                                        placeholder="Masukkan Permasalahan" name="troubleID" required disabled>
+                                        placeholder="Masukkan Permasalahan" readonly value="{{ $troubleID }}">
                                 </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
-                                    <label for="name" class="form-label">Pengguna</label>
+                                    <label for="user" class="form-label">Pengguna</label>
                                 </div>
                                 <div class="col-8">
-                                    <select name="" class="selectpicker" id="" data-width="100%" data-live-search="true"
-                                        data-size="4" required>
+                                    <select name="user" class="selectpicker" id="user" data-width="100%"
+                                        data-live-search="true" data-size="4" required>
                                         <option value="">-- Pilih Pengguna --</option>
                                         @foreach ($employees as $employee)
                                         <option value="{{ $employee->nik }}">{{ $employee->fullname }}</option>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-8 my-auto">
                                     <input type="text" class="form-control form-control" id="devices"
-                                        placeholder="Sistem yang bermasalah" name="name" autocomplete="off" required>
+                                        placeholder="Sistem yang bermasalah" name="devices" autocomplete="off" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -52,7 +52,7 @@
                                     <label for="trouble" class="form-label">Permasalahan</label>
                                 </div>
                                 <div class="col-8">
-                                    <textarea name="" id="trouble" class="form-control w-100" cols="" rows="3"
+                                    <textarea name="trouble" id="trouble" class="form-control w-100" cols="" rows="3"
                                         placeholder="Masukkan Permasalahan" required></textarea>
                                 </div>
                             </div>
@@ -61,8 +61,8 @@
                                     <label for="action" class="form-label">Tindakan</label>
                                 </div>
                                 <div class="col-8">
-                                    <textarea name="" id="action" class="form-control w-100" cols="" rows="3"
-                                        placeholder="Masukkan Tindakan" required></textarea>
+                                    <textarea name="action" id="action" class="form-control w-100" cols="" rows="3"
+                                        placeholder="Masukkan Tindakan"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -74,19 +74,19 @@
                                 <div class="col-8 my-auto">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="notdone"
-                                            value="notdone">
+                                            value="Belum Selesai">
                                         <label class="form-check-label" for="notdone">Belum Selesai</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="done"
-                                            value="done" required>
+                                            value="Selesai" required>
                                         <label class="form-check-label" for="done">Selesai</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-4 my-auto">
-                                    <label for="file" class="form-label">Gambar Pendukung</label>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <label for="foto" class="form-label">Gambar Pendukung</label>
                                 </div>
                                 <div class="col-8">
                                     @livewire('upload-photo')

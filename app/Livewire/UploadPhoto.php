@@ -17,17 +17,16 @@ class UploadPhoto extends Component
             'foto' => 'mimes:jpg,jpeg,png,webp',
         ]);
     }
+    // public function simpan()
+    // {
+    //     $this->validate([
+    //         'foto' => 'required|mimes:jpg,jpeg,png,webp',
+    //     ]);
 
-    public function simpan()
-    {
-        $this->validate([
-            'foto' => 'required|mimes:jpg,jpeg,png,webp',
-        ]);
+    //     $this->foto->store('public/foto');
 
-        $this->foto->store('public/foto');
-
-        session()->flash('pesan', 'Foto berhasil diupload.');
-    }
+    //     session()->flash('pesan', 'Foto berhasil diupload.');
+    // }
     public function render()
     {
         return view('livewire.upload-photo');

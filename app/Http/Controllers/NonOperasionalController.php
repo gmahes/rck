@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Imports\xls;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Customers;
+use App\Models\ITDocs;
 use DOMDocument;
 use App\Models\Suppliers;
 use App\Models\UserDetail;
@@ -867,8 +868,64 @@ class NonOperasionalController extends Controller
             'position' => Auth::user()->userDetail->position,
             'employees' => UserDetail::whereHas('userAuth', function ($query) {
                 $query->where('role', '!=', 'superadmin');
-            })->orderBy('fullname')->get()
+            })->orderBy('fullname')->get(),
+            'troubles' => ITDocs::all()->sortBy('created_at'),
         ];
+        $dateCode = date('ymd');
+        $prefix = 'IT-RCK/' . $dateCode . '/';
+
+        $lastKode = ITDocs::where('troubleID', 'like', $prefix . '%')
+            ->orderBy('troubleID', 'desc')
+            ->value('troubleID');
+
+        if ($lastKode) {
+            $lastNumber = (int) substr($lastKode, -3);
+            $urut = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            $urut = '001';
+        }
+        $troubleID = $prefix . $urut;
+        $attr['troubleID'] = $troubleID;
         return view('non-operasional.itdocs.itdocs', $attr);
+    }
+    public function saveITDocs()
+    {
+        $validator = Validator::make(request()->all(), [
+            'user' => 'required',
+            'devices' => 'required',
+            'trouble' => 'required',
+            'status' => 'required',
+        ], [
+            'user.required' => 'Nama Karyawan wajib diisi',
+            'devices.required' => 'Sistem wajib diisi',
+            'trouble.required' => 'Masalah wajib diisi',
+            'status.required' => 'Status wajib diisi',
+        ]);
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('itdocs');
+        }
+        $validated = $validator->validated();
+        if (request()->action) {
+            $itdocs = [
+                'devices' => $validated['devices'],
+                'nik' => $validated['user'],
+                'trouble' => $validated['trouble'],
+                'action' => request()->action,
+                'status' => $validated['status'],
+                'created_by' => Auth::user()->username,
+            ];
+        } else {
+            $itdocs = [
+                'devices' => $validated['devices'],
+                'nik' => $validated['user'],
+                'trouble' => $validated['trouble'],
+                'status' => $validated['status'],
+                'created_by' => Auth::user()->username,
+            ];
+        }
+        ITDocs::create($itdocs);
+        Alert::toast('Data berhasil disimpan', 'success');
+        return redirect()->route('itdocs');
     }
 }

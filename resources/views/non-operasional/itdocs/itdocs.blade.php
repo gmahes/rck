@@ -30,12 +30,34 @@
             <div class="col">
                 <div class="card shadow">
                     <div class="card-body">
-                        <div class="row">
-                            <p class="mt-2 card-text fw-bold">Berikut adalah dokumentasi IT yang dapat diakses oleh
-                                seluruh
-                                karyawan RCK
-                                Office.
-                            </p>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <table data-toggle="table" id="itdocs" class="table table-bordered" style="width:100%">
+                                    <thead class="table-dark">
+                                        <tr class="text-center">
+                                            <th>No ID</th>
+                                            <th>Pengguna</th>
+                                            <th>Permasalahan</th>
+                                            <th>Tindakan</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($troubles as $item)
+                                        <tr>
+                                            <td>{{ $item->troubleID }}</td>
+                                            <td>{{ $item->nik }}</td>
+                                            <td>{{ $item->trouble }}</td>
+                                            <td>@if ($item->action == null)
+                                                {{ "Belum ada aksi" }}
+                                                @else {{ $item->action }}
+                                                @endif</td>
+                                            <td></td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

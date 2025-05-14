@@ -865,10 +865,9 @@ class NonOperasionalController extends Controller
             'title' => 'Dokumentasi IT',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'employees' => UserDetail::join('user_auth', 'user_detail.username', '=', 'user_auth.username')
-                ->where('user_auth.role', '!=', 'superadmin')
-                ->orderBy('user_detail.fullname')
-                ->get(['user_detail.*'])
+            'employees' => UserDetail::whereHas('userAuth', function ($query) {
+                $query->where('role', '!=', 'superadmin');
+            })->orderBy('fullname')->get()
         ];
         return view('non-operasional.itdocs.itdocs', $attr);
     }

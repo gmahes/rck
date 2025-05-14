@@ -14,62 +14,83 @@
                     @csrf
                     <div class="row">
                         <div class="col">
-                            <div class="mb-3">
-                                <div class="row">
-                                    <div class="col-4 my-auto">
-                                        <label for="troubleID" class="form-label">Trouble ID</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control" id="troubleID"
-                                            placeholder="Masukkan Permasalahan" name="troubleID" required disabled>
-                                    </div>
+                            <div class="row">
+                                <div class="col-4 my-auto">
+                                    <label for="troubleID" class="form-label">Trouble ID</label>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col-4 my-auto">
-                                        <label for="name" class="form-label">Pengguna</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <select name="" class="selectpicker" id="" data-width="100%"
-                                            data-live-search="true" data-size="4" required>
-                                            <option value="">-- Pilih Pengguna --</option>
-                                            @foreach ($employees as $employee)
-                                            <option value="{{ $employee->nik }}">{{ $employee->fullname }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control form-control" id="troubleID"
+                                        placeholder="Masukkan Permasalahan" name="troubleID" required disabled>
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-4 my-auto">
-                                        <label for="devices" class="form-label">Sistem yang
-                                            bermasalah</label>
-                                    </div>
-                                    <div class="col-8 my-auto">
-                                        <input type="text" class="form-control form-control" id="devices"
-                                            placeholder="Sistem yang bermasalah" name="name" required>
-                                    </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
+                                    <label for="name" class="form-label">Pengguna</label>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4 my-auto">
-                                        <label for="trouble" class="form-label">Permasalahan</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <textarea name="" id="trouble" class="form-control w-100" cols="" rows="3"
-                                            placeholder="Masukkan Permasalahan"></textarea>
-                                    </div>
+                                <div class="col-8">
+                                    <select name="" class="selectpicker" id="" data-width="100%" data-live-search="true"
+                                        data-size="4" required>
+                                        <option value="">-- Pilih Pengguna --</option>
+                                        @foreach ($employees as $employee)
+                                        <option value="{{ $employee->nik }}">{{ $employee->fullname }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col-4 my-auto">
-                                        <label for="action" class="form-label">Tindakan</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <textarea name="" id="action" class="form-control w-100" cols="" rows="3"
-                                            placeholder="Masukkan Tindakan"></textarea>
-                                    </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4 my-auto">
+                                    <label for="devices" class="form-label">Sistem yang
+                                        bermasalah</label>
+                                </div>
+                                <div class="col-8 my-auto">
+                                    <input type="text" class="form-control form-control" id="devices"
+                                        placeholder="Sistem yang bermasalah" name="name" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 my-auto">
+                                    <label for="trouble" class="form-label">Permasalahan</label>
+                                </div>
+                                <div class="col-8">
+                                    <textarea name="" id="trouble" class="form-control w-100" cols="" rows="3"
+                                        placeholder="Masukkan Permasalahan" required></textarea>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
+                                    <label for="action" class="form-label">Tindakan</label>
+                                </div>
+                                <div class="col-8">
+                                    <textarea name="" id="action" class="form-control w-100" cols="" rows="3"
+                                        placeholder="Masukkan Tindakan" required></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="mb-3">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="form-label">Status Trouble</label>
+                                </div>
+                                <div class="col-8 my-auto">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="notdone"
+                                            value="notdone">
+                                        <label class="form-check-label" for="notdone">Belum Selesai</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="status" id="done"
+                                            value="done" required>
+                                        <label class="form-check-label" for="done">Selesai</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4 my-auto">
+                                    <label for="file" class="form-label">Gambar Pendukung</label>
+                                </div>
+                                <div class="col-8">
+                                    @livewire('upload-photo')
+                                </div>
                             </div>
                         </div>
                     </div>

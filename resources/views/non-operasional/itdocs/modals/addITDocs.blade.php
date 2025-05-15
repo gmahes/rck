@@ -25,7 +25,8 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
-                                    <label for="user" class="form-label">Pengguna</label>
+                                    <label for="user" class="form-label">Pengguna<p class="d-inline fw-bold">*</p>
+                                    </label>
                                 </div>
                                 <div class="col-8">
                                     <select name="user" class="selectpicker" id="user" data-width="100%"
@@ -40,7 +41,7 @@
                             <div class="row mt-1">
                                 <div class="col-4 my-auto">
                                     <label for="devices" class="form-label">Sistem yang
-                                        bermasalah</label>
+                                        bermasalah<p class="d-inline fw-bold">*</p></label>
                                 </div>
                                 <div class="col-8 my-auto">
                                     <input type="text" class="form-control form-control" id="devices"
@@ -49,7 +50,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-4 my-auto">
-                                    <label for="trouble" class="form-label">Permasalahan</label>
+                                    <label for="trouble" class="form-label">Permasalahan<p class="d-inline fw-bold">*
+                                        </p></label>
                                 </div>
                                 <div class="col-8">
                                     <textarea name="trouble" id="trouble" class="form-control w-100" cols="" rows="3"
@@ -69,7 +71,7 @@
                         <div class="col">
                             <div class="row">
                                 <div class="col-4">
-                                    <label class="form-label">Status Trouble</label>
+                                    <label class="form-label">Status Trouble<p class="d-inline fw-bold">*</p></label>
                                 </div>
                                 <div class="col-8 my-auto">
                                     <div class="form-check form-check-inline">
@@ -94,14 +96,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2">
-                        <div class="d-flex flex-row-reverse">
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="text-start">
+                                <p class="text-danger form-text"><em><strong>* </strong>Wajib diisi
+                                    </em></p>
                             </div>
-                            <div class="text-end me-2">
-                                <button type="button" class="btn btn-secondary btn-sm"
-                                    data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex flex-row-reverse">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                                </div>
+                                <div class="text-end me-2">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        data-bs-dismiss="modal">Tutup</button>
+                                </div>
                             </div>
                         </div>
                     </div>

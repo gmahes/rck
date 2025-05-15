@@ -52,10 +52,16 @@
                                             <td>{{ $item->userDetail->fullname}}</td>
                                             <td>{{ $item->trouble }}</td>
                                             <td>@if ($item->action == null)
-                                                {{ "Belum ada aksi" }}
+                                                {{ "-" }}
                                                 @else {{ $item->action }}
                                                 @endif</td>
-                                            <td>{{ $item->status }}</td>
+                                            <td>@if ($item->status == "Belum Selesai")
+                                                <i class="bi bi-hourglass-split text-primary fs-4"
+                                                    title="Belum Selesai"></i>
+                                                @else <i class="bi bi-check-square-fill text-success fs-4"
+                                                    title="Selesai"></i>
+                                                @endif
+                                            </td>
                                             <td></td>
                                             <td>
                                                 <img src="{{ Storage::url($item->photo) }}" alt="" width="200">

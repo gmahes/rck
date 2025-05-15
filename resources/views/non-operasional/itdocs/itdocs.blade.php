@@ -32,27 +32,34 @@
                     <div class="card-body">
                         <div class="row mt-2">
                             <div class="col">
-                                <table data-toggle="table" id="itdocs" class="table table-bordered" style="width:100%">
+                                <table data-toggle="table" data-search="true" data-pagination="true" id="itdocs"
+                                    class="table table-bordered" style="width:100%">
                                     <thead class="table-dark">
                                         <tr class="text-center">
-                                            <th>No ID</th>
+                                            <th data-width="165" class="fw-bold">ID</th>
                                             <th>Pengguna</th>
                                             <th>Permasalahan</th>
                                             <th>Tindakan</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
+                                            <th>Gambar</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="text-center">
                                         @foreach ($troubles as $item)
                                         <tr>
                                             <td>{{ $item->troubleID }}</td>
-                                            <td>{{ $item->nik }}</td>
+                                            <td>{{ $item->userDetail->fullname}}</td>
                                             <td>{{ $item->trouble }}</td>
                                             <td>@if ($item->action == null)
                                                 {{ "Belum ada aksi" }}
                                                 @else {{ $item->action }}
                                                 @endif</td>
+                                            <td>{{ $item->status }}</td>
                                             <td></td>
+                                            <td>
+                                                <img src="{{ Storage::url($item->photo) }}" alt="" width="200">
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

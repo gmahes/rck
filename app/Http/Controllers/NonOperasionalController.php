@@ -860,6 +860,19 @@ class NonOperasionalController extends Controller
             ->header('Content-Type', 'text/xml')
             ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::parse(session('start_date'))->format('d M Y') . ' - ' . Carbon::parse(session('end_date'))->format('d M Y') . '.xml"');
     }
+    private function generateKodeDokumentasi()
+    {
+        $tanggal = now()->format('ymd'); // Hasil: 240514
+        $prefix = "IT-RCK/{$tanggal}/";
+
+        // Hitung jumlah entri hari ini
+        $count = ITDocs::where('troubleID', 'like', $prefix . '%')->count();
+
+        // Nomor urut + 1, dengan padding 3 digit (001, 002, dst)
+        $urut = str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+
+        return $prefix . $urut; // Contoh: IT-RCK/240514/001
+    }
     public function itdocs()
     {
         $attr = [
@@ -895,35 +908,29 @@ class NonOperasionalController extends Controller
             'devices' => 'required',
             'trouble' => 'required',
             'status' => 'required',
+            'photo' => 'mimes:jpeg,jpg,png|max:2048',
         ], [
             'user.required' => 'Nama Karyawan wajib diisi',
             'devices.required' => 'Sistem wajib diisi',
             'trouble.required' => 'Masalah wajib diisi',
             'status.required' => 'Status wajib diisi',
+            'photo.mimes' => 'File harus berupa gambar (jpeg, jpg, png)',
         ]);
         if ($validator->fails()) {
             Alert::error('Gagal', $validator->errors()->first());
             return redirect()->route('itdocs');
         }
         $validated = $validator->validated();
-        if (request()->action) {
-            $itdocs = [
-                'devices' => $validated['devices'],
-                'nik' => $validated['user'],
-                'trouble' => $validated['trouble'],
-                'action' => request()->action,
-                'status' => $validated['status'],
-                'created_by' => Auth::user()->username,
-            ];
-        } else {
-            $itdocs = [
-                'devices' => $validated['devices'],
-                'nik' => $validated['user'],
-                'trouble' => $validated['trouble'],
-                'status' => $validated['status'],
-                'created_by' => Auth::user()->username,
-            ];
-        }
+        $itdocs = [
+            'nik' => $validated['user'],
+            'devices' => $validated['devices'],
+            'trouble' => $validated['trouble'],
+            'status' => $validated['status'],
+            'photo' => request()->hasFile('photo') ? request()->file('photo')->storeAs('itdocs', Str::uuid()->toString() . '.' . request()->file('photo')->getClientOriginalExtension(), 'public') : null,
+            'action' => request()->has('action') ? request()->action : null,
+            'created_by' => Auth::user()->username,
+        ];
+        // dd($itdocs);
         ITDocs::create($itdocs);
         Alert::toast('Data berhasil disimpan', 'success');
         return redirect()->route('itdocs');

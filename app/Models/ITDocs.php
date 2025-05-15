@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\UserDetail;
 
 class ITDocs extends Model
 {
@@ -16,7 +17,7 @@ class ITDocs extends Model
         'trouble',
         'action',
         'status',
-        'foto',
+        'photo',
         'created_by',
         'updated_by'
     ];
@@ -42,5 +43,9 @@ class ITDocs extends Model
             } while (self::where('troubleID', $prefix . $urut)->exists());
             $model->troubleID = $prefix . $urut;
         });
+    }
+    public function userDetail()
+    {
+        return $this->belongsTo(UserDetail::class, 'nik', 'nik');
     }
 }

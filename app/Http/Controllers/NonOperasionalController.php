@@ -211,7 +211,7 @@ class NonOperasionalController extends Controller
                         $listOfGoodService->addChild('Code', '000000');
                         $listOfGoodService->addChild('Name', $invoice['deskripsi'][$key]);
                         $listOfGoodService->addChild('Unit', $attr['units'][$invoice['satuan'][$key]] ?? 'UM.0033');
-                        $listOfGoodService->addChild('Price', intval($invoice['jumlah'][$key]) / floatval($invoice['qty'][$key]));
+                        $listOfGoodService->addChild('Price', number_format(intval($invoice['jumlah'][$key]) / floatval($invoice['qty'][$key]), 2, '.', ''));
                         $listOfGoodService->addChild('Qty', $invoice['qty'][$key]);
                         $listOfGoodService->addChild('TotalDiscount', '0');
                         $listOfGoodService->addChild('TaxBase', $invoice['jumlah'][$key]);
@@ -533,7 +533,7 @@ class NonOperasionalController extends Controller
                     $sheet->getStyle('A' . $row)->getFont()->setBold(true);
                     $sheet->setCellValue('F' . $row, number_format(array_sum($invoice['jumlah']), 0, '.', ','));
                     $sheet->setCellValue('G' . $row, number_format(array_sum($invoice['jumlah']) * 11 / 12, 2, '.', ','));
-                    $sheet->setCellValue('H' . $row, number_format(array_sum($invoice['jumlah']) * 0.011, 0, '.', ','));
+                    $sheet->setCellValue('H' . $row, number_format(array_sum($invoice['jumlah']) * 0.11, 0, '.', ','));
                     $sheet->getStyle('F' . $row . ':H' . $row)->getFont()->setBold(true);
                     $sheet->mergeCells('A' . ($row - count($invoice['deskripsi'])) . ':A' . ($row - 1));
                     $sheet->mergeCells('B' . ($row - count($invoice['deskripsi'])) . ':B' . ($row - 1));

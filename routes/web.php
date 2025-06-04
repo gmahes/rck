@@ -47,3 +47,4 @@ Route::delete('del-bupot/{id}', [NonOperasionalController::class, 'deleteBupot']
 Route::post('xmlBupot', [NonOperasionalController::class, 'xmlBupot'])->middleware('auth')->name('xmlBupot');
 Route::get('itdocs', [NonOperasionalController::class, 'itdocs'])->middleware('auth')->name('itdocs');
 Route::post('add-itdocs', [NonOperasionalController::class, 'saveITDocs'])->middleware('auth')->name('add-itdocs');
+Route::delete('del-itdocs', [NonOperasionalController::class, 'deleteITDocs'])->middleware('auth')->name('del-itdocs');

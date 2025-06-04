@@ -935,4 +935,10 @@ class NonOperasionalController extends Controller
         Alert::toast('Data berhasil disimpan', 'success');
         return redirect()->route('itdocs');
     }
+    public function deleteITDocs()
+    {
+        ITDocs::where('troubleID', request()->troubleID)->delete();
+        Alert::toast('Data berhasil dihapus', 'success');
+        return redirect()->route('itdocs');
+    }
 }

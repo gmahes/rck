@@ -42,11 +42,11 @@
                                             <th>Tindakan</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
-                                            <th>Gambar</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
                                         @foreach ($troubles as $item)
+                                        @include('non-operasional.itdocs.modals.deleteITDocs')
                                         <tr>
                                             <td>{{ $item->troubleID }}</td>
                                             <td>{{ $item->userDetail->fullname}}</td>
@@ -62,9 +62,31 @@
                                                     title="Selesai"></i>
                                                 @endif
                                             </td>
-                                            <td></td>
                                             <td>
-                                                <img src="{{ Storage::url($item->photo) }}" alt="" width="200">
+                                                <div class="btn-group dropstart">
+                                                    <button class="btn btn-sm btn-secondary dropdown-toggle"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-justify"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <button type="button"
+                                                                class="btn btn-sm dropdown-item text-success"
+                                                                data-bs-toggle="modal" data-bs-target="#editBupotList">
+                                                                <i class="bi bi-pencil"></i>
+                                                                Edit Data
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button"
+                                                                class="btn btn-sm dropdown-item text-danger"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteITDocs{{ $item->troubleID }}">
+                                                                <i class="bi bi-trash"></i>
+                                                                Hapus Data
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </td>
                                         </tr>
                                         @endforeach

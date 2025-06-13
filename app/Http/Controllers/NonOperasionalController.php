@@ -941,4 +941,36 @@ class NonOperasionalController extends Controller
         Alert::toast('Data berhasil dihapus', 'success');
         return redirect()->route('itdocs');
     }
+    public function editITDocs()
+    {
+        $validator = Validator::make(request()->all(), [
+            'user' => 'required',
+            'devices' => 'required',
+            'trouble' => 'required',
+            'status' => 'required',
+            'photo' => 'mimes:jpeg,jpg,png|max:2048',
+        ], [
+            'user.required' => 'Nama Karyawan wajib diisi',
+            'devices.required' => 'Sistem wajib diisi',
+            'trouble.required' => 'Masalah wajib diisi',
+            'status.required' => 'Status wajib diisi',
+            'photo.mimes' => 'File harus berupa gambar (jpeg, jpg, png)',
+        ]);
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('itdocs');
+        }
+        $validated = $validator->validated();
+        $itdocs = [
+            'nik' => $validated['user'],
+            'devices' => $validated['devices'],
+            'trouble' => $validated['trouble'],
+            'status' => $validated['status'],
+            'photo' => request()->hasFile('photo') ? request()->file('photo')->storeAs('itdocs', Str::uuid()->toString() . '.' . request()->file('photo')->getClientOriginalExtension(), 'public') : null,
+            'action' => request()->has('action') ? request()->action : null,
+        ];
+        ITDocs::where('troubleID', request()->troubleID)->update($itdocs);
+        Alert::toast('Data berhasil diubah', 'success');
+        return redirect()->route('itdocs');
+    }
 }

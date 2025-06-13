@@ -39,13 +39,13 @@
                                                         </option>
                                                         @endforeach
                                                     </optgroup>
-                                                    <optgroup label="Kendaraan Kecil">
+                                                    {{-- <optgroup label="Kendaraan Kecil">
                                                         <option value="allSmall">Semua Supir</option>
                                                         @foreach ($smallvehicledrivers as $driver)
                                                         <option value="{{ $driver->id }}">{{ $driver->fullname }}
                                                         </option>
                                                         @endforeach
-                                                    </optgroup>
+                                                    </optgroup> --}}
                                                 </select>
                                             </div>
                                         </div>

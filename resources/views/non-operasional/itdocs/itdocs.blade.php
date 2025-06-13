@@ -46,6 +46,7 @@
                                     </thead>
                                     <tbody class="text-center">
                                         @foreach ($troubles as $item)
+                                        @include('non-operasional.itdocs.modals.editITDocs')
                                         @include('non-operasional.itdocs.modals.deleteITDocs')
                                         <tr>
                                             <td>{{ $item->troubleID }}</td>
@@ -72,7 +73,8 @@
                                                         <li>
                                                             <button type="button"
                                                                 class="btn btn-sm dropdown-item text-success"
-                                                                data-bs-toggle="modal" data-bs-target="#editBupotList">
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editITDocs{{ $item->troubleID }}">
                                                                 <i class="bi bi-pencil"></i>
                                                                 Edit Data
                                                             </button>

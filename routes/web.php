@@ -48,3 +48,4 @@ Route::post('xmlBupot', [NonOperasionalController::class, 'xmlBupot'])->middlewa
 Route::get('itdocs', [NonOperasionalController::class, 'itdocs'])->middleware('auth')->name('itdocs');
 Route::post('add-itdocs', [NonOperasionalController::class, 'saveITDocs'])->middleware('auth')->name('add-itdocs');
 Route::delete('del-itdocs', [NonOperasionalController::class, 'deleteITDocs'])->middleware('auth')->name('del-itdocs');
+Route::put('edit-itdocs', [NonOperasionalController::class, 'editITDocs'])->middleware('auth')->name('edit-itdocs');

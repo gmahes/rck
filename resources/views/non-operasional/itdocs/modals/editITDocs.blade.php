@@ -12,25 +12,29 @@
             <div class="modal-body text-start text-dark">
                 <form action="{{ route('edit-itdocs') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" name="troubleID" value="{{ $item->troubleID }}">
                     <div class="row">
                         <div class="col">
                             <div class="row">
                                 <div class="col-4 my-auto">
-                                    <label for="troubleID" class="form-label">Trouble ID</label>
+                                    <label for="troubleID{{ $item->troubleID }}" class="form-label">Trouble ID</label>
                                 </div>
                                 <div class="col-8">
-                                    <input type="text" class="form-control form-control" id="troubleID"
-                                        placeholder="Masukkan Permasalahan" readonly value="{{ $troubleID }}" disabled>
+                                    <input type="text" class="form-control form-control"
+                                        id="troubleID{{ $item->troubleID }}" placeholder="Masukkan Permasalahan"
+                                        readonly value="{{ $troubleID }}" disabled>
                                 </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
-                                    <label for="user" class="form-label">Pengguna<p class="d-inline fw-bold">*</p>
+                                    <label for="user{{ $item->troubleID }}" class="form-label">Pengguna<p
+                                            class="d-inline fw-bold">*</p>
                                     </label>
                                 </div>
                                 <div class="col-8">
-                                    <select name="user" class="selectpicker" id="user" data-width="100%"
-                                        data-live-search="true" data-size="4" required>
+                                    <select name="user" class="selectpicker" id="user{{ $item->troubleID }}"
+                                        data-width="100%" data-live-search="true" data-size="4" required>
                                         <option value="">-- Pilih Pengguna --</option>
                                         @foreach ($employees as $employee)
                                         <option value="{{ $employee->nik }}" @if ($employee->nik == $item->nik) selected
@@ -42,32 +46,34 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-4 my-auto">
-                                    <label for="devices" class="form-label">Sistem yang
+                                    <label for="devices{{ $item->troubleID }}" class="form-label">Sistem yang
                                         bermasalah<p class="d-inline fw-bold">*</p></label>
                                 </div>
                                 <div class="col-8 my-auto">
-                                    <input type="text" class="form-control form-control" id="devices"
-                                        placeholder="Sistem yang bermasalah" name="devices" autocomplete="off" required
-                                        value="{{ $item->devices }}">
+                                    <input type="text" class="form-control form-control"
+                                        id="devices{{ $item->troubleID }}" placeholder="Sistem yang bermasalah"
+                                        name="devices" autocomplete="off" required value="{{ $item->devices }}">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-4 my-auto">
-                                    <label for="trouble" class="form-label">Permasalahan<p class="d-inline fw-bold">*
+                                    <label for="trouble{{ $item->troubleID }}" class="form-label">Permasalahan<p
+                                            class="d-inline fw-bold">*
                                         </p></label>
                                 </div>
                                 <div class="col-8">
-                                    <textarea name="trouble" id="trouble" class="form-control w-100" cols="" rows="3"
-                                        placeholder="Masukkan Permasalahan" required>{{ $item->trouble }}</textarea>
+                                    <textarea name="trouble" id="trouble{{ $item->troubleID }}"
+                                        class="form-control w-100" cols="" rows="3" placeholder="Masukkan Permasalahan"
+                                        required>{{ $item->trouble }}</textarea>
                                 </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
-                                    <label for="action" class="form-label">Tindakan</label>
+                                    <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
                                 </div>
                                 <div class="col-8">
-                                    <textarea name="action" id="action" class="form-control w-100" cols="" rows="3"
-                                        placeholder="Masukkan Tindakan">{{ $item->action }}</textarea>
+                                    <textarea name="action" id="action{{ $item->troubleID }}" class="form-control w-100"
+                                        cols="" rows="3" placeholder="Masukkan Tindakan">{{ $item->action }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -78,20 +84,22 @@
                                 </div>
                                 <div class="col-8 my-auto">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="notdone"
-                                            value="Belum Selesai" @if ($item->status == 'Belum Selesai') checked @endif>
+                                        <input class="form-check-input" type="radio" name="status"
+                                            id="notdone{{ $item->troubleID }}" value="Belum Selesai" @if ($item->status
+                                        == 'Belum Selesai') checked @endif>
                                         <label class="form-check-label" for="notdone">Belum Selesai</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status" id="done"
-                                            value="Selesai" @if ($item->status == 'Selesai') checked @endif>
+                                        <input class="form-check-input" type="radio" name="status"
+                                            id="done{{ $item->troubleID }}" value="Selesai" @if ($item->status ==
+                                        'Selesai') checked @endif>
                                         <label class="form-check-label" for="done">Selesai</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-4">
-                                    <label for="foto" class="form-label">Gambar Pendukung</label>
+                                    <label for="foto{{ $item->troubleID }}" class="form-label">Gambar Pendukung</label>
                                 </div>
                                 <div class="col-8">
                                     @livewire('upload-photo', ['savedPhotoPath' => $item->photo])

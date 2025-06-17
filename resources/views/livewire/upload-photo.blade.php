@@ -17,10 +17,4 @@
         <img src="{{ $savedPhotoURL }}" class="img-thumbnail" style="max-height: 200px;">
     </div>
     @endif
-    {{-- @if ($foto)
-    <div class="mt-1">
-        <label class="form-label">Preview:</label><br>
-        <img src="{{ $foto->temporaryUrl() }}" class="img-thumbnail" style="max-height: 200px;">
-    </div>
-    @endif --}}
 </div>

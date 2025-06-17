@@ -13,7 +13,7 @@ class UploadPhoto extends Component
     public $foto;
     public $savedPhotoURL;
 
-    public function mount($savedPhotoPath = null) // Tambahkan parameter opsional
+    public function mount($savedPhotoPath = null)
     {
         if ($savedPhotoPath) {
             $this->savedPhotoURL = Storage::url($savedPhotoPath);

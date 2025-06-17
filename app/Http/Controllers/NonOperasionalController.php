@@ -20,7 +20,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use App\Models\BupotList;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 
 class NonOperasionalController extends Controller
 {
@@ -961,14 +963,28 @@ class NonOperasionalController extends Controller
             return redirect()->route('itdocs');
         }
         $validated = $validator->validated();
+        $itdocsToUpdate = ITDocs::where('troubleID', request()->troubleID)->first();
         $itdocs = [
             'nik' => $validated['user'],
             'devices' => $validated['devices'],
             'trouble' => $validated['trouble'],
             'status' => $validated['status'],
-            'photo' => request()->hasFile('photo') ? request()->file('photo')->storeAs('itdocs', Str::uuid()->toString() . '.' . request()->file('photo')->getClientOriginalExtension(), 'public') : null,
             'action' => request()->has('action') ? request()->action : null,
         ];
+        if (request()->hasFile('photo')) {
+            // Jika ada foto baru diupload:
+            // Hapus foto lama jika ada dan file-nya benar-benar ada di storage
+            if ($itdocsToUpdate->photo && Storage::disk('public')->exists($itdocsToUpdate->photo)) {
+                Storage::disk('public')->delete($itdocsToUpdate->photo);
+            }
+            // Simpan foto baru
+            $photoPath = request()->file('photo')->storeAs('itdocs', Str::uuid()->toString() . '.' . request()->file('photo')->getClientOriginalExtension(), 'public');
+            $itdocs['photo'] = $photoPath;
+        } else {
+            // Jika tidak ada foto baru diupload:
+            // Pertahankan foto yang sudah ada di database dengan mengambil dari model yang diambil
+            $itdocs['photo'] = $itdocsToUpdate->photo;
+        }
         ITDocs::where('troubleID', request()->troubleID)->update($itdocs);
         Alert::toast('Data berhasil diubah', 'success');
         return redirect()->route('itdocs');

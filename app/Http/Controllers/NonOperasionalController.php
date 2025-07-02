@@ -35,7 +35,98 @@ class NonOperasionalController extends Controller
     }
     public function convertXlsToXml()
     {
-        if (request()->invoice == "imp") {
+        if (Auth::user()->userDetail->position == 'Staff Exim' or Auth::user()->userDetail->position == 'Kepala Exim') {
+            $import = new invoiceImport;
+            Excel::import($import, request()->file('file'));
+            $attr = [
+                'sbu' => Customers::all()->sortBy('name'),
+                'invoices' => $import->data
+            ];
+            $this->xml = new SimpleXMLElement('<TaxInvoiceBulk xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></TaxInvoiceBulk>');
+            $this->xml->addChild('TIN', '0109009514402000');
+            $this->xml->addChild('ListOfTaxInvoice');
+            foreach ($attr['invoices'] as $invoice) {
+                if ($invoice['status'] == 'Tidak Terdaftar') {
+                    Alert::error('Gagal', 'Pelanggan ' . $invoice['nama_pelanggan'] . ' tidak terdaftar');
+                    return redirect()->route('xml-coretax');
+                }
+                $taxInvoice = $this->xml->ListOfTaxInvoice->addChild('TaxInvoice');
+                $taxInvoice->addChild('TaxInvoiceDate', $invoice['tanggal_invoice']);
+                $taxInvoice->addChild('TaxInvoiceOpt', 'Normal');
+                $taxInvoice->addChild('TrxCode', '05');
+                $taxInvoice->addChild('AddInfo');
+                $taxInvoice->addChild('CustomDoc');
+                $taxInvoice->addChild('CustomDocMonthYear');
+                $taxInvoice->addChild('RefDesc', $invoice['no_invoice']);
+                $taxInvoice->addChild('FacilityStamp');
+                $taxInvoice->addChild('SellerIDTKU', '0109009514402000000000');
+                foreach ($attr['sbu'] as $sbu) {
+                    if ($sbu->name == $invoice['nama_pelanggan']) {
+                        if ($sbu->type == 'NPWP') {
+                            $taxInvoice->addChild('BuyerTin', $sbu->id);
+                            $taxInvoice->addChild('BuyerDocument', 'TIN');
+                            $taxInvoice->addChild('BuyerCountry', 'IDN');
+                            $taxInvoice->addChild('BuyerDocumentNumber', '-');
+                            $taxInvoice->addChild('BuyerName', $sbu->name);
+                            $taxInvoice->addChild('BuyerAdress', $sbu->address);
+                            $taxInvoice->addChild('BuyerEmail');
+                            $taxInvoice->addChild('BuyerIDTKU', $sbu->id . '000000');
+                        } else {
+                            $taxInvoice->addChild('BuyerTin', '0000000000000000');
+                            $taxInvoice->addChild('BuyerDocument', 'National ID');
+                            $taxInvoice->addChild('BuyerCountry', 'IDN');
+                            $taxInvoice->addChild('BuyerDocumentNumber', $sbu->id);
+                            $taxInvoice->addChild('BuyerName', $sbu->name);
+                            $taxInvoice->addChild('BuyerAdress', $sbu->address);
+                            $taxInvoice->addChild('BuyerEmail');
+                            $taxInvoice->addChild('BuyerIDTKU', '000000');
+                        }
+                    }
+                }
+                $goodService = $taxInvoice->addChild('ListOfGoodService');
+                if (gettype($invoice['deskripsi']) == 'string') {
+                    $listOfGoodService = $goodService->addChild('GoodService');
+                    $listOfGoodService->addChild('Opt', 'B');
+                    $listOfGoodService->addChild('Code', '000000');
+                    $listOfGoodService->addChild('Name', $invoice['deskripsi']);
+                    $listOfGoodService->addChild('Unit', 'UM.0033');
+                    $listOfGoodService->addChild('Price', $invoice['jumlah'] / $invoice['unit']);
+                    $listOfGoodService->addChild('Qty', $invoice['unit']);
+                    $listOfGoodService->addChild('TotalDiscount', '0');
+                    $listOfGoodService->addChild('TaxBase', $invoice['jumlah']);
+                    $listOfGoodService->addChild('OtherTaxBase', '0');
+                    $listOfGoodService->addChild('VATRate', '12');
+                    $listOfGoodService->addChild('VAT', rtrim(rtrim(number_format($invoice['jumlah'] * 0.011, 2, '.', ''), '0'), '.'));
+                    $listOfGoodService->addChild('STLGRate', '0');
+                    $listOfGoodService->addChild('STLG', '0');
+                } else {
+                    foreach (array_keys($invoice['deskripsi']) as $key) {
+                        $listOfGoodService = $goodService->addChild('GoodService');
+                        $listOfGoodService->addChild('Opt', 'B');
+                        $listOfGoodService->addChild('Code', '000000');
+                        $listOfGoodService->addChild('Name', $invoice['deskripsi'][$key]);
+                        $listOfGoodService->addChild('Unit', 'UM.0033');
+                        $listOfGoodService->addChild('Price', $invoice['jumlah'][$key] / $invoice['unit'][$key]);
+                        $listOfGoodService->addChild('Qty', $invoice['unit'][$key]);
+                        $listOfGoodService->addChild('TotalDiscount', '0');
+                        $listOfGoodService->addChild('TaxBase', $invoice['jumlah'][$key]);
+                        $listOfGoodService->addChild('OtherTaxBase', '0');
+                        $listOfGoodService->addChild('VATRate', '12');
+                        $listOfGoodService->addChild('VAT', rtrim(rtrim(number_format($invoice['jumlah'][$key] * 0.011, 2, '.', ''), '0'), '.'));
+                        $listOfGoodService->addChild('STLGRate', '0');
+                        $listOfGoodService->addChild('STLG', '0');
+                    }
+                }
+                $attr['xml'] = $this->xml;
+                $dom = new DOMDocument('1.0', 'UTF-8');
+                $dom->preserveWhiteSpace = false;
+                $dom->formatOutput = true;
+                $dom->loadXML($attr['xml']->asXML());
+            }
+            return response($dom->saveXML(), 200)
+                ->header('Content-Type', 'text/xml')
+                ->header('Content-Disposition', 'attachment; filename="' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xml"');
+        } elseif (request()->invoice == "imp") {
             $import = new invoiceImport;
             Excel::import($import, request()->file('file'));
             $attr = [

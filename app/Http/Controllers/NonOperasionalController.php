@@ -427,7 +427,124 @@ class NonOperasionalController extends Controller
     }
     public function convertXlsToXlsx()
     {
-        if (request()->invoice == "imp") {
+        if (Auth::user()->userDetail->position == 'Staff Exim' or Auth::user()->userDetail->position == 'Kepala Exim') {
+            $import = new invoiceImport;
+            Excel::import($import, request()->file('file'));
+            $attr = [
+                'sbu' => Customers::all()->sortBy('name'),
+                'invoices' => $import->data
+            ];
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'No Invoice');
+            $sheet->setCellValue('B1', 'Tanggal Invoice');
+            $sheet->setCellValue('C1', 'Nama Pelanggan');
+            $sheet->setCellValue('D1', 'Qty');
+            $sheet->setCellValue('E1', 'Deskripsi');
+            $sheet->setCellValue('F1', 'DPP');
+            $sheet->setCellValue('G1', 'PPN 1,1%');
+
+            // Set header with bold text, center text, and font size 11
+            $headerStyleArray = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 11,
+                    'name' => 'Calibri',
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+            ];
+            $sheet->getStyle('A1:G1')->applyFromArray($headerStyleArray);
+
+            $row = 2;
+            foreach ($attr['invoices'] as $invoice) {
+                if (gettype($invoice['deskripsi']) == 'string') {
+                    $ppn = $invoice['jumlah'] * 0.011;
+                    $sheet->setCellValue('A' . $row, $invoice['no_invoice']);
+                    $sheet->setCellValue('B' . $row, Carbon::parse($invoice['tanggal_invoice'])->translatedFormat('d-m-Y'));
+                    $sheet->setCellValue('C' . $row, $invoice['nama_pelanggan']);
+                    $sheet->setCellValue('D' . $row, $invoice['unit']);
+                    $sheet->setCellValue('E' . $row, $invoice['deskripsi']);
+                    $sheet->setCellValue('F' . $row, number_format($invoice['jumlah'], 0, '.', ','));
+                    $sheet->setCellValue('G' . $row, number_format($ppn, 0, '.', ','));
+                    $row++;
+                } else {
+                    foreach (array_keys($invoice['deskripsi']) as $key) {
+                        $sumJumlah = array_sum($invoice['jumlah']);
+                        $sumPPn = $sumJumlah * 0.011;
+                        // dd($sumPPn);
+                        $sheet->setCellValue('A' . $row, $invoice['no_invoice']);
+                        $sheet->setCellValue('B' . $row, Carbon::parse($invoice['tanggal_invoice'])->translatedFormat('d-m-Y'));
+                        $sheet->setCellValue('C' . $row, $invoice['nama_pelanggan']);
+                        $sheet->setCellValue('D' . $row, $invoice['unit'][$key]);
+                        $sheet->setCellValue('E' . $row, $invoice['deskripsi'][$key]);
+                        $sheet->setCellValue('F' . $row, number_format($invoice['jumlah'][$key], 0, '.', ','));
+                        $sheet->setCellValue('G' . $row, number_format($invoice['jumlah'][$key] * 0.011, 2, '.', ','));
+                        $row++;
+                    }
+                    //Total
+                    $sheet->mergeCells('A' . $row . ':E' . $row);
+                    $sheet->setCellValue('A' . $row, 'Total');
+                    $sheet->getStyle('A' . $row)->getFont()->setBold(true);
+                    $sheet->setCellValue('F' . $row, number_format($sumJumlah, 0, '.', ','));
+                    $sheet->setCellValue('G' . $row, number_format($sumPPn, 0, '.', ','));
+                    $sheet->getStyle('F' . $row . ':G' . $row)->getFont()->setBold(true);
+                    $sheet->mergeCells('A' . ($row - count($invoice['deskripsi'])) . ':A' . ($row - 1));
+                    $sheet->mergeCells('B' . ($row - count($invoice['deskripsi'])) . ':B' . ($row - 1));
+                    $sheet->mergeCells('C' . ($row - count($invoice['deskripsi'])) . ':C' . ($row - 1));
+                    $sheet->getStyle('A' . ($row - count($invoice['deskripsi'])) . ':A' . ($row - 1))
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $sheet->getStyle('B' . ($row - count($invoice['deskripsi'])) . ':B' . ($row - 1))
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $sheet->getStyle('C' . ($row - count($invoice['deskripsi'])) . ':C' . ($row - 1))
+                        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                }
+                $row++;
+            }
+
+            // Auto size columns to fit content
+            foreach (range('A', 'G') as $columnID) {
+                $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            }
+
+            // Add border to cells
+            $styleArray = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '00000000'],
+                    ],
+                ],
+            ];
+            $sheet->getStyle('A1:G' . ($row - 1))->applyFromArray($styleArray);
+
+            // Center align all cells and set font to Calibri with size 11
+            $sheet->getStyle('A1:G' . ($row - 1))->applyFromArray([
+                'font' => [
+                    'name' => 'Calibri',
+                    'size' => 11,
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+            ]);
+
+            // Set print settings
+            $sheet->getPageSetup()->setFitToWidth(1);
+            $sheet->getPageSetup()->setFitToHeight(0);
+            $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_FOLIO);
+            $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+
+            // Set repeating rows for print title
+            $sheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 1);
+
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $filename = storage_path('app/public/' . pathinfo(request()->file('file')->getClientOriginalName(), PATHINFO_FILENAME) . '.xlsx');
+            $writer->save($filename);
+
+            return response()->download($filename)->deleteFileAfterSend(true);
+        } elseif (request()->invoice == "imp") {
             $import = new invoiceImport;
             Excel::import($import, request()->file('file'));
             $attr = [

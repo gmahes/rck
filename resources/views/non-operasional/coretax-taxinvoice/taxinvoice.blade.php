@@ -35,9 +35,7 @@
                                     </div>
                                     @if (auth()->user()->role == 'administrator' or auth()->user()->role ==
                                     'superadmin' or auth()->user()->userDetail->position == 'Admin Marketing' or
-                                    auth()->user()->userDetail->position == 'Admin Akuntansi' or
-                                    auth()->user()->userDetail->position == 'Staff Exim' or
-                                    auth()->user()->userDetail->position == 'Kepala Exim')
+                                    auth()->user()->userDetail->position == 'Admin Akuntansi')
                                     <div class="row mt-1">
                                         <div class="col">
                                             <div class="form-check form-check-inline">
@@ -51,9 +49,7 @@
                                                 <label class="form-check-label" for="invoiceImport">Import</label>
                                             </div>
                                             <div class="form-check form-check-inline" {{ auth()->
-                                                user()->userDetail->position == 'Admin Marketing' ||
-                                                auth()->user()->userDetail->position == 'Staff Exim' ||
-                                                auth()->user()->userDetail->position == 'Kepala Exim' ? 'hidden' : ''
+                                                user()->userDetail->position == 'Admin Marketing' ? 'hidden' : ''
                                                 }}>
                                                 <input class="form-check-input" type="radio" name="invoice"
                                                     id="invoiceBengkel" value="bkl">

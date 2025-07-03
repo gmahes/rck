@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title text-dark fw-bold fs-5" id="staticBackdropLabel">
-                    Tambah Dokumentasi IT
+                    Data Pengaduan
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -20,7 +20,7 @@
                                 </div>
                                 <div class="col-8">
                                     <input type="text" class="form-control form-control" id="troubleID"
-                                        placeholder="Masukkan Permasalahan" readonly value="{{ $troubleID }}">
+                                        placeholder="Masukkan Permasalahan" readonly value="{{ $troubleID }}" disabled>
                                 </div>
                             </div>
                             <div class="row mt-2">

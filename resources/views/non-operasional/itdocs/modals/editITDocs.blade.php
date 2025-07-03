@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title text-dark fw-bold fs-5" id="staticBackdropLabel">
-                    Edit Dokumentasi IT
+                    Data Pengaduan
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

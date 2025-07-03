@@ -17,7 +17,6 @@ class UserDetail extends Model
         'username',
         'fullname',
         'position',
-        'division',
         'created_by',
     ];
     protected $with = ['userAuth'];

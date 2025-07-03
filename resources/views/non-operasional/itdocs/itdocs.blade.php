@@ -11,13 +11,13 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <p class="card-text fw-bold text-dark fs-5">Dokumentasi IT</p>
+                                <p class="card-text fw-bold text-dark fs-5">Pengaduan</p>
                             </div>
                             <div class="col text-end">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addITDocs">
-                                    Tambah Data
+                                    Buat Pengaduan
                                 </button>
                                 @include('non-operasional.itdocs.modals.addITDocs')
                             </div>
@@ -64,6 +64,7 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($item->status == "Belum Selesai")
                                                 <div class="btn-group dropstart">
                                                     <button class="btn btn-sm btn-secondary dropdown-toggle"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -89,6 +90,7 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

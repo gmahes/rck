@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             'username' => 'it_chakra',
             'fullname' => 'superadmin',
             'position' => 'superadmin',
-            'division' => 'superadmin',
         ]);
     }
 }

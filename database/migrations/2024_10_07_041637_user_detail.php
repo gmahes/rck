@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('username', 255);
             $table->string('fullname', 255);
             $table->string('position', 255);
-            $table->string('division', 255);
             $table->timestamps();
             $table->string('created_by', 255)->nullable();
             $table->string('updated_by', 255)->nullable();

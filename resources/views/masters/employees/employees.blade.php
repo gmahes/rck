@@ -2,7 +2,7 @@
 @section('content')
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Selamat Datang di RCK Office!</h1>
+        <h1>Selamat Datang di RCK Helpdesk!</h1>
     </div><!-- End Page Title -->
     <section class="section">
         <div class="col">
@@ -37,7 +37,6 @@
                                         <th>NIK</th>
                                         <th>Nama Lengkap</th>
                                         <th>Jabatan</th>
-                                        <th>Divisi</th>
                                         @if (Auth::user()->role == 'superadmin')
                                         <th>Role</th>
                                         @endif
@@ -53,7 +52,6 @@
                                         <td class="fw-bold text-center">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
                                         <td>{{ $employee->position }}</td>
-                                        <td>{{ $employee->division }}</td>
                                         @if (Auth::user()->role == 'superadmin')
                                         <td>{{ $employee->userAuth->role }}</td>
                                         @endif

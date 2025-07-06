@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="editITDocs{{ $item->troubleID }}" data-bs-backdrop="static" data-bs-keyboard="false"
+<div class="modal fade" id="editComplaint{{ $item->troubleID }}" data-bs-backdrop="static" data-bs-keyboard="false"
     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -10,10 +10,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start text-dark">
-                <form action="{{ route('edit-itdocs') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('edit-complaint') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="troubleID" value="{{ $item->troubleID }}">
                     <div class="row">
                         <div class="col">
                             <div class="row">
@@ -23,7 +22,7 @@
                                 <div class="col-8">
                                     <input type="text" class="form-control form-control"
                                         id="troubleID{{ $item->troubleID }}" placeholder="Masukkan Permasalahan"
-                                        readonly value="{{ $troubleID }}" disabled>
+                                        readonly value="{{ $item->troubleID }}" disabled>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -78,25 +77,6 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="row">
-                                <div class="col-4">
-                                    <label class="form-label">Status Trouble<p class="d-inline fw-bold">*</p></label>
-                                </div>
-                                <div class="col-8 my-auto">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status"
-                                            id="notdone{{ $item->troubleID }}" value="Belum Selesai" @if ($item->status
-                                        == 'Belum Selesai') checked @endif>
-                                        <label class="form-check-label" for="notdone">Belum Selesai</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="status"
-                                            id="done{{ $item->troubleID }}" value="Selesai" @if ($item->status ==
-                                        'Selesai') checked @endif>
-                                        <label class="form-check-label" for="done">Selesai</label>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row mt-2">
                                 <div class="col-4">
                                     <label for="foto{{ $item->troubleID }}" class="form-label">Gambar Pendukung</label>

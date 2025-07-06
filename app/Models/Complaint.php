@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\UserDetail;
 
-class ITDocs extends Model
+class Complaint extends Model
 {
-    protected $table = 'it-docs'; // Nama tabel
+    protected $table = 'complaint'; // Nama tabel
     protected $primaryKey = 'troubleID'; // Primary key
     public $incrementing = false; // Non-incrementing karena menggunakan string sebagai primary key
     protected $keyType = 'string'; // Tipe data primary key

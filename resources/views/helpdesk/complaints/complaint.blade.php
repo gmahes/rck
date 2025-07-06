@@ -2,7 +2,7 @@
 @section('content')
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Selamat Datang di RCK Office!</h1>
+        <h1>Selamat Datang di RCK Helpdesk!</h1>
     </div><!-- End Page Title -->
     <section class="section">
         <div class="row">
@@ -13,14 +13,16 @@
                             <div class="col">
                                 <p class="card-text fw-bold text-dark fs-5">Pengaduan</p>
                             </div>
+                            @if (Auth::user()->role == 'user')
                             <div class="col text-end">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#addITDocs">
+                                    data-bs-target="#addComplaint">
                                     Buat Pengaduan
                                 </button>
-                                @include('non-operasional.itdocs.modals.addITDocs')
+                                @include('helpdesk.complaints.modals.addComplaint')
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -36,7 +38,7 @@
                                     class="table table-bordered" style="width:100%">
                                     <thead class="table-dark">
                                         <tr class="text-center">
-                                            <th data-width="165" class="fw-bold">ID</th>
+                                            <th data-width="165" class="fw-bold">Trouble ID</th>
                                             <th>Pengguna</th>
                                             <th>Permasalahan</th>
                                             <th>Tindakan</th>
@@ -46,8 +48,8 @@
                                     </thead>
                                     <tbody class="text-center">
                                         @foreach ($troubles as $item)
-                                        @include('non-operasional.itdocs.modals.editITDocs')
-                                        @include('non-operasional.itdocs.modals.deleteITDocs')
+                                        @include('helpdesk.complaints.modals.editComplaint')
+                                        @include('helpdesk.complaints.modals.deleteComplaint')
                                         <tr>
                                             <td>{{ $item->troubleID }}</td>
                                             <td>{{ $item->userDetail->fullname}}</td>
@@ -56,15 +58,15 @@
                                                 {{ "-" }}
                                                 @else {{ $item->action }}
                                                 @endif</td>
-                                            <td>@if ($item->status == "Belum Selesai")
+                                            <td>@if ($item->status == "Added")
                                                 <i class="bi bi-hourglass-split text-primary fs-4"
-                                                    title="Belum Selesai"></i>
+                                                    title="Ditambahkan"></i>
                                                 @else <i class="bi bi-check-square-fill text-success fs-4"
                                                     title="Selesai"></i>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($item->status == "Belum Selesai")
+                                                @if ($item->status == "Added" || $item->status == "On Process")
                                                 <div class="btn-group dropstart">
                                                     <button class="btn btn-sm btn-secondary dropdown-toggle"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,7 +77,7 @@
                                                             <button type="button"
                                                                 class="btn btn-sm dropdown-item text-success"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#editITDocs{{ $item->troubleID }}">
+                                                                data-bs-target="#editComplaint{{ $item->troubleID }}">
                                                                 <i class="bi bi-pencil"></i>
                                                                 Edit Data
                                                             </button>
@@ -84,7 +86,7 @@
                                                             <button type="button"
                                                                 class="btn btn-sm dropdown-item text-danger"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#deleteITDocs{{ $item->troubleID }}">
+                                                                data-bs-target="#deleteComplaint{{ $item->troubleID }}">
                                                                 <i class="bi bi-trash"></i>
                                                                 Hapus Data
                                                         </li>

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('it-docs', function (Blueprint $table) {
+        Schema::create('complaint', function (Blueprint $table) {
             $table->string('troubleID')->primary(); // Digunakan sebagai primary key
             $table->bigInteger('nik');
             $table->string('devices');
             $table->text('trouble');
             $table->text('action')->nullable();
-            $table->enum('status', ['Belum Selesai', 'Selesai'])->default('Belum Selesai');
+            $table->enum('status', ['Added', 'On Process', 'Finished'])->default('Added');
             $table->string('photo')->nullable();
             $table->foreign('nik')->references('nik')->on('user_detail')->cascadeOnDelete();
             $table->timestamps(); // created_at dan updated_at

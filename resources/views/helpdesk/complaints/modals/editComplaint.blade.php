@@ -25,24 +25,18 @@
                                         readonly value="{{ $item->troubleID }}" disabled>
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            @if (Auth::user()->role != 'user')
+                            <div class="row mt-1">
                                 <div class="col-4 my-auto">
-                                    <label for="user{{ $item->troubleID }}" class="form-label">Pengguna<p
-                                            class="d-inline fw-bold">*</p>
-                                    </label>
+                                    <label for="user{{ $item->troubleID }}" class="form-label">
+                                        Pelapor</label>
                                 </div>
-                                <div class="col-8">
-                                    <select name="user" class="selectpicker" id="user{{ $item->troubleID }}"
-                                        data-width="100%" data-live-search="true" data-size="4" required>
-                                        <option value="">-- Pilih Pengguna --</option>
-                                        @foreach ($employees as $employee)
-                                        <option value="{{ $employee->nik }}" @if ($employee->nik == $item->nik) selected
-                                            @endif>
-                                            {{ $employee->fullname }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-8 mt-1">
+                                    <input type="text" class="form-control form-control" id="user{{ $item->troubleID }}"
+                                        name="user" value="{{ $item->userDetail->fullname }}" disabled>
                                 </div>
                             </div>
+                            @endif
                             <div class="row mt-1">
                                 <div class="col-4 my-auto">
                                     <label for="devices{{ $item->troubleID }}" class="form-label">Sistem yang
@@ -66,21 +60,14 @@
                                         required>{{ $item->trouble }}</textarea>
                                 </div>
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-4 my-auto">
-                                    <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
-                                </div>
-                                <div class="col-8">
-                                    <textarea name="action" id="action{{ $item->troubleID }}" class="form-control w-100"
-                                        cols="" rows="3" placeholder="Masukkan Tindakan">{{ $item->action }}</textarea>
-                                </div>
-                            </div>
                         </div>
                         <div class="col">
-                            <div class="row mt-2">
+                            <div class="row {{ Auth::user()->role == 'user' ? 'mt-2' : '' }}">
+                                @if (Auth::user()->role == 'user')
                                 <div class="col-4">
                                     <label for="foto{{ $item->troubleID }}" class="form-label">Gambar Pendukung</label>
                                 </div>
+                                @endif
                                 <div class="col-8">
                                     @livewire('upload-photo', ['savedPhotoPath' => $item->photo])
                                 </div>
@@ -95,7 +82,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="d-flex flex-row-reverse">
+                            <div class="d-flex flex-row-reverse mt-2">
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
                                 </div>

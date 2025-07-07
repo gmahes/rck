@@ -18,6 +18,7 @@ Route::patch('reset-password/{username}', [MasterController::class, 'resetPasswo
 Route::post('change-password/{username}', [DashboardController::class, 'changePassword'])->middleware('auth')->name('change-password');
 Route::get('dummy', [DashboardController::class, 'dummy'])->middleware('auth')->name('dummy');
 Route::get('complaint', [HelpdeskController::class, 'complaint'])->middleware('auth')->name('complaint');
+Route::patch('confirm-complaint', [HelpdeskController::class, 'confirmComplaint'])->middleware('auth')->name('confirm-complaint');
 Route::post('add-complaint', [HelpdeskController::class, 'saveComplaint'])->middleware('auth')->name('add-complaint');
 Route::delete('del-complaint', [HelpdeskController::class, 'deleteComplaint'])->middleware('auth')->name('del-complaint');
 Route::put('edit-complaint', [HelpdeskController::class, 'editComplaint'])->middleware('auth')->name('edit-complaint');

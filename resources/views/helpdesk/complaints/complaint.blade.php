@@ -39,9 +39,10 @@
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th data-width="165" class="fw-bold">Trouble ID</th>
+                                            @if (Auth::user()->role != 'user')
                                             <th>Pengguna</th>
+                                            @endif
                                             <th>Permasalahan</th>
-                                            <th>Tindakan</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -52,21 +53,24 @@
                                         @include('helpdesk.complaints.modals.deleteComplaint')
                                         <tr>
                                             <td>{{ $item->troubleID }}</td>
+                                            @if (Auth::user()->role != 'user')
                                             <td>{{ $item->userDetail->fullname}}</td>
+                                            @endif
                                             <td>{{ $item->trouble }}</td>
-                                            <td>@if ($item->action == null)
-                                                {{ "-" }}
-                                                @else {{ $item->action }}
-                                                @endif</td>
                                             <td>@if ($item->status == "Added")
-                                                <i class="bi bi-hourglass-split text-primary fs-4"
-                                                    title="Ditambahkan"></i>
-                                                @else <i class="bi bi-check-square-fill text-success fs-4"
+                                                <i class="bi bi-exclamation-triangle-fill text-warning fs-4"
+                                                    title="Pengaduan Baru"></i>
+                                                @elseif($item->status =="On Process") <i
+                                                    class="bi bi-hourglass-split text-primary fs-4"
+                                                    title="Sedang Diproses"></i>
+                                                @else
+                                                <i class="bi bi-check-square-fill text-success fs-4"
                                                     title="Selesai"></i>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($item->status == "Added" || $item->status == "On Process")
+                                                @if (Auth::user()->role == 'user')
+                                                @if ($item->status == "Added")
                                                 <div class="btn-group dropstart">
                                                     <button class="btn btn-sm btn-secondary dropdown-toggle"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,7 +83,7 @@
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#editComplaint{{ $item->troubleID }}">
                                                                 <i class="bi bi-pencil"></i>
-                                                                Edit Data
+                                                                Edit
                                                             </button>
                                                         </li>
                                                         <li>
@@ -88,10 +92,42 @@
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#deleteComplaint{{ $item->troubleID }}">
                                                                 <i class="bi bi-trash"></i>
-                                                                Hapus Data
+                                                                Hapus
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                @else
+                                                @endif
+                                                @endif
+                                                @if (Auth::user()->role != 'user')
+                                                @if ($item->status == "On Process")
+                                                <div class="btn-group dropstart">
+                                                    <button class="btn btn-sm btn-secondary dropdown-toggle"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-justify"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <button type="button"
+                                                                class="btn btn-sm dropdown-item text-success"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editComplaint{{ $item->troubleID }}">
+                                                                <i class="bi bi-pencil"></i>
+                                                                Edit
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                @elseif ($item->status == "Added")
+                                                <form action="{{ route('confirm-complaint') }}" method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="troubleID"
+                                                        value="{{ $item->troubleID }}">
+                                                    <input type="hidden" name="status" value="On Process">
+                                                    <button class="btn btn-sm btn-primary" type="submit">Proses</button>
+                                                </form>
+                                                @endif
                                                 @endif
                                             </td>
                                         </tr>

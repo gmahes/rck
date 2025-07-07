@@ -76,6 +76,12 @@ class HelpdeskController extends Controller
         Alert::toast('Data berhasil disimpan', 'success');
         return redirect()->route('complaint');
     }
+    public function confirmComplaint()
+    {
+        complaint::where('troubleID', request()->troubleID)->update(['status' => 'On Process']);
+        Alert::toast('Pengaduan diproses', 'success');
+        return redirect()->route('complaint');
+    }
     public function deleteComplaint()
     {
         complaint::where('troubleID', request()->troubleID)->delete();

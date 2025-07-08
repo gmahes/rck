@@ -13,6 +13,7 @@
                 <form action="{{ route('edit-complaint') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="troubleID" value="{{ $item->troubleID }}">
                     <div class="row">
                         <div class="col">
                             <div class="row">
@@ -58,6 +59,15 @@
                                     <textarea name="trouble" id="trouble{{ $item->troubleID }}"
                                         class="form-control w-100" cols="" rows="3" placeholder="Masukkan Permasalahan"
                                         required>{{ $item->trouble }}</textarea>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
+                                    <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
+                                </div>
+                                <div class="col-8 my-auto">
+                                    <textarea name="action" id="action{{ $item->troubleID }}" cols="" rows="3"
+                                        class="form-control w-100"></textarea>
                                 </div>
                             </div>
                         </div>

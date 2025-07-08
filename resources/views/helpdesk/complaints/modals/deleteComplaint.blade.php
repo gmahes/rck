@@ -13,7 +13,7 @@
                     @method('delete')
                     <input type="hidden" name="troubleID" value="{{ $item->troubleID }}">
                     <div class="row text-center">
-                        <p class="text-dark modal-title">Apakah anda yakin akan menghapus data <br> <strong>{{
+                        <p class="text-dark modal-title">Apakah anda yakin akan menghapus pengaduan <br> <strong>{{
                                 $item->troubleID }}</strong> ?
                         </p>
                     </div>

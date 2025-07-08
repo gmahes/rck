@@ -90,17 +90,14 @@ class HelpdeskController extends Controller
     }
     public function editComplaint()
     {
+        // dd(request()->all());
         $validator = Validator::make(request()->all(), [
-            'user' => 'required',
             'devices' => 'required',
             'trouble' => 'required',
-            'status' => 'required',
             'photo' => 'mimes:jpeg,jpg,png|max:2048',
         ], [
-            'user.required' => 'Nama Karyawan wajib diisi',
             'devices.required' => 'Sistem wajib diisi',
             'trouble.required' => 'Masalah wajib diisi',
-            'status.required' => 'Status wajib diisi',
             'photo.mimes' => 'File harus berupa gambar (jpeg, jpg, png)',
         ]);
         if ($validator->fails()) {
@@ -110,10 +107,8 @@ class HelpdeskController extends Controller
         $validated = $validator->validated();
         $complaintToUpdate = complaint::where('troubleID', request()->troubleID)->first();
         $complaint = [
-            'nik' => $validated['user'],
             'devices' => $validated['devices'],
             'trouble' => $validated['trouble'],
-            'status' => $validated['status'],
             'action' => request()->has('action') ? request()->action : null,
         ];
         if (request()->hasFile('photo')) {

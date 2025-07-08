@@ -11,7 +11,9 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <p class="card-text fw-bold text-dark fs-5">Pengaduan Baru</p>
+                                <p class="card-text fw-bold text-dark fs-5">{{ Auth::user()->role == 'user' ?
+                                    "Pengaduan" :
+                                    "Pengaduan Baru" }}</p>
                             </div>
                             @if (Auth::user()->role == 'user')
                             <div class="col text-end">
@@ -43,7 +45,9 @@
                                             <th>Pengguna</th>
                                             @endif
                                             <th>Permasalahan</th>
+                                            @if (Auth::user()->role == 'user')
                                             <th>Status</th>
+                                            @endif
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -57,6 +61,7 @@
                                             <td>{{ $item->userDetail->fullname}}</td>
                                             @endif
                                             <td>{{ $item->trouble }}</td>
+                                            @if (Auth::user()->role == 'user')
                                             <td>@if ($item->status == "Added")
                                                 <i class="bi bi-exclamation-triangle-fill text-warning fs-4"
                                                     title="Pengaduan Baru"></i>
@@ -68,6 +73,7 @@
                                                     title="Selesai"></i>
                                                 @endif
                                             </td>
+                                            @endif
                                             <td>
                                                 @if (Auth::user()->role == 'user')
                                                 @if ($item->status == "Added")
@@ -100,25 +106,7 @@
                                                 @endif
                                                 @endif
                                                 @if (Auth::user()->role != 'user')
-                                                @if ($item->status == "On Process")
-                                                <div class="btn-group dropstart">
-                                                    <button class="btn btn-sm btn-secondary dropdown-toggle"
-                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="bi bi-justify"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <button type="button"
-                                                                class="btn btn-sm dropdown-item text-success"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#editComplaint{{ $item->troubleID }}">
-                                                                <i class="bi bi-pencil"></i>
-                                                                Edit
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                @elseif ($item->status == "Added")
+                                                @if ($item->status == "Added")
                                                 <form action="{{ route('confirm-complaint') }}" method="POST">
                                                     @csrf
                                                     @method('PATCH')

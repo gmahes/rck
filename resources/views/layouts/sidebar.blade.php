@@ -34,11 +34,13 @@
                 data-bs-toggle="collapse" href="#">
                 <i class="bi bi-building-fill"></i><span>Helpdesk</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="helpdesk" class="nav-content collapse @if(url()->current() == route('complaint'))show @endif"
+            <ul id="helpdesk"
+                class="nav-content collapse @if(url()->current() == route('complaint') or url()->current() == route('confirmed-complaint'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('complaint') }}">
-                        <i class="bi bi-circle-fill"></i><span>Pengaduan Baru</span>
+                        <i class="bi bi-circle-fill"></i><span>{{ Auth::user()->role == 'user' ? "Pengaduan" :
+                            "Pengaduan Baru" }}</span>
                     </a>
                 </li>
                 @if (Auth::user()->role != 'user')

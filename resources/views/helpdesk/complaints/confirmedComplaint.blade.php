@@ -57,66 +57,17 @@
                                             @endif
                                             <td>{{ $item->trouble }}</td>
                                             <td>
-                                                @if (Auth::user()->role == 'user')
-                                                @if ($item->status == "Added")
-                                                <div class="btn-group dropstart">
-                                                    <button class="btn btn-sm btn-secondary dropdown-toggle"
-                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="bi bi-justify"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <button type="button"
-                                                                class="btn btn-sm dropdown-item text-success"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#editComplaint{{ $item->troubleID }}">
-                                                                <i class="bi bi-pencil"></i>
-                                                                Edit
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button"
-                                                                class="btn btn-sm dropdown-item text-danger"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#deleteComplaint{{ $item->troubleID }}">
-                                                                <i class="bi bi-trash"></i>
-                                                                Hapus
-                                                        </li>
-                                                    </ul>
+                                                <div class="d-inline-flex gap-3 align-items-center">
+                                                    @if ($item->photo)
+                                                    <a href="{{ Storage::url($item->photo) }}" class="" target="_blank"
+                                                        title="Lihat Lampiran"><i class="bi bi-eye-fill fs-4"></i></a>
+                                                    @endif
+                                                    <a href="" data-bs-toggle="modal"
+                                                        data-bs-target="#editComplaint{{ $item->troubleID }}"
+                                                        title="Tindakan">
+                                                        <i class="bi bi-pencil fs-5 text-success"></i>
+                                                    </a>
                                                 </div>
-                                                @else
-                                                @endif
-                                                @endif
-                                                @if (Auth::user()->role != 'user')
-                                                @if ($item->status == "On Process")
-                                                <div class="btn-group dropstart">
-                                                    <button class="btn btn-sm btn-secondary dropdown-toggle"
-                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="bi bi-justify"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <button type="button"
-                                                                class="btn btn-sm dropdown-item text-success"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#editComplaint{{ $item->troubleID }}">
-                                                                <i class="bi bi-pencil"></i>
-                                                                Edit
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                @elseif ($item->status == "Added")
-                                                <form action="{{ route('confirm-complaint') }}" method="POST">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="troubleID"
-                                                        value="{{ $item->troubleID }}">
-                                                    <input type="hidden" name="status" value="On Process">
-                                                    <button class="btn btn-sm btn-primary" type="submit">Proses</button>
-                                                </form>
-                                                @endif
-                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

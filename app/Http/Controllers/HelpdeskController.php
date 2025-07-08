@@ -27,7 +27,7 @@ class HelpdeskController extends Controller
             'employees' => UserDetail::whereHas('userAuth', function ($query) {
                 $query->where('role', '!=', 'superadmin');
             })->orderBy('fullname')->get(),
-            'troubles' => Auth::user()->role == 'administrator' || Auth::user()->role == 'superadmin' ? Complaint::all()->sortBy('created_at') : Complaint::where('nik', Auth::user()->userDetail->nik)->get()->sortBy('created_at'),
+            'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : Complaint::where('nik', Auth::user()->userDetail->nik)->get()->sortBy('created_at'),
         ];
         $dateCode = date('ymd');
         $prefix = 'IT-RCK/' . $dateCode . '/';
@@ -73,7 +73,7 @@ class HelpdeskController extends Controller
             'created_by' => Auth::user()->username,
         ];
         complaint::create($complaint);
-        Alert::toast('Data berhasil disimpan', 'success');
+        Alert::toast('Pengaduan berhasil ditambahkan', 'success');
         return redirect()->route('complaint');
     }
     public function confirmComplaint()
@@ -133,5 +133,15 @@ class HelpdeskController extends Controller
         complaint::where('troubleID', request()->troubleID)->update($complaint);
         Alert::toast('Data berhasil diubah', 'success');
         return redirect()->route('complaint');
+    }
+    public function confirmedComplaint()
+    {
+        $attr = [
+            'title' => 'Pengaduan Diproses',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'confirmedTroubles' => Complaint::where('status', 'On Process')->get()->sortBy('created_at'),
+        ];
+        return view('helpdesk.complaints.confirmedComplaint', $attr);
     }
 }

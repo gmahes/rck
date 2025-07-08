@@ -38,7 +38,19 @@
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('complaint') }}">
-                        <i class="bi bi-circle-fill"></i><span>Pengaduan</span>
+                        <i class="bi bi-circle-fill"></i><span>Pengaduan Baru</span>
+                    </a>
+                </li>
+                @if (Auth::user()->role != 'user')
+                <li>
+                    <a href="{{ route('confirmed-complaint') }}">
+                        <i class="bi bi-circle-fill"></i><span>Pengaduan Diproses</span>
+                    </a>
+                </li>
+                @endif
+                <li>
+                    <a href="">
+                        <i class="bi bi-circle-fill"></i><span>Riwayat Pengaduan</span>
                     </a>
                 </li>
             </ul>

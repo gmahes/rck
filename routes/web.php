@@ -22,3 +22,4 @@ Route::patch('confirm-complaint', [HelpdeskController::class, 'confirmComplaint'
 Route::post('add-complaint', [HelpdeskController::class, 'saveComplaint'])->middleware('auth')->name('add-complaint');
 Route::delete('del-complaint', [HelpdeskController::class, 'deleteComplaint'])->middleware('auth')->name('del-complaint');
 Route::put('edit-complaint', [HelpdeskController::class, 'editComplaint'])->middleware('auth')->name('edit-complaint');
+Route::get('confirmed-complaint', [HelpdeskController::class, 'confirmedComplaint'])->middleware('auth')->name('confirmed-complaint');

@@ -11,9 +11,9 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">
-                                <p class="card-text fw-bold text-dark fs-5">Pengaduan Baru</p>
+                                <p class="card-text fw-bold text-dark fs-5">Pengaduan Diproses</p>
                             </div>
-                            @if (Auth::user()->role == 'user')
+                            {{-- @if (Auth::user()->role == 'user')
                             <div class="col text-end">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
@@ -22,7 +22,7 @@
                                 </button>
                                 @include('helpdesk.complaints.modals.addComplaint')
                             </div>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                 </div>
@@ -43,12 +43,11 @@
                                             <th>Pengguna</th>
                                             @endif
                                             <th>Permasalahan</th>
-                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
-                                        @foreach ($troubles as $item)
+                                        @foreach ($confirmedTroubles as $item)
                                         @include('helpdesk.complaints.modals.editComplaint')
                                         @include('helpdesk.complaints.modals.deleteComplaint')
                                         <tr>
@@ -57,17 +56,6 @@
                                             <td>{{ $item->userDetail->fullname}}</td>
                                             @endif
                                             <td>{{ $item->trouble }}</td>
-                                            <td>@if ($item->status == "Added")
-                                                <i class="bi bi-exclamation-triangle-fill text-warning fs-4"
-                                                    title="Pengaduan Baru"></i>
-                                                @elseif($item->status =="On Process") <i
-                                                    class="bi bi-hourglass-split text-primary fs-4"
-                                                    title="Diproses"></i>
-                                                @else
-                                                <i class="bi bi-check-square-fill text-success fs-4"
-                                                    title="Selesai"></i>
-                                                @endif
-                                            </td>
                                             <td>
                                                 @if (Auth::user()->role == 'user')
                                                 @if ($item->status == "Added")

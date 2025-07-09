@@ -24,3 +24,4 @@ Route::delete('del-complaint', [HelpdeskController::class, 'deleteComplaint'])->
 Route::put('edit-complaint', [HelpdeskController::class, 'editComplaint'])->middleware('auth')->name('edit-complaint');
 Route::get('confirmed-complaint', [HelpdeskController::class, 'confirmedComplaint'])->middleware('auth')->name('confirmed-complaint');
 Route::put('complaint-action', [HelpdeskController::class, 'complaintAction'])->middleware('auth')->name('complaint-action');
+Route::get('complaint-history', [HelpdeskController::class, 'complaintHistory'])->middleware('auth')->name('complaint-history');

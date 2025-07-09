@@ -35,7 +35,7 @@
                 <i class="bi bi-building-fill"></i><span>Helpdesk</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="helpdesk"
-                class="nav-content collapse @if(url()->current() == route('complaint') or url()->current() == route('confirmed-complaint'))show @endif"
+                class="nav-content collapse @if(url()->current() == route('complaint') or url()->current() == route('confirmed-complaint') or url()->current() == route('complaint-history'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{ route('complaint') }}">
@@ -50,11 +50,11 @@
                     </a>
                 </li>
                 @endif
-                {{-- <li>
-                    <a href="">
+                <li>
+                    <a href="{{ route('complaint-history') }}">
                         <i class="bi bi-circle-fill"></i><span>Riwayat Pengaduan</span>
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </li><!-- End Helpdesk Nav -->
     </ul>

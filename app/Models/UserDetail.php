@@ -24,8 +24,4 @@ class UserDetail extends Model
     {
         return $this->belongsTo(UserAuth::class, 'username', 'username');
     }
-    public function itDocs()
-    {
-        return $this->hasMany(ITDocs::class, 'nik', 'nik');
-    }
 }

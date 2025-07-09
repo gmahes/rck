@@ -10,7 +10,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start text-dark">
-                <form action="{{ route('edit-complaint') }}" method="POST" enctype="multipart/form-data">
+                <form
+                    action="{{ url()->current() == route('confirmed-complaint') ? route('complaint-action') : route('edit-complaint') }}"
+                    method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="troubleID" value="{{ $item->troubleID }}">
@@ -61,15 +63,17 @@
                                         required>{{ $item->trouble }}</textarea>
                                 </div>
                             </div>
+                            @if (Auth::user()->role != 'user')
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
                                     <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
                                 </div>
                                 <div class="col-8 my-auto">
                                     <textarea name="action" id="action{{ $item->troubleID }}" cols="" rows="3"
-                                        class="form-control w-100"></textarea>
+                                        class="form-control w-100" required></textarea>
                                 </div>
                             </div>
+                            @endif
                         </div>
                         <div class="col">
                             <div class="row {{ Auth::user()->role == 'user' ? 'mt-2' : '' }}">

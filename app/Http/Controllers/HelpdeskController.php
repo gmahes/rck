@@ -85,7 +85,7 @@ class HelpdeskController extends Controller
     public function deleteComplaint()
     {
         complaint::where('troubleID', request()->troubleID)->delete();
-        Alert::toast('Data berhasil dihapus', 'success');
+        Alert::toast('Pengaduan berhasil dihapus', 'success');
         return redirect()->route('complaint');
     }
     public function editComplaint()
@@ -138,5 +138,24 @@ class HelpdeskController extends Controller
             'confirmedTroubles' => Complaint::where('status', 'On Process')->get()->sortBy('created_at'),
         ];
         return view('helpdesk.complaints.confirmedComplaint', $attr);
+    }
+    public function complaintAction()
+    {
+        $validator = Validator::make(request()->all(), [
+            'action' => 'required',
+        ], [
+            'action.required' => 'Tindakan wajib diisi',
+        ]);
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('confirmed-complaint');
+        }
+        $validated = $validator->validated();
+        complaint::where('troubleID', request()->troubleID)->update([
+            'action' => $validated['action'],
+            'status' => 'Finished',
+        ]);
+        Alert::toast('Pengaduan telah diselesaikan', 'success');
+        return redirect()->route('confirmed-complaint');
     }
 }

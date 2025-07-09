@@ -50,11 +50,11 @@
                     </a>
                 </li>
                 @endif
-                <li>
+                {{-- <li>
                     <a href="">
                         <i class="bi bi-circle-fill"></i><span>Riwayat Pengaduan</span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </li><!-- End Helpdesk Nav -->
     </ul>

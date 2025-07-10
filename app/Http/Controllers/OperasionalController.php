@@ -113,12 +113,12 @@ class OperasionalController extends Controller
                 'title' => 'Omzet',
                 'fullname' => Auth::user()->userDetail->fullname,
                 'position' => Auth::user()->userDetail->position,
-                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->where('status', 'Aktif')->sortBy('fullname'),
                 'supir' => null,
                 'omzet' => $omzet,
                 'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),
                 'totalOmzetPerDriver' => $totalOmzetPerDriver,
-                'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'bigvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->where('status', 'Aktif')->sortBy('fullname'),
                 'smallvehicledrivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Kecil')->sortBy('fullname'),
                 'filter' => [
                     'driver' => $validated['driver'],
@@ -189,7 +189,7 @@ class OperasionalController extends Controller
         if ($driver == 'allBig') {
             $omzet = Omzet::whereBetween('date', [$start_date, $end_date])
                 ->whereHas('drivers', function ($query) {
-                    $query->where('vehicle_type', 'Kendaraan Besar');
+                    $query->where('vehicle_type', 'Kendaraan Besar')->where('status', 'Aktif');
                 })
                 ->get()
                 ->groupBy('driver_id');
@@ -201,7 +201,7 @@ class OperasionalController extends Controller
                 'title' => 'Omzet',
                 'fullname' => Auth::user()->userDetail->fullname,
                 'position' => Auth::user()->userDetail->position,
-                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->sortBy('fullname'),
+                'drivers' => Drivers::all()->where('vehicle_type', 'Kendaraan Besar')->where('status', 'Aktif')->sortBy('fullname'),
                 'supir' => null,
                 'omzet' => $omzet,
                 'totalOmzet' => number_format($totalOmzet, 0, ',', '.'),

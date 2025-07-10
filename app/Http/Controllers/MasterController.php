@@ -209,6 +209,7 @@ class MasterController extends Controller
         $validated = $validator->validated();
         $driver = [
             'fullname' => $validated['fullname'],
+            'status' => $request->status,
             'vehicle_type' => $validated['vehicle_type'],
             'vehicle_number' => $validated['vehicle_number'],
             'updated_by' => Auth::user()->username

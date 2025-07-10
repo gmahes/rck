@@ -54,6 +54,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="editStatus{{ $driver->id }}" class="form-label">Status</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" aria-label="editStatus{{ $driver->id }}"
+                                    name="status" required>
+                                    <option value="Aktif" @if ($driver->status=='Aktif') selected @endif>Aktif</option>
+                                    <option value="Non Aktif" @if ($driver->status=='Non Aktif') selected @endif>Non
+                                        Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mt-2">
                         <div class="d-flex flex-row-reverse">
                             <div class="text-end">

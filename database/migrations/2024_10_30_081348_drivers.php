@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->string('fullname', 255);
+            $table->enum('status', ['Aktif', 'Non Aktif'])->default('Aktif');
             $table->enum('vehicle_type', ['Kendaraan Kecil', 'Kendaraan Besar']);
             $table->string('vehicle_number', 255);
             $table->timestamps();

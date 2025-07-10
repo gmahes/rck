@@ -12,6 +12,7 @@ class Drivers extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'fullname',
+        'status',
         'vehicle_type',
         'vehicle_number',
         'created_by',

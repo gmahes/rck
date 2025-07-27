@@ -17,12 +17,23 @@
                 data-bs-toggle="collapse" href="#">
                 <i class="bi bi-database-fill"></i><span>Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="master" class="nav-content collapse @if(url()->current() == route('employees'))show @endif"
+            <ul id="master"
+                class="nav-content collapse @if(url()->current() == route('employees') or url()->current() == route('positions'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator')
                 <li>
                     <a href="{{ route('employees') }}">
-                        <i class="bi bi-circle-fill"></i><span>Data Karyawan</span>
+                        <i class="bi bi-circle-fill"></i><span>Karyawan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('positions') }}">
+                        <i class="bi bi-circle-fill"></i><span>Jabatan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('complaint-categories') }}">
+                        <i class="bi bi-circle-fill"></i><span>Kategori Pengaduan</span>
                     </a>
                 </li>
                 @endif

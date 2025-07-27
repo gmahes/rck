@@ -51,7 +51,7 @@
                                     <tr>
                                         <td class="fw-bold text-center">{{ $employee->nik }}</td>
                                         <td class="">{{ $employee->fullname }}</td>
-                                        <td>{{ $employee->position }}</td>
+                                        <td>{{ $employee->position->name }}</td>
                                         @if (Auth::user()->role == 'superadmin')
                                         <td>{{ $employee->userAuth->role }}</td>
                                         @endif

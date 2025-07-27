@@ -56,19 +56,28 @@
                                 <label for="position" class="form-label">Jabatan</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm" id="position"
-                                    placeholder="Masukkan Jabatan" name="position" required>
+                                <select name="position" id="position" class="selectpicker form-control form-control-sm"
+                                    data-width="100%" aria-label="position" data-live-search="true" data-size="3"
+                                    required>
+                                    <option value="" selected disabled>Pilih Jabatan</option>
+                                    @foreach ($positions as $position)
+                                    <option value="{{ $position->id }}">
+                                        {{ $position->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
                     @if (Auth::user()->role == 'superadmin')
-                    <div class=" mb-3">
+                    <div class="mb-3">
                         <div class="row">
                             <div class="col-4">
                                 <label for="role" class="form-label">Role</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select form-select-sm" aria-label="role" name="role" required>
+                                <select class="selectpicker form-control form-control-sm" aria-label="role" name="role"
+                                    required>
                                     @foreach ($role_list as $role)
                                     <option value="{{ $role }}">{{ $role }}
                                     </option>

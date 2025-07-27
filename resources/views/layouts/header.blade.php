@@ -52,7 +52,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{ $fullname }}</h6>
-                        <span>{{ $position }}</span>
+                        <span>{{ $position->name }}</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

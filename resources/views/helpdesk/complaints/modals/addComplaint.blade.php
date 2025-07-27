@@ -20,34 +20,47 @@
                                     <label for="troubleID" class="form-label">Trouble ID</label>
                                 </div>
                                 <div class="col-8">
-                                    <input type="text" class="form-control form-control" id="troubleID"
+                                    <input type="text" class="form-control form-control-sm" id="troubleID"
                                         placeholder="Masukkan Permasalahan" readonly value="{{ $troubleID }}" disabled>
                                 </div>
                             </div>
-                            <div class="row mt-1">
-                                <div class="col-4 my-auto">
-                                    <label for="devices" class="form-label">Sistem yang
-                                        bermasalah<p class="d-inline fw-bold">*</p></label>
+                            <div class="row mt-2">
+                                <div class="col-4 mt-2">
+                                    <label for="category" class="form-label">Kategori<p class="d-inline fw-bold">*</p>
+                                    </label>
                                 </div>
                                 <div class="col-8 my-auto">
-                                    <input type="text" class="form-control form-control" id="devices"
-                                        placeholder="Sistem yang bermasalah" name="devices" autocomplete="off" required>
+                                    <select name="category" id="category"
+                                        class="selectpicker form-control form-control-sm" data-live-search="true"
+                                        data-size="3" required>
+                                        <option value="" selected disabled>Pilih Kategori</option>
+                                        <optgroup label="Perangkat Keras" class="text-start">
+                                            @foreach ($hardware as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="Perangkat Lunak" class="text-start">
+                                            @foreach ($software as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-4 my-auto">
                                     <label for="trouble" class="form-label">Permasalahan<p class="d-inline fw-bold">*
                                         </p></label>
                                 </div>
                                 <div class="col-8">
-                                    <textarea name="trouble" id="trouble" class="form-control w-100" cols="" rows="3"
-                                        placeholder="Masukkan Permasalahan" required></textarea>
+                                    <textarea name="trouble" id="trouble" class="form-control form-control-sm w-100"
+                                        cols="" rows="3" placeholder="Masukkan Permasalahan" required></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="row mt-2">
-                                <div class="col-4">
+                            <div class="row">
+                                <div class="col-4 mt-2">
                                     <label for="foto" class="form-label">Gambar Pendukung</label>
                                 </div>
                                 <div class="col-8">

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\UserAuth;
 use App\Models\UserDetail;
+use App\Models\Positions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Positions::create([
+            'name' => 'superadmin',
+        ]);
         UserAuth::create([
             'username' => 'it_chakra',
             'password' => Hash::make('it_chakra'),
@@ -23,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'nik' => 12345678,
             'username' => 'it_chakra',
             'fullname' => 'superadmin',
-            'position' => 'superadmin',
+            'position_id' => 1,
         ]);
     }
 }

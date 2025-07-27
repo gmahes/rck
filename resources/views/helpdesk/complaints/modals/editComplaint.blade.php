@@ -23,7 +23,7 @@
                                     <label for="troubleID{{ $item->troubleID }}" class="form-label">Trouble ID</label>
                                 </div>
                                 <div class="col-8">
-                                    <input type="text" class="form-control form-control"
+                                    <input type="text" class="form-control form-control-sm"
                                         id="troubleID{{ $item->troubleID }}" placeholder="Masukkan Permasalahan"
                                         readonly value="{{ $item->troubleID }}" disabled>
                                 </div>
@@ -35,32 +35,48 @@
                                         Pelapor</label>
                                 </div>
                                 <div class="col-8 mt-1">
-                                    <input type="text" class="form-control form-control" id="user{{ $item->troubleID }}"
-                                        name="user" value="{{ $item->userDetail->fullname }}" disabled>
+                                    <input type="text" class="form-control form-control-sm"
+                                        id="user{{ $item->troubleID }}" name="user"
+                                        value="{{ $item->userDetail->fullname }}" disabled>
                                 </div>
                             </div>
                             @endif
-                            <div class="row mt-1">
+                            <div class="row mt-2">
                                 <div class="col-4 my-auto">
-                                    <label for="devices{{ $item->troubleID }}" class="form-label">Sistem yang
-                                        bermasalah<p class="d-inline fw-bold">*</p></label>
-                                </div>
-                                <div class="col-8 my-auto">
-                                    <input type="text" class="form-control form-control"
-                                        id="devices{{ $item->troubleID }}" placeholder="Sistem yang bermasalah"
-                                        name="devices" autocomplete="off" required value="{{ $item->devices }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4 my-auto">
-                                    <label for="trouble{{ $item->troubleID }}" class="form-label">Permasalahan<p
-                                            class="d-inline fw-bold">*
-                                        </p></label>
+                                    <label for="category{{ $item->troubleID }}" class="form-label">Kategori<p
+                                            class="d-inline fw-bold">*</p></label>
                                 </div>
                                 <div class="col-8">
-                                    <textarea name="trouble" id="trouble{{ $item->troubleID }}"
-                                        class="form-control w-100" cols="" rows="3" placeholder="Masukkan Permasalahan"
-                                        required>{{ $item->trouble }}</textarea>
+                                    <select name="category" id="category{{ $item->troubleID }}"
+                                        class="selectpicker form-control form-control-sm" data-width="100%"
+                                        aria-label="category" data-live-search="true" data-size="3" required>
+                                        <option value="" selected disabled>Pilih Kategori</option>
+                                        <optgroup label="Perangkat Keras" class="text-start">
+                                            @foreach ($hardware as $hardwareItem)
+                                            <option value="{{ $hardwareItem->id }}" {{ $item->category_id ==
+                                                $hardwareItem->id ? 'selected' : '' }}>
+                                                {{ $hardwareItem->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="Perangkat Lunak" class="text-start">
+                                            @foreach ($software as $softwareItem)
+                                            <option value="{{ $softwareItem->id }}" {{ $item->category_id ==
+                                                $softwareItem->id ? 'selected' : '' }}>
+                                                {{ $softwareItem->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
+                                    <label for="trouble{{ $item->troubleID }}" class="form-label">Permasalahan<p
+                                            class="d-inline fw-bold">*</p></label>
+                                </div>
+                                <div class="col-8">
+                                    <textarea name="trouble" id="trouble{{ $item->troubleID }}" cols="" rows="3"
+                                        class="form-control form-control-sm w-100" required {{
+                                        Auth::user()->role == 'administrator' ? 'readonly' : '' }}>{{ $item->trouble }}</textarea>
                                 </div>
                             </div>
                             @if (Auth::user()->role != 'user')
@@ -76,9 +92,9 @@
                             @endif
                         </div>
                         <div class="col">
-                            <div class="row {{ Auth::user()->role == 'user' ? 'mt-2' : '' }}">
+                            <div class="row">
                                 @if (Auth::user()->role == 'user')
-                                <div class="col-4">
+                                <div class="col-4 mt-2">
                                     <label for="foto{{ $item->troubleID }}" class="form-label">Gambar Pendukung</label>
                                 </div>
                                 @endif

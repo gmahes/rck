@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComplaintCategories;
+use App\Models\Positions;
 use App\Models\UserAuth;
 use App\Models\UserDetail;
 use GuzzleHttp\Psr7\Query;
@@ -21,24 +23,24 @@ class MasterController extends Controller
             'title' => 'Data Karyawan',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'division_list' => ['Operasional', 'Non Operasional'],
             'role_list' => ['administrator', 'user'],
             'employees' => UserDetail::join('user_auth', 'user_detail.username', '=', 'user_auth.username')
                 ->where('user_auth.role', '!=', 'superadmin')
                 ->orderBy('user_detail.fullname')
-                ->get(['user_detail.*'])
+                ->get(['user_detail.*']),
+            'positions' => Positions::all()->sortBy('name'),
         ];
         return view('masters.employees.employees', $attr);
     }
     public function addEmployee(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
                 'username' => 'required|unique:App\Models\UserAuth,username|alpha:ascii|lowercase',
                 'nik' => 'required|numeric|unique:App\Models\UserDetail,nik',
                 'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'position' => 'required|regex:/^[a-zA-Z\s]+$/',
             ],
             [
                 'username.required' => 'Username belum diisi',
@@ -50,8 +52,6 @@ class MasterController extends Controller
                 'nik.unique' => 'NIK sudah terdaftar',
                 'fullname.required' => 'Nama lengkap belum diisi',
                 'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
-                'position.required' => 'Posisi belum diisi',
-                'position.regex' => 'Posisi hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->position'",
             ],
         );
         if ($validator->fails()) {
@@ -69,7 +69,7 @@ class MasterController extends Controller
             'nik' => $validated['nik'],
             'username' => $validated['username'],
             'fullname' => $validated['fullname'],
-            'position' => $validated['position'],
+            'position_id' => intval($request->position),
             'created_by' => Auth::user()->username
         ];
         UserAuth::create($userauth);
@@ -83,15 +83,10 @@ class MasterController extends Controller
             $request->all(),
             [
                 'fullname' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'position' => 'required|regex:/^[a-zA-Z\s]+$/',
-                'division' => 'required',
             ],
             [
                 'fullname.required' => 'Nama lengkap belum diisi',
                 'fullname.regex' => 'Nama lengkap hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->fullname'",
-                'position.required' => 'Posisi belum diisi',
-                'position.regex' => 'Posisi hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->position'",
-                'division.required' => 'Divisi belum dipilih'
             ],
         );
         if ($validator->fails()) {
@@ -102,8 +97,7 @@ class MasterController extends Controller
         if (!$request->role) {
             $userdetail = [
                 'fullname' => $validated['fullname'],
-                'position' => $validated['position'],
-                'division' => $validated['division'],
+                'position_id' => $request->position,
                 'updated_by' => Auth::user()->username
 
             ];
@@ -114,8 +108,7 @@ class MasterController extends Controller
             UserAuth::where('username', $username)->update($userauth);
             $userdetail = [
                 'fullname' => $validated['fullname'],
-                'position' => $validated['position'],
-                'division' => $validated['division'],
+                'position_id' => $request->position,
                 'updated_by' => Auth::user()->username
             ];
         }
@@ -135,5 +128,97 @@ class MasterController extends Controller
         $userauth->update(['password' => Hash::make(12345678)]);
         Alert::success('Sukses', 'Password berhasil direset');
         return redirect()->route('employees');
+    }
+    public function positions()
+    {
+        $attr = [
+            'title' => 'Data Jabatan',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'positions' => Positions::orderBy('name')->get('name'),
+        ];
+        confirmDelete('Hapus Jabatan', 'Apakah Anda yakin ingin menghapus jabatan ini?');
+        return view('masters.positions.position', $attr);
+    }
+    public function addPosition(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'positionName' => 'required|regex:/^[a-zA-Z\s]+$/',
+            ],
+            [
+                'positionName.required' => 'Nama jabatan belum diisi',
+                'positionName.regex' => 'Nama jabatan hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->positionName'",
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('positions');
+        }
+        $validated = $validator->validated();
+        Positions::create([
+            'name' => $validated['positionName'],
+            'created_by' => Auth::user()->username,
+        ]);
+        Alert::toast('Data jabatan berhasil ditambahkan', 'success');
+        return redirect()->route('positions');
+    }
+    public function deletePosition($name)
+    {
+        try {
+            Positions::where('name', $name)->delete();
+            Alert::toast('Data jabatan berhasil dihapus', 'success');
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Data jabatan tidak dapat dihapus karena masih digunakan oleh karyawan');
+        }
+        return redirect()->route('positions');
+    }
+    public function complaintCategories()
+    {
+        $attr = [
+            'title' => 'Kategori Pengaduan',
+            'fullname' => Auth::user()->userDetail->fullname,
+            'position' => Auth::user()->userDetail->position,
+            'categories' => ComplaintCategories::orderBy('name')->get(),
+            'categoryTypes' => ['Perangkat Keras', 'Perangkat Lunak'],
+        ];
+        confirmDelete('Hapus Kategori', 'Apakah Anda yakin ingin menghapus kategori ini?');
+        return view('masters.complaint-categories.category', $attr);
+    }
+    public function addCategory(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'categoryName' => 'required|regex:/^[a-zA-Z\s]+$/',
+            ],
+            [
+                'categoryName.required' => 'Nama kategori belum diisi',
+                'categoryName.regex' => 'Nama kategori hanya boleh berisi huruf a-z. Anda membuat ' . "'$request->categoryName'",
+            ],
+        );
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors()->first());
+            return redirect()->route('complaint-categories');
+        }
+        $validated = $validator->validated();
+        ComplaintCategories::create([
+            'name' => $validated['categoryName'],
+            'type' => $request->categoryType,
+            'created_by' => Auth::user()->username,
+        ]);
+        Alert::toast('Kategori pengaduan berhasil ditambahkan', 'success');
+        return redirect()->route('complaint-categories');
+    }
+    public function deleteCategory($name)
+    {
+        try {
+            ComplaintCategories::where('name', $name)->delete();
+            Alert::toast('Kategori pengaduan berhasil dihapus', 'success');
+        } catch (QueryException $e) {
+            Alert::error('Gagal', 'Kategori pengaduan tidak dapat dihapus karena masih digunakan oleh pengaduan');
+        }
+        return redirect()->route('complaint-categories');
     }
 }

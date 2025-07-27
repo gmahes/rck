@@ -15,7 +15,6 @@
                                     "Pengaduan" :
                                     "Pengaduan Baru" }}</p>
                             </div>
-                            @if (Auth::user()->role == 'user')
                             <div class="col text-end">
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
@@ -24,7 +23,6 @@
                                 </button>
                                 @include('helpdesk.complaints.modals.addComplaint')
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -44,6 +42,7 @@
                                             @if (Auth::user()->role != 'user')
                                             <th>Pengguna</th>
                                             @endif
+                                            <th>Kategori</th>
                                             <th>Permasalahan</th>
                                             @if (Auth::user()->role == 'user')
                                             <th>Status</th>
@@ -60,6 +59,13 @@
                                             @if (Auth::user()->role != 'user')
                                             <td>{{ $item->userDetail->fullname}}</td>
                                             @endif
+                                            <td>
+                                                @if ($item->category)
+                                                {{ $item->category->name }}
+                                                @else
+                                                <span class="text-danger">Kategori tidak ditemukan</span>
+                                                @endif
+                                            </td>
                                             <td>{{ $item->trouble }}</td>
                                             @if (Auth::user()->role == 'user')
                                             <td>@if ($item->status == "Added")

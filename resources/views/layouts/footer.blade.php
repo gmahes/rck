@@ -18,6 +18,8 @@
 <script src="{{ asset('vendor/bootstrap-table-master/dist/bootstrap-table.min.js') }}"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ $chart->script() }}
 
 <!-- Template Main JS File -->
 <script src="{{ asset('js/main.js') }}"></script>

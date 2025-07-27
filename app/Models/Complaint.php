@@ -7,7 +7,7 @@ use App\Models\UserDetail;
 
 class Complaint extends Model
 {
-    protected $table = 'complaint'; // Nama tabel
+    protected $table = 'complaints'; // Nama tabel
     protected $primaryKey = 'troubleID'; // Primary key
     public $incrementing = false; // Non-incrementing karena menggunakan string sebagai primary key
     protected $keyType = 'string'; // Tipe data primary key
@@ -18,6 +18,7 @@ class Complaint extends Model
         'action',
         'status',
         'photo',
+        'category_id',
         'created_by',
         'updated_by'
     ];
@@ -47,5 +48,9 @@ class Complaint extends Model
     public function userDetail()
     {
         return $this->belongsTo(UserDetail::class, 'nik', 'nik');
+    }
+    public function category()
+    {
+        return $this->belongsTo(ComplaintCategories::class, 'category_id');
     }
 }

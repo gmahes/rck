@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_detail', function (Blueprint $table) {
-            $table->bigInteger('nik', 255)->primary();
-            $table->string('username', 255);
-            $table->string('fullname', 255);
+        Schema::create('positions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
             $table->timestamps();
             $table->string('created_by', 255)->nullable();
             $table->string('updated_by', 255)->nullable();
-            $table->foreign('username')->references('username')->on('user_auth')->cascadeOnDelete();
+        });
+
+        // Add foreign key to user_detail table
+        Schema::table('user_detail', function (Blueprint $table) {
+            $table->foreignId('position_id')->nullable()->constrained('positions')->onDelete('restrict');
         });
     }
 

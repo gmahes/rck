@@ -11,10 +11,13 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ $fullname }}</h5>
                         <img src="{{ asset('img/avatar.jpg') }}" class="img-fluid" alt="">
-                        <h3 class="card-title fs-6">{{ $position }}</h3>
+                        <h3 class="card-title fs-6">{{ $position->name }}</h3>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            {{ $chart->container() }}
         </div>
     </section>
 </main><!-- End #main -->

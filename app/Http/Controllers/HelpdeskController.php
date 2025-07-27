@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use DOMDocument;
 use App\Models\Complaint;
+use App\Models\ComplaintCategories;
 use App\Models\UserDetail;
 use RealRashid\SweetAlert\Facades\Alert;
 use SimpleXMLElement;
@@ -28,6 +29,8 @@ class HelpdeskController extends Controller
                 $query->where('role', '!=', 'superadmin');
             })->orderBy('fullname')->get(),
             'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at'),
+            'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
+            'software' => ComplaintCategories::where('type', 'Perangkat Lunak')->get(),
         ];
         $dateCode = date('ymd');
         $prefix = 'IT-RCK/' . $dateCode . '/';
@@ -50,12 +53,10 @@ class HelpdeskController extends Controller
     {
         $validator = Validator::make(request()->all(), [
             'user' => 'required',
-            'devices' => 'required',
             'trouble' => 'required',
             'photo' => 'mimes:jpeg,jpg,png|max:2048',
         ], [
             'user.required' => 'Nama Karyawan wajib diisi',
-            'devices.required' => 'Sistem wajib diisi',
             'trouble.required' => 'Masalah wajib diisi',
             'photo.mimes' => 'File harus berupa gambar (jpeg, jpg, png)',
         ]);
@@ -66,7 +67,7 @@ class HelpdeskController extends Controller
         $validated = $validator->validated();
         $complaint = [
             'nik' => $validated['user'],
-            'devices' => $validated['devices'],
+            'category_id' => intval(request()->category),
             'trouble' => $validated['trouble'],
             'status' => 'Added',
             'photo' => request()->hasFile('photo') ? request()->file('photo')->storeAs('complaint', Str::uuid()->toString() . '.' . request()->file('photo')->getClientOriginalExtension(), 'public') : null,
@@ -92,11 +93,9 @@ class HelpdeskController extends Controller
     {
         // dd(request()->all());
         $validator = Validator::make(request()->all(), [
-            'devices' => 'required',
             'trouble' => 'required',
             'photo' => 'mimes:jpeg,jpg,png|max:2048',
         ], [
-            'devices.required' => 'Sistem wajib diisi',
             'trouble.required' => 'Masalah wajib diisi',
             'photo.mimes' => 'File harus berupa gambar (jpeg, jpg, png)',
         ]);
@@ -107,7 +106,7 @@ class HelpdeskController extends Controller
         $validated = $validator->validated();
         $complaintToUpdate = complaint::where('troubleID', request()->troubleID)->first();
         $complaint = [
-            'devices' => $validated['devices'],
+            'category_id' => intval(request()->category),
             'trouble' => $validated['trouble'],
             'action' => request()->has('action') ? request()->action : null,
         ];
@@ -136,6 +135,8 @@ class HelpdeskController extends Controller
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
             'confirmedTroubles' => Complaint::where('status', 'On Process')->get()->sortBy('created_at'),
+            'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
+            'software' => ComplaintCategories::where('type', 'Perangkat Lunak')->get(),
         ];
         return view('helpdesk.complaints.confirmedComplaint', $attr);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\Dashboard;
 use App\Models\UserAuth;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -17,6 +18,15 @@ class DashboardController extends Controller
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
         ];
+        $charts = new Dashboard;
+        $charts->labels(['January', 'February', 'March', 'April', 'May', 'June']);
+        $charts->dataset('My dataset', 'line', [1, 2, 3, 4, 5, 6])
+            ->color('rgb(255, 99, 132)')
+            ->backgroundColor('rgba(255, 99, 132, 0.2)');
+        $charts->dataset('My dataset 2', 'bar', [6, 5, 4, 3, 2, 1])
+            ->color('rgb(54, 162, 235)')
+            ->backgroundColor('rgba(54, 162, 235, 0.2)');
+        $attr['chart'] = $charts;
         return view('dashboard.dash', $attr);
     }
     public function changePassword(Request $request, $username)
@@ -47,14 +57,5 @@ class DashboardController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->to('/login');
-    }
-    public function dummy()
-    {
-        $attr = [
-            'title' => 'Dummy',
-            'fullname' => Auth::user()->userDetail->fullname,
-            'position' => Auth::user()->userDetail->position,
-        ];
-        return view('non-operasional.upxlstable', $attr);
     }
 }

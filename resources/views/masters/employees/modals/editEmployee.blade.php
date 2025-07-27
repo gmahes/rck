@@ -54,9 +54,14 @@
                                 <label for="editposition{{ $employee->username }}" class="form-label">Jabatan</label>
                             </div>
                             <div class="col-8">
-                                <input type="text" class="form-control form-control-sm"
-                                    id="editposition{{ $employee->username }}" placeholder="Masukkan Jabatan"
-                                    name="position" value="{{ $employee->position }}" required>
+                                <select name="position" id="editposition{{ $employee->username }}"
+                                    class="selectpicker form-control form-control-sm" data-live-search="true"
+                                    data-width="100%" data-size="3" required>
+                                    @foreach ($positions as $position)
+                                    <option value="{{ $position->id }}" @if ($position->id==$employee->position_id)
+                                        selected @endif>{{ $position->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -67,12 +72,11 @@
                                 <label for="editrole{{ $employee->username }}" class="form-label">Role</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select form-select-sm"
+                                <select class="selectpicker form-control form-control-sm"
                                     aria-label="editrole{{ $employee->username }}" name="role" required>
                                     @foreach ($role_list as $role)
                                     <option value="{{ $role }}" @if ($role==$employee->userAuth->role) selected
                                         @endif>{{ $role }}</option>
-                                    </option>
                                     @endforeach
                                 </select>
                             </div>

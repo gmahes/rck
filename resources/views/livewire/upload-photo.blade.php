@@ -1,5 +1,5 @@
 <div>
-    @if (Auth::user()->role == 'user')
+    @if (url()->current() != route('confirmed-complaint'))
     <div class="mt-1">
         <input class="form-control form-control-sm" type="file" id="foto" wire:model="foto"
             accept="image/jpeg,image/png,image/webp" name="photo">

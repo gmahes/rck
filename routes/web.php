@@ -15,6 +15,12 @@ Route::post('add-employee', [MasterController::class, 'addEmployee'])->middlewar
 Route::put('edit-employee/{username}', [MasterController::class, 'editEmployee'])->middleware('auth')->name('edit-employee');
 Route::delete('del-employee/{username}', [MasterController::class, 'delEmployee'])->middleware('auth')->name('del-employee');
 Route::patch('reset-password/{username}', [MasterController::class, 'resetPassword'])->middleware('auth')->name('reset-password');
+Route::get('positions', [MasterController::class, 'positions'])->middleware(['auth', 'administrator'])->name('positions');
+Route::post('add-position', [MasterController::class, 'addPosition'])->middleware('auth')->name('add-position');
+Route::delete('delete-position/{name}', [MasterController::class, 'deletePosition'])->middleware('auth')->name('delete-position');
+Route::get('complaint-categories', [MasterController::class, 'complaintCategories'])->middleware(['auth', 'administrator'])->name('complaint-categories');
+Route::post('add-category', [MasterController::class, 'addCategory'])->middleware('auth')->name('add-category');
+Route::delete('delete-category/{name}', [MasterController::class, 'deleteCategory'])->middleware('auth')->name('delete-category');
 Route::post('change-password/{username}', [DashboardController::class, 'changePassword'])->middleware('auth')->name('change-password');
 Route::get('dummy', [DashboardController::class, 'dummy'])->middleware('auth')->name('dummy');
 Route::get('complaint', [HelpdeskController::class, 'complaint'])->middleware('auth')->name('complaint');

@@ -16,12 +16,16 @@ class UserDetail extends Model
         'nik',
         'username',
         'fullname',
-        'position',
+        'position_id',
         'created_by',
     ];
     protected $with = ['userAuth'];
     public function userAuth()
     {
         return $this->belongsTo(UserAuth::class, 'username', 'username');
+    }
+    public function position()
+    {
+        return $this->belongsTo(Positions::class, 'position_id', 'id');
     }
 }

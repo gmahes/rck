@@ -23,6 +23,9 @@ return new class extends Migration
         Schema::table('complaints', function (Blueprint $table) {
             $table->foreignId('category_id')->nullable()->constrained('complaint_categories')->onDelete('restrict');
         });
+        Schema::table('complaints', function (Blueprint $table) {
+            $table->foreignId('technician_id')->nullable()->constrained('user_detail', 'nik')->onDelete('restrict');
+        });
     }
 
     /**

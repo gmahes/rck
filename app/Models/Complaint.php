@@ -18,6 +18,7 @@ class Complaint extends Model
         'action',
         'status',
         'photo',
+        'technician_id',
         'category_id',
         'created_by',
         'updated_by'

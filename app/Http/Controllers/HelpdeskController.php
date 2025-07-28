@@ -28,9 +28,12 @@ class HelpdeskController extends Controller
             'employees' => UserDetail::whereHas('userAuth', function ($query) {
                 $query->where('role', '!=', 'superadmin');
             })->orderBy('fullname')->get(),
-            'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at'),
+            'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : (Auth::user()->role == 'user' && Auth::user()->userDetail->position->name == "Teknisi IT" ? Complaint::where('technician_id', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at')),
             'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
             'software' => ComplaintCategories::where('type', 'Perangkat Lunak')->get(),
+            'technicians' => UserDetail::whereHas('position', function ($query) {
+                $query->where('name', 'Teknisi IT');
+            })->orderBy('fullname')->get(),
         ];
         $dateCode = date('ymd');
         $prefix = 'IT-RCK/' . $dateCode . '/';
@@ -79,7 +82,7 @@ class HelpdeskController extends Controller
     }
     public function confirmComplaint()
     {
-        complaint::where('troubleID', request()->troubleID)->update(['status' => 'On Process']);
+        complaint::where('troubleID', request()->troubleID)->update(['status' => 'On Process', 'technician_id' => request()->technician]);
         Alert::toast('Pengaduan diproses', 'success');
         return redirect()->route('complaint');
     }
@@ -108,8 +111,10 @@ class HelpdeskController extends Controller
         $complaint = [
             'category_id' => intval(request()->category),
             'trouble' => $validated['trouble'],
-            'action' => request()->has('action') ? request()->action : null,
         ];
+        if (request()->has('technician')) {
+            $complaint['technician_id'] = request()->technician;
+        }
         if (request()->hasFile('photo')) {
             // Jika ada foto baru diupload:
             // Hapus foto lama jika ada dan file-nya benar-benar ada di storage
@@ -137,6 +142,9 @@ class HelpdeskController extends Controller
             'confirmedTroubles' => Complaint::where('status', 'On Process')->get()->sortBy('created_at'),
             'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
             'software' => ComplaintCategories::where('type', 'Perangkat Lunak')->get(),
+            'technicians' => UserDetail::whereHas('position', function ($query) {
+                $query->where('name', 'Teknisi IT');
+            })->orderBy('fullname')->get(),
         ];
         return view('helpdesk.complaints.confirmedComplaint', $attr);
     }

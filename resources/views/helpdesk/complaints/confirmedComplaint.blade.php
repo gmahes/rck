@@ -58,14 +58,10 @@
                                             <td>{{ $item->trouble }}</td>
                                             <td>
                                                 <div class="d-inline-flex gap-3 align-items-center">
-                                                    @if ($item->photo)
-                                                    <a href="{{ Storage::url($item->photo) }}" class="" target="_blank"
-                                                        title="Lihat Lampiran"><i class="bi bi-eye-fill fs-4"></i></a>
-                                                    @endif
                                                     <a href="" data-bs-toggle="modal"
                                                         data-bs-target="#editComplaint{{ $item->troubleID }}"
                                                         title="Tindakan">
-                                                        <i class="bi bi-pencil fs-5 text-success"></i>
+                                                        <i class="bi bi-eye-fill fs-4"></i></i>
                                                     </a>
                                                 </div>
                                             </td>

@@ -11,13 +11,19 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ $fullname }}</h5>
                         <img src="{{ asset('img/avatar.jpg') }}" class="img-fluid" alt="">
+                        @if (Auth::user()->role != 'superadmin')
                         <h3 class="card-title fs-6">{{ $position->name }}</h3>
+                        @endif
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            {{ $chart->container() }}
+            {{-- <div class="col">
+                <div class="card">
+                    <div class="row">
+                        {{ $chart->container() }}
+                    </div>
+                </div>
+            </div> --}}
         </div>
     </section>
 </main><!-- End #main -->

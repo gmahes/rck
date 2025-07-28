@@ -19,7 +19,9 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@if (url()->current() == route('dashboard'))
 {{ $chart->script() }}
+@endif
 
 <!-- Template Main JS File -->
 <script src="{{ asset('js/main.js') }}"></script>

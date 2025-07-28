@@ -52,7 +52,9 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{ $fullname }}</h6>
+                        @if (Auth::user()->role != 'superadmin')
                         <span>{{ $position->name }}</span>
+                        @endif
                     </li>
                     <li>
                         <hr class="dropdown-divider">

@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body text-start text-dark">
                 <form
-                    action="{{ url()->current() == route('confirmed-complaint') ? route('complaint-action') : route('edit-complaint') }}"
+                    action="{{ Auth::user()->role == 'user' && Auth::user()->userDetail->position->name == 'Teknisi IT' ? route('complaint-action') : route('edit-complaint') }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -49,7 +49,8 @@
                                 <div class="col-8">
                                     <select name="category" id="category{{ $item->troubleID }}"
                                         class="selectpicker form-control form-control-sm" data-width="100%"
-                                        aria-label="category" data-live-search="true" data-size="3" required>
+                                        aria-label="category" data-live-search="true" data-size="3" required {{
+                                        Auth::user()->role != 'user' ? 'disabled' : '' }}>
                                         <option value="" selected disabled>Pilih Kategori</option>
                                         <optgroup label="Perangkat Keras" class="text-start">
                                             @foreach ($hardware as $hardwareItem)
@@ -82,6 +83,18 @@
                             @if (Auth::user()->role != 'user')
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
+                                    <label for="technician{{ $item->troubleID }}" class="form-label">Teknisi</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        id="technician{{ $item->troubleID }}" name="technician"
+                                        value="{{ $item->technician_id }}" disabled>
+                                </div>
+                            </div>
+                            @elseif (Auth::user()->role == 'user' and
+                            Auth::user()->userDetail->position->name == 'Teknisi IT')
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
                                     <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
                                 </div>
                                 <div class="col-8 my-auto">
@@ -111,6 +124,7 @@
                                     </em></p>
                             </div>
                         </div>
+                        @if (Auth::user()->role == 'user')
                         <div class="col">
                             <div class="d-flex flex-row-reverse mt-2">
                                 <div class="text-end">
@@ -122,6 +136,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </form>
             </div>

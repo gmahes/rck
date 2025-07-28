@@ -78,6 +78,7 @@
                             <div class="col-8">
                                 <select class="selectpicker form-control form-control-sm" aria-label="role" name="role"
                                     required>
+                                    <option value="" selected disabled>Pilih Role</option>
                                     @foreach ($role_list as $role)
                                     <option value="{{ $role }}">{{ $role }}
                                     </option>

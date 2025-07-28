@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('complaints', function (Blueprint $table) {
             $table->string('troubleID')->primary(); // Digunakan sebagai primary key
-            $table->bigInteger('nik');
+            $table->bigInteger('nik')->unsigned();
             $table->text('trouble');
             $table->text('action')->nullable();
             $table->enum('status', ['Added', 'On Process', 'Finished'])->default('Added');

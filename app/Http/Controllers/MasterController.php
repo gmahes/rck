@@ -28,7 +28,9 @@ class MasterController extends Controller
                 ->where('user_auth.role', '!=', 'superadmin')
                 ->orderBy('user_detail.fullname')
                 ->get(['user_detail.*']),
-            'positions' => Positions::all()->sortBy('name'),
+            'positions' => Positions::all()->whereNotIn('name', ['superadmin'])->sortBy('name'),
+
+
         ];
         return view('masters.employees.employees', $attr);
     }
@@ -135,7 +137,7 @@ class MasterController extends Controller
             'title' => 'Data Jabatan',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'positions' => Positions::orderBy('name')->get('name'),
+            'positions' => Positions::all()->whereNotIn('name', ['superadmin'])->sortBy('name'),
         ];
         confirmDelete('Hapus Jabatan', 'Apakah Anda yakin ingin menghapus jabatan ini?');
         return view('masters.positions.position', $attr);

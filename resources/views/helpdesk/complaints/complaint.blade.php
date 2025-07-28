@@ -39,12 +39,14 @@
                                     <thead class="table-dark">
                                         <tr class="text-center">
                                             <th data-width="165" class="fw-bold">Trouble ID</th>
-                                            @if (Auth::user()->role != 'user')
+                                            @if (Auth::user()->role != 'user' or
+                                            Auth::user()->userDetail->position->name == 'Teknisi IT')
                                             <th>Pengguna</th>
                                             @endif
                                             <th>Kategori</th>
                                             <th>Permasalahan</th>
-                                            @if (Auth::user()->role == 'user')
+                                            @if (Auth::user()->role == 'user' and
+                                            Auth::user()->userDetail->position->name != 'Teknisi IT')
                                             <th>Status</th>
                                             @endif
                                             <th>Aksi</th>
@@ -54,9 +56,12 @@
                                         @foreach ($troubles as $item)
                                         @include('helpdesk.complaints.modals.editComplaint')
                                         @include('helpdesk.complaints.modals.deleteComplaint')
+                                        @include('helpdesk.complaints.modals.setTechnicians')
                                         <tr>
                                             <td>{{ $item->troubleID }}</td>
-                                            @if (Auth::user()->role != 'user')
+                                            @if (Auth::user()->role != 'user' or
+                                            Auth::user()->userDetail->position->name
+                                            == 'Teknisi IT')
                                             <td>{{ $item->userDetail->fullname}}</td>
                                             @endif
                                             <td>
@@ -67,7 +72,8 @@
                                                 @endif
                                             </td>
                                             <td>{{ $item->trouble }}</td>
-                                            @if (Auth::user()->role == 'user')
+                                            @if (Auth::user()->role == 'user' and
+                                            Auth::user()->userDetail->position->name != 'Teknisi IT')
                                             <td>@if ($item->status == "Added")
                                                 <i class="bi bi-exclamation-triangle-fill text-warning fs-4"
                                                     title="Pengaduan Baru"></i>
@@ -81,7 +87,8 @@
                                             </td>
                                             @endif
                                             <td>
-                                                @if (Auth::user()->role == 'user')
+                                                @if (Auth::user()->role == 'user' and
+                                                Auth::user()->userDetail->position->name != 'Teknisi IT')
                                                 @if ($item->status == "Added")
                                                 <div class="btn-group dropstart">
                                                     <button class="btn btn-sm btn-secondary dropdown-toggle"
@@ -108,19 +115,26 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                @else
+                                                @endif
+                                                @endif
+                                                @if ($item->status == "On Process")
+                                                @if (Auth::user()->role == 'user' and
+                                                Auth::user()->userDetail->position->name == 'Teknisi IT')
+                                                <button type="button" class="btn btn-sm btn-secondary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editComplaint{{ $item->troubleID }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                    Edit
+                                                </button>
                                                 @endif
                                                 @endif
                                                 @if (Auth::user()->role != 'user')
                                                 @if ($item->status == "Added")
-                                                <form action="{{ route('confirm-complaint') }}" method="POST">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="troubleID"
-                                                        value="{{ $item->troubleID }}">
-                                                    <input type="hidden" name="status" value="On Process">
-                                                    <button class="btn btn-sm btn-primary" type="submit">Proses</button>
-                                                </form>
+                                                <button type="button" class="btn btn-sm btn-secondary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#setTechnicians{{ $item->troubleID }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
                                                 @endif
                                                 @endif
                                             </td>

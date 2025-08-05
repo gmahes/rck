@@ -118,13 +118,13 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                @else
+                                                {{-- @else
                                                 <button type="button" class="btn btn-sm btn-secondary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editComplaint{{ $item->troubleID }}">
                                                     <i class="bi bi-pencil"></i>
                                                     Edit
-                                                </button>
+                                                </button> --}}
                                                 @endif
                                                 @endif
                                                 @if (Auth::user()->role != 'user')
@@ -164,6 +164,17 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                @endif
+                                                @endif
+                                                @if (Auth::user()->role == 'user' and
+                                                Auth::user()->userDetail->position->name == 'Teknisi IT')
+                                                @if ($item->status == "On Process")
+                                                <button type="button" class="btn btn-sm btn-secondary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editComplaint{{ $item->troubleID }}">
+                                                    <i class="bi bi-eye"></i>
+                                                    Proses
+                                                </button>
                                                 @endif
                                                 @endif
                                             </td>

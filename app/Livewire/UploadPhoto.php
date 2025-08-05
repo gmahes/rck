@@ -11,13 +11,13 @@ class UploadPhoto extends Component
     use WithFileUploads;
 
     public $foto;
-    public $savedPhotoURL;
+    public $nik;
+    public $status;
 
-    public function mount($savedPhotoPath = null)
+    public function mount($nik = null, $status = null)
     {
-        if ($savedPhotoPath) {
-            $this->savedPhotoURL = Storage::url($savedPhotoPath);
-        }
+        $this->nik = $nik;
+        $this->status = $status;
     }
     public function updatedFoto()
     {

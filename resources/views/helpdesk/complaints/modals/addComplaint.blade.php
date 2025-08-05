@@ -12,7 +12,9 @@
             <div class="modal-body text-start text-dark">
                 <form action="{{ route('add-complaint') }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @if (Auth::user()->role == 'user')
                     <input type="hidden" name="user" value="{{ Auth::user()->userDetail->nik }}">
+                    @endif
                     <div class="row">
                         <div class="col">
                             <div class="row">
@@ -24,6 +26,23 @@
                                         placeholder="Masukkan Permasalahan" readonly value="{{ $troubleID }}" disabled>
                                 </div>
                             </div>
+                            @if (Auth::user()->role != 'user')
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
+                                    <label for="user" class="form-label">Pelapor<p class="d-inline fw-bold">*</p>
+                                        </label>
+                                </div>
+                                <div class="col-8 mt-1">
+                                    <select name="user" id="user" class="selectpicker form-control form-control-sm"
+                                        data-live-search="true" data-size="3" required>
+                                        <option value="" selected disabled>Pilih Pelapor</option>
+                                        @foreach ($employees as $user)
+                                        <option value="{{ $user->nik }}">{{ $user->fullname }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
                             <div class="row mt-2">
                                 <div class="col-4 mt-2">
                                     <label for="category" class="form-label">Kategori<p class="d-inline fw-bold">*</p>

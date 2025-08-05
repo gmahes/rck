@@ -46,6 +46,10 @@ class Complaint extends Model
             $model->troubleID = $prefix . $urut;
         });
     }
+    public function technician()
+    {
+        return $this->belongsTo(UserDetail::class, 'technician_id', 'nik');
+    }
     public function userDetail()
     {
         return $this->belongsTo(UserDetail::class, 'nik', 'nik');

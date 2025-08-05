@@ -28,9 +28,8 @@
                                         readonly value="{{ $item->troubleID }}" disabled>
                                 </div>
                             </div>
-                            @if (Auth::user()->role != 'user')
                             <div class="row mt-1">
-                                <div class="col-4 my-auto">
+                                <div class="col-4 mt-2">
                                     <label for="user{{ $item->troubleID }}" class="form-label">
                                         Pelapor</label>
                                 </div>
@@ -40,7 +39,6 @@
                                         value="{{ $item->userDetail->fullname }}" disabled>
                                 </div>
                             </div>
-                            @endif
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
                                     <label for="category{{ $item->troubleID }}" class="form-label">Kategori<p
@@ -50,7 +48,9 @@
                                     <select name="category" id="category{{ $item->troubleID }}"
                                         class="selectpicker form-control form-control-sm" data-width="100%"
                                         aria-label="category" data-live-search="true" data-size="3" required {{
-                                        $item->userDetail->nik != Auth::user()->userDetail->nik ? 'disabled' : '' }}>
+                                        $item->userDetail->nik != Auth::user()->userDetail->nik ? 'disabled' :
+                                        ($item->status == 'On Process' ? 'disabled' : ($item->status == 'Finished' ?
+                                        'disabled' : '')) }}>
                                         <option value="" selected disabled>Pilih Kategori</option>
                                         <optgroup label="Perangkat Keras" class="text-start">
                                             @foreach ($hardware as $hardwareItem)
@@ -76,34 +76,58 @@
                                 </div>
                                 <div class="col-8">
                                     <textarea name="trouble" id="trouble{{ $item->troubleID }}" cols="" rows="3"
-                                        class="form-control form-control-sm w-100" required {{
-                                        $item->userDetail->nik != Auth::user()->userDetail->nik ? 'readonly' : '' }}>{{ $item->trouble }}</textarea>
+                                        class="form-control form-control-sm w-100" required {{ $item->userDetail->nik != Auth::user()->userDetail->nik ? 'readonly' : ($item->status == 'On Process' ? 'readonly' : ($item->status == 'Finished' ?
+                                        'readonly' : '')) }}>{{ $item->trouble }}</textarea>
                                 </div>
                             </div>
-                            @if (Auth::user()->role != 'user')
-                            @if ($item->status == 'On Process')
+                            @if ($item->status == 'Finished')
                             <div class="row mt-2">
-                                <div class="col-4 my-auto">
+                                <div class="col-4 mt-2">
                                     <label for="technician{{ $item->troubleID }}" class="form-label">Teknisi</label>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-8 mt-1">
                                     <input type="text" class="form-control form-control-sm"
                                         id="technician{{ $item->troubleID }}" name="technician"
-                                        value="{{ $item->technician_id }}" disabled>
+                                        value="{{ $item->technician->fullname }}" disabled>
                                 </div>
                             </div>
-                            @endif
-                            @elseif (Auth::user()->role == 'user' and
-                            Auth::user()->userDetail->position->name == 'Teknisi IT')
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
                                     <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
                                 </div>
                                 <div class="col-8 my-auto">
                                     <textarea name="action" id="action{{ $item->troubleID }}" cols="" rows="3"
-                                        class="form-control w-100" required></textarea>
+                                        class="form-control form-control-sm w-100"
+                                        readonly>{{ $item->action }}</textarea>
                                 </div>
                             </div>
+                            @endif
+                            @if (Auth::user()->role != 'user')
+                            @if ($item->status == 'On Process')
+                            <div class="row mt-2">
+                                <div class="col-4 mt-2">
+                                    <label for="technician{{ $item->troubleID }}" class="form-label">Teknisi</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        id="technician{{ $item->troubleID }}" name="technician"
+                                        value="{{ $item->technician->fullname }}" disabled>
+                                </div>
+                            </div>
+                            @endif
+                            @elseif (Auth::user()->role == 'user' and
+                            Auth::user()->userDetail->position->name == 'Teknisi IT')
+                            @if ($item->status == 'On Process')
+                            <div class="row mt-2">
+                                <div class="col-4 my-auto">
+                                    <label for="action{{ $item->troubleID }}" class="form-label">Tindakan</label>
+                                </div>
+                                <div class="col-8 my-auto">
+                                    <textarea name="action" id="action{{ $item->troubleID }}" cols="" rows="3"
+                                        class="form-control form-control-sm w-100" required></textarea>
+                                </div>
+                            </div>
+                            @endif
                             @endif
                         </div>
                         <div class="col">
@@ -112,7 +136,17 @@
                                     <label for="foto{{ $item->troubleID }}" class="form-label">Gambar Pendukung</label>
                                 </div>
                                 <div class="col-8">
-                                    @livewire('upload-photo', ['savedPhotoPath' => $item->photo])
+                                    @if ($item->photo)
+                                    <div class="mt-2">
+                                        <label class="form-label">Lampiran :</label><br>
+                                        <a href="{{ Storage::url($item->photo) }}" target="_blank">
+                                            <img src="{{ Storage::url($item->photo) }}" class="img-thumbnail"
+                                                style="max-height: 200px;">
+                                        </a>
+                                    </div>
+                                    @else
+                                    @livewire('upload-photo', ['nik' => $item->nik, 'status' => $item->status,])
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -124,19 +158,29 @@
                                     </em></p>
                             </div>
                         </div>
-                        @if (Auth::user()->role == 'user')
                         <div class="col">
                             <div class="d-flex flex-row-reverse mt-2">
+                                @if (url()->current() == route('complaint'))
+                                @if ($item->nik == Auth::user()->userDetail->nik)
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
                                 </div>
+                                @endif
+                                @endif
+                                @if (Auth::user()->role == 'user' && Auth::user()->userDetail->position->name ==
+                                'Teknisi IT')
+                                @if ($item->status == 'On Process')
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-sm btn-primary">Proses</button>
+                                </div>
+                                @endif
+                                @endif
                                 <div class="text-end me-2">
                                     <button type="button" class="btn btn-secondary btn-sm"
                                         data-bs-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>
-                        @endif
                     </div>
                 </form>
             </div>

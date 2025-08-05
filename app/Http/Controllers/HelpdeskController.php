@@ -27,6 +27,8 @@ class HelpdeskController extends Controller
             'position' => Auth::user()->userDetail->position,
             'employees' => UserDetail::whereHas('userAuth', function ($query) {
                 $query->where('role', '!=', 'superadmin');
+            })->whereHas('position', function ($query) {
+                $query->where('name', '!=', 'Teknisi IT');
             })->orderBy('fullname')->get(),
             'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : (Auth::user()->role == 'user' && Auth::user()->userDetail->position->name == "Teknisi IT" ? Complaint::where('technician_id', Auth::user()->userDetail->nik)->whereIn('status', ['On Process'])->get()->sortBy('created_at') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at')),
             'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
@@ -82,7 +84,7 @@ class HelpdeskController extends Controller
     }
     public function confirmComplaint()
     {
-        complaint::where('troubleID', request()->troubleID)->update(['status' => 'On Process', 'technician_id' => request()->technician]);
+        complaint::where('troubleID', request()->troubleID)->update(['status' => 'On Process', 'technician_id' => request()->technician, 'updated_by' => Auth::user()->username]);
         Alert::toast('Pengaduan diproses', 'success');
         return redirect()->route('complaint');
     }
@@ -111,6 +113,7 @@ class HelpdeskController extends Controller
         $complaint = [
             'category_id' => intval(request()->category),
             'trouble' => $validated['trouble'],
+            'updated_by' => Auth::user()->username,
         ];
         if (request()->has('technician')) {
             $complaint['technician_id'] = request()->technician;
@@ -163,9 +166,10 @@ class HelpdeskController extends Controller
         complaint::where('troubleID', request()->troubleID)->update([
             'action' => $validated['action'],
             'status' => 'Finished',
+            'updated_by' => Auth::user()->username,
         ]);
         Alert::toast('Pengaduan telah diselesaikan', 'success');
-        return redirect()->route('confirmed-complaint');
+        return redirect()->route('complaint');
     }
     public function complaintHistory()
     {
@@ -173,7 +177,12 @@ class HelpdeskController extends Controller
             'title' => 'Riwayat Pengaduan',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'troubleHistory' => Complaint::where('status', 'Finished')->get()->sortBy('created_at'),
+            'troubleHistory' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Finished') : (Auth::user()->role == 'user' && Auth::user()->userDetail->position->name == "Teknisi IT" ? Complaint::where('technician_id', Auth::user()->userDetail->nik)->whereIn('status', ['Finished'])->get()->sortBy('created_at') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Finished'])->get()->sortBy('created_at')),
+            'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
+            'software' => ComplaintCategories::where('type', 'Perangkat Lunak')->get(),
+            'technicians' => UserDetail::whereHas('position', function ($query) {
+                $query->where('name', 'Teknisi IT');
+            })->orderBy('fullname')->get(),
         ];
         return view('helpdesk.complaints.complaintHistory', $attr);
     }

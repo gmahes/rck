@@ -1,11 +1,9 @@
 <div>
-    @if (Auth::user()->role == 'user')
     <div class="mt-1">
         <input class="form-control form-control-sm" type="file" id="foto" wire:model="foto"
             accept="image/jpeg,image/png,image/webp" name="photo">
         @error('foto') <div class="text-danger mt-1">{{ $message }}</div> @enderror
     </div>
-    @endif
     {{-- Kondisi untuk menampilkan preview gambar yang baru diupload --}}
     @if ($foto)
     <div class="mt-1">

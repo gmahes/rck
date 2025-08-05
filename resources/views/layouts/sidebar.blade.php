@@ -18,7 +18,7 @@
                 <i class="bi bi-database-fill"></i><span>Master</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="master"
-                class="nav-content collapse @if(url()->current() == route('employees') or url()->current() == route('positions'))show @endif"
+                class="nav-content collapse @if(url()->current() == route('employees') or url()->current() == route('positions') or url()->current() == route('complaint-categories'))show @endif"
                 data-bs-parent="#sidebar-nav">
                 @if(Auth::user()->role == 'superadmin' or Auth::user()->role == 'administrator')
                 <li>

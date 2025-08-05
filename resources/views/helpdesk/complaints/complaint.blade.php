@@ -17,10 +17,13 @@
                             </div>
                             <div class="col text-end">
                                 <!-- Button trigger modal -->
+                                @if (Auth::user()->userDetail->position->name !=
+                                'Teknisi IT')
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addComplaint">
                                     Buat Pengaduan
                                 </button>
+                                @endif
                                 @include('helpdesk.complaints.modals.addComplaint')
                             </div>
                         </div>
@@ -115,11 +118,7 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                @endif
-                                                @endif
-                                                @if ($item->status == "On Process")
-                                                @if (Auth::user()->role == 'user' and
-                                                Auth::user()->userDetail->position->name == 'Teknisi IT')
+                                                @else
                                                 <button type="button" class="btn btn-sm btn-secondary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editComplaint{{ $item->troubleID }}">
@@ -130,11 +129,41 @@
                                                 @endif
                                                 @if (Auth::user()->role != 'user')
                                                 @if ($item->status == "Added")
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#setTechnicians{{ $item->troubleID }}">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
+                                                <div class="btn-group dropstart">
+                                                    <button class="btn btn-sm btn-secondary dropdown-toggle"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-justify"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <button type="button"
+                                                                class="btn btn-sm dropdown-item text-success"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editComplaint{{ $item->troubleID }}">
+                                                                <i class="bi bi-eye"></i>
+                                                                Lihat Detail
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button"
+                                                                class="btn btn-sm dropdown-item text-secondary"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#setTechnicians{{ $item->troubleID }}">
+                                                                <i class="bi bi-pencil"></i>
+                                                                Pilih Teknisi
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button"
+                                                                class="btn btn-sm dropdown-item text-danger"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteComplaint{{ $item->troubleID }}">
+                                                                <i class="bi bi-trash"></i>
+                                                                Hapus
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                                 @endif
                                                 @endif
                                             </td>

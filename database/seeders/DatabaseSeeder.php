@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Positions::create([
-            'name' => 'superadmin',
-        ]);
+        Positions::create(['name' => 'superadmin']);
+        Positions::create(['name' => 'Admin IT']);
+        Positions::create(['name' => 'Teknisi IT']);
         UserAuth::create([
             'username' => 'it_chakra',
             'password' => Hash::make('it_chakra'),

@@ -28,7 +28,7 @@ class HelpdeskController extends Controller
             'employees' => UserDetail::whereHas('userAuth', function ($query) {
                 $query->where('role', '!=', 'superadmin');
             })->orderBy('fullname')->get(),
-            'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : (Auth::user()->role == 'user' && Auth::user()->userDetail->position->name == "Teknisi IT" ? Complaint::where('technician_id', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at')),
+            'troubles' => Auth::user()->role != 'user' ? Complaint::all()->sortBy('created_at')->where('status', 'Added') : (Auth::user()->role == 'user' && Auth::user()->userDetail->position->name == "Teknisi IT" ? Complaint::where('technician_id', Auth::user()->userDetail->nik)->whereIn('status', ['On Process'])->get()->sortBy('created_at') : Complaint::where('nik', Auth::user()->userDetail->nik)->whereIn('status', ['Added', 'On Process'])->get()->sortBy('created_at')),
             'hardware' => ComplaintCategories::where('type', 'Perangkat Keras')->get(),
             'software' => ComplaintCategories::where('type', 'Perangkat Lunak')->get(),
             'technicians' => UserDetail::whereHas('position', function ($query) {

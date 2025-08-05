@@ -40,9 +40,11 @@
                                         <td class="fw-bold text-center">{{ $loop->iteration }}</td>
                                         <td class="text-center">{{ $position->name }}</td>
                                         <td class="text-center">
+                                            @if ($position->name !== 'Admin IT' && $position->name !== 'Teknisi IT')
                                             <a href="{{ route('delete-position', $position->name) }}"
                                                 class="btn btn-sm btn-danger" data-confirm-delete="true"><i
                                                     class="bi bi-trash-fill fs-6"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

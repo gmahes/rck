@@ -50,7 +50,7 @@
                                     <select name="category" id="category{{ $item->troubleID }}"
                                         class="selectpicker form-control form-control-sm" data-width="100%"
                                         aria-label="category" data-live-search="true" data-size="3" required {{
-                                        Auth::user()->role != 'user' ? 'disabled' : '' }}>
+                                        $item->userDetail->nik != Auth::user()->userDetail->nik ? 'disabled' : '' }}>
                                         <option value="" selected disabled>Pilih Kategori</option>
                                         <optgroup label="Perangkat Keras" class="text-start">
                                             @foreach ($hardware as $hardwareItem)
@@ -77,10 +77,11 @@
                                 <div class="col-8">
                                     <textarea name="trouble" id="trouble{{ $item->troubleID }}" cols="" rows="3"
                                         class="form-control form-control-sm w-100" required {{
-                                        Auth::user()->role == 'administrator' ? 'readonly' : '' }}>{{ $item->trouble }}</textarea>
+                                        $item->userDetail->nik != Auth::user()->userDetail->nik ? 'readonly' : '' }}>{{ $item->trouble }}</textarea>
                                 </div>
                             </div>
                             @if (Auth::user()->role != 'user')
+                            @if ($item->status == 'On Process')
                             <div class="row mt-2">
                                 <div class="col-4 my-auto">
                                     <label for="technician{{ $item->troubleID }}" class="form-label">Teknisi</label>
@@ -91,6 +92,7 @@
                                         value="{{ $item->technician_id }}" disabled>
                                 </div>
                             </div>
+                            @endif
                             @elseif (Auth::user()->role == 'user' and
                             Auth::user()->userDetail->position->name == 'Teknisi IT')
                             <div class="row mt-2">
@@ -106,11 +108,9 @@
                         </div>
                         <div class="col">
                             <div class="row">
-                                @if (Auth::user()->role == 'user')
                                 <div class="col-4 mt-2">
                                     <label for="foto{{ $item->troubleID }}" class="form-label">Gambar Pendukung</label>
                                 </div>
-                                @endif
                                 <div class="col-8">
                                     @livewire('upload-photo', ['savedPhotoPath' => $item->photo])
                                 </div>

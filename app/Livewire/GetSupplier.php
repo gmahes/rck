@@ -15,6 +15,9 @@ class GetSupplier extends Component
     public $document;
     public $facility;
     public $percentage;
+    public $rate = 0.0;
+    public $dpp = '';
+    public $pph = 0;
 
     public function mount()
     {
@@ -38,7 +41,7 @@ class GetSupplier extends Component
             $this->code = $supplier->code;
             $this->document = $document[$supplier->document];
             $this->facility = $facility[$supplier->facility];
-            $this->percentage = $supplier->percentage . '%';
+            $this->percentage = $supplier->percentage;
         } else {
             $this->idNumber = '';
             $this->code = '';
@@ -47,6 +50,20 @@ class GetSupplier extends Component
             $this->percentage = '';
         }
     }
+    public function recalc()
+    {
+        $this->recalcPPh();
+    }
+    private function recalcPPh(): void
+    {
+        $dppNumber = (int) preg_replace('/[^\d]/', '', (string) $this->dpp);
+        $percentage = (float) $this->percentage; // langsung ambil dari properti
+
+        $this->pph = ($dppNumber > 0 && $percentage > 0)
+            ? (int) round($dppNumber * ($percentage / 100))
+            : 0;
+    }
+
     public function render()
     {
         return view('livewire.get-supplier');

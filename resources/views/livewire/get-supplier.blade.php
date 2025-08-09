@@ -20,14 +20,6 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-4">
-                    <label for="date">Tanggal Dokumen</label>
-                </div>
-                <div class="col">
-                    <input type="date" id="date" class="form-control form-control-sm" name="date" required>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-4">
                     <label for="docId">Nomor Dokumen</label>
                 </div>
                 <div class="col">
@@ -41,7 +33,23 @@
                 </div>
                 <div class="col">
                     <input type="text" id="dpp" class="form-control form-control-sm" name="dpp" autocomplete="off"
-                        required>
+                        wire:model.debounce.300ms="dpp" wire:change="recalc" required>
+                    <div class="form-text mt-1">
+                        @php
+                        $fmt = fn($n) => $n ? 'Rp '.number_format($n, 0, ',', '.') : '-';
+                        $rateText = $percentage ?: ($rate ? ($rate.'%') : '0%');
+                        @endphp
+                        Perkiraan PPh ({{ $percentage . '%' }}) : <strong>Rp {{ number_format($pph, 0, ',', '.')
+                            }}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <label for="date">Tanggal Dokumen</label>
+                </div>
+                <div class="col">
+                    <input type="date" id="date" class="form-control form-control-sm" name="date" required>
                 </div>
             </div>
         </div>

@@ -14,6 +14,7 @@ class BupotList extends Model
     protected $fillable = [
         'id',
         'supplier_id',
+        'sbu',
         'date',
         'docId',
         'dpp',

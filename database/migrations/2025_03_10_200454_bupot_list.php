@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('bupot_list', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('supplier_id');
+            $table->enum('sbu', ['rck', 'ckl'])->default('rck');
             $table->date('date');
             $table->string('docId');
             $table->string('dpp');

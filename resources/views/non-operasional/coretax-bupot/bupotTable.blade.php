@@ -58,6 +58,20 @@
                                                 required>
                                         </div>
                                     </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-4">
+                                            <label for="sbu">SBU</label>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ckl"
+                                                    id="checkDefault" name="sbu">
+                                                <label class="form-check-label" for="checkDefault">
+                                                    CKL
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                                 <form action="{{ route('xmlBupot') }}" method="POST" id="xmlBupot">
                                     @csrf

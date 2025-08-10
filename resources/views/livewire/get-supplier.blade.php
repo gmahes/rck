@@ -33,7 +33,7 @@
                 </div>
                 <div class="col">
                     <input type="text" id="dpp" class="form-control form-control-sm" name="dpp" autocomplete="off"
-                        wire:model.debounce.300ms="dpp" wire:change="recalc" required>
+                        wire:model="dpp" wire:change="recalc" required>
                     <div class="form-text mt-1">
                         @php
                         $fmt = fn($n) => $n ? 'Rp '.number_format($n, 0, ',', '.') : '-';
@@ -50,6 +50,19 @@
                 </div>
                 <div class="col">
                     <input type="date" id="date" class="form-control form-control-sm" name="date" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <label for="sbu">SBU</label>
+                </div>
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="ckl" id="checkDefault" name="sbu">
+                        <label class="form-check-label" for="checkDefault">
+                            CKL
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>

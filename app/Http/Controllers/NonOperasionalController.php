@@ -924,6 +924,7 @@ class NonOperasionalController extends Controller
     }
     public function saveBupot()
     {
+        // dd(request()->all());
         $validator = Validator::make(request()->all(), [
             'supplier' => 'required',
             'date' => 'required',
@@ -942,15 +943,28 @@ class NonOperasionalController extends Controller
             return redirect()->route('bupot');
         }
         $validated = $validator->validated();
-        $bupotList = [
-            'id' => Str::uuid7(),
-            'supplier_id' => $validated['supplier'],
-            'date' => $validated['date'],
-            'docId' => $validated['docId'],
-            'dpp' => $validated['dpp'],
-            'pph' => number_format(intval(preg_replace('/[^0-9]/', '', $validated['dpp'])) * Suppliers::find($validated['supplier'])->percentage / 100, 0, '', '.'),
-            'whdate' => $validated['date'],
-        ];
+        if (request()->sbu) {
+            $bupotList = [
+                'id' => Str::uuid7(),
+                'supplier_id' => $validated['supplier'],
+                'sbu' => 'ckl',
+                'date' => $validated['date'],
+                'docId' => $validated['docId'],
+                'dpp' => $validated['dpp'],
+                'pph' => number_format(intval(preg_replace('/[^0-9]/', '', $validated['dpp'])) * Suppliers::find($validated['supplier'])->percentage / 100, 0, '', '.'),
+                'whdate' => $validated['date'],
+            ];
+        } else {
+            $bupotList = [
+                'id' => Str::uuid7(),
+                'supplier_id' => $validated['supplier'],
+                'date' => $validated['date'],
+                'docId' => $validated['docId'],
+                'dpp' => $validated['dpp'],
+                'pph' => number_format(intval(preg_replace('/[^0-9]/', '', $validated['dpp'])) * Suppliers::find($validated['supplier'])->percentage / 100, 0, '', '.'),
+                'whdate' => $validated['date'],
+            ];
+        }
         BupotList::create($bupotList);
         Alert::toast('Data berhasil disimpan', 'success');
         return redirect()->route('bupot');
@@ -988,7 +1002,7 @@ class NonOperasionalController extends Controller
             'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'bupots' => BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)])->sortBy('date'),
+            'bupots' => request()->sbu ? BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)])->where('sbu', 'ckl')->sortBy('date') : BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)])->whereNotIn('sbu', ['ckl'])->sortBy('date'),
         ];
         if (count($attr['bupots']) == 0) {
             Alert::error('Gagal', 'Data tidak ditemukan');
@@ -1007,6 +1021,7 @@ class NonOperasionalController extends Controller
         session([
             'start_date' => request()->start_date,
             'end_date' => request()->end_date,
+            'sbu' => request()->sbu ? 'ckl' : 'rck',
         ]);
         foreach ($attr['bupots'] as $bupot) {
             $bupot->supplier->document = $document[$bupot->supplier->document];
@@ -1026,13 +1041,13 @@ class NonOperasionalController extends Controller
             'title' => 'Bupot PPh',
             'fullname' => Auth::user()->userDetail->fullname,
             'position' => Auth::user()->userDetail->position,
-            'bupots' => BupotList::all()->whereBetween('date', [request()->start_date, Carbon::parse(request()->end_date)->setTime(23, 59, 59)])->sortBy('date'),
+            'bupots' => request()->session()->get('sbu') == 'ckl' ? BupotList::all()->whereBetween('date', [request()->session()->get('start_date'), Carbon::parse(request()->session()->get('end_date'))->setTime(23, 59, 59)])->where('sbu', 'ckl')->sortBy('date') : BupotList::all()->whereBetween('date', [request()->session()->get('start_date'), Carbon::parse(request()->session()->get('end_date'))->setTime(23, 59, 59)])->whereNotIn('sbu', ['ckl'])->sortBy('date'),
         ];
         if (count($attr['bupots']) == 0) {
             Alert::error('Gagal', 'Data tidak ditemukan');
             return redirect()->route('bupot');
         }
-        $tin = '0704142322402000';
+        $tin = request()->session()->get('sbu') == 'ckl' ? '0109009514402000' : '0704142322402000';
         $this->xml = new SimpleXMLElement('<BpuBulk xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd"></BpuBulk>');
         $this->xml->addChild('TIN', $tin);
         $this->xml->addChild('ListOfBpu');
@@ -1064,6 +1079,6 @@ class NonOperasionalController extends Controller
 
         return response($dom->saveXML(), 200)
             ->header('Content-Type', 'text/xml')
-            ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::parse(session('start_date'))->format('d M Y') . ' - ' . Carbon::parse(session('end_date'))->format('d M Y') . '.xml"');
+            ->header('Content-Disposition', 'attachment; filename="Bupot ' . Carbon::parse(session('start_date'))->format('d M Y') . ' - ' . Carbon::parse(session('end_date'))->format('d M Y') . (request()->session()->get('sbu') == 'ckl' ? ' (CKL)' : '') . '.xml"');
     }
 }

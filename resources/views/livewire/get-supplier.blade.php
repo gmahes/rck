@@ -58,8 +58,8 @@
                 </div>
                 <div class="col">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="ckl" id="checkDefault" name="sbu">
-                        <label class="form-check-label" for="checkDefault">
+                        <input class="form-check-input" type="checkbox" value="ckl" id="sbu" name="sbu">
+                        <label class="form-check-label" for="sbu">
                             CKL
                         </label>
                     </div>
